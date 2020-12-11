@@ -1,0 +1,59 @@
+version: "3"
+
+services:
+  proxy:
+    image: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-proxy.conf:/etc/nginx/nginx.conf
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /etc/ssl/certs:/etc/ssl/certs
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+  frontend:
+    container_name: frontend
+    image: findthebusinessfe
+    build: 
+      context: ./FindTheBusinessFE
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment: 
+      NODE_ENV: ${NODE_ENV}
+    volumes:
+      - './FindTheBusinessFE:/app'
+      - '/app/node_modules'
+  backend:
+    container_name: backend
+    image: findthebusinessbe
+    build: 
+      context: ./FindTheBusinessBE
+      dockerfile: Dockerfile
+    ports:
+      - "9000:8080"
+    environment: 
+      SPRING_ENV: ${SPRING_ENV}
+      JDBC_DATABASE_URL: ${JDBC_DATABASE_URL}
+      JDBC_DATABASE_NAME: ${JDBC_DATABASE_NAME}
+      JDBC_DATABASE_PORT: ${JDBC_DATABASE_PORT}
+      JDBC_DATABASE_USERNAME: ${JDBC_DATABASE_USERNAME}
+      JDBC_DATABASE_PASSWORD: ${JDBC_DATABASE_PASSWORD}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_S3_BUCKET: ${AWS_S3_BUCKET}
+      AWS_S3_REGION: ${AWS_S3_REGION}
+      SPRING_APP_FRONTEND_1: ${SPRING_APP_FRONTEND_1}
+      SPRING_APP_FRONTEND_2: ${SPRING_APP_FRONTEND_2}
+      FACEBOOK_APP_ID: ${FACEBOOK_APP_ID}
+      FACEBOOK_SECRET: ${FACEBOOK_SECRET}
+      SPRING_APP_STRIPE: ${SPRING_APP_STRIPE}
+      SPRING_APP_TOKEN_SECRET_REFRESH_TOKEN: ${SPRING_APP_TOKEN_SECRET_REFRESH_TOKEN}
+      SPRING_APP_TOKEN_SECRET_ACCESS_TOKEN: ${SPRING_APP_TOKEN_SECRET_ACCESS_TOKEN}
+      SPRING_APP_TOKEN_SECRET_CHANGE_PASSWORD: ${SPRING_APP_TOKEN_SECRET_CHANGE_PASSWORD}
+      SPRING_APP_TOKEN_SECRET_CHANGE_INFO: ${SPRING_APP_TOKEN_SECRET_CHANGE_INFO}
+      EMAIL_APP_PASS: ${EMAIL_APP_PASS}
+      CRYPT_KEY: ${CRYPT_KEY}
+    volumes:
+      - /data/findthebusinessbe
+    
