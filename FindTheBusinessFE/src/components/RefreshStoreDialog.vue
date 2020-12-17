@@ -6,7 +6,7 @@
         <h2 class="uk-modal-title">Reincarcare magazin</h2>
       </div>
       <div class="uk-modal-body">
-        <p>Daca alegeti aceasta optiune, 5 RON vor fi retrasi din contul dumneavoastra pentru ca magazinul sa ajunga cat mai sus in lista de magazine la cautare sau in cazul unui magazin promovat, pe prima pagina a site-ului</p>
+        <p>Daca alegeti aceasta optiune, 20 RON vor fi retrasi din contul dumneavoastra pentru ca magazinul sa ajunga cat mai sus in lista de magazine la cautare sau in cazul unui magazin promovat, pe prima pagina a site-ului</p>
         <p v-if="loading==true">Se incarca</p>
       </div>
       <div class="uk-modal-footer uk-text-right">

@@ -189,7 +189,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .setPassword(passwordEncoder.encode(userToRegister.getPassword()))
                     .setActive(false)
                     .setBanned(false)
-                    .setBalance(3000L)
+                    .setBalance(120L)
                     .setSmallTokens(0)
                     .setMediumTokens(0)
                     .setLargeTokens(0)

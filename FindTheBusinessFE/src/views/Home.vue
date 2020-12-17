@@ -14,11 +14,11 @@ export default {
   },
   metaInfo() {
     return { 
-      title: "Acasa - Produse&Servicii.ro",
+      title: "Acasa - ProduseSiServicii.ro",
       meta: [
           { name: 'description', content:  'Aceasta platforma are scopul de a ajuta comerciantii in a-si gasi clienti, iar clientii in a gasi produse si servicii cat mai usor si rapid.'},
-          { property: 'og:title', content: "Produse&Servicii.ro - Gaseste-ti clientii si comerciantii"},
-          { property: 'og:site_name', content: 'Produse&Servicii.ro'},
+          { property: 'og:title', content: "ProduseSiServicii.ro - Gaseste-ti clientii si comerciantii"},
+          { property: 'og:site_name', content: 'ProduseSiServicii.ro'},
           { property: 'og:type', content: 'website'},    
           { name: 'robots', content: 'index,follow'} 
       ]

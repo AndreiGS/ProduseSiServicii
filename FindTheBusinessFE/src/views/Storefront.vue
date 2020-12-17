@@ -251,11 +251,11 @@ export default {
     },
     metaInfo() {
       return { 
-        title: `${(this.store.name != null) ? this.store.name + ' - Produse&Servicii.ro' : 'Produse&Servicii.ro'}`,
+        title: `${(this.store.name != null) ? this.store.name + ' - ProduseSiServicii.ro' : 'ProduseSiServicii.ro'}`,
         meta: [
             { name: 'description', content:  (this.store.description != null) ? this.store.description.substring(0, Math.min(this.store.description.length, 200)) : 'Descriere'},
-            { property: 'og:title', content: this.store.name + " - Produse&Servicii.ro"},
-            { property: 'og:site_name', content: 'Produse&Servicii.ro'},
+            { property: 'og:title', content: this.store.name + " - ProduseSiServicii.ro"},
+            { property: 'og:site_name', content: 'ProduseSiServicii.ro'},
             { property: 'og:type', content: 'website'},    
             { name: 'robots', content: 'index,follow'} 
         ]

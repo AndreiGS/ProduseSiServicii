@@ -8,19 +8,19 @@
       <div class="uk-modal-body">
         <table>
           <tr>
-            <td><p class="info-p">Mici (5 produse/servicii - 20 RON) : {{(small != null) ? small : 'Negasit'}}</p></td>
+            <td><p class="info-p">Mici (5 produse/servicii - GRATIS) : {{(small != null) ? small : 'Negasit'}}</p></td>
             <td><button style="cursor: pointer; background: linear-gradient(45deg, #d6e218, #777400);" @click="buyCredit('small')" class="edit-button uk-button-primary"><span uk-icon="icon: plus; ratio: 0.8"></span></button></td>
           </tr>
           <tr>
-            <td><p class="info-p">Medii (15 produse/servicii - 50 RON) : {{(medium != null) ? medium : 'Negasit'}}</p></td>
+            <td><p class="info-p">Medii (15 produse/servicii - GRATIS) : {{(medium != null) ? medium : 'Negasit'}}</p></td>
             <td><button style="cursor: pointer; background: linear-gradient(45deg, #d6e218, #777400);" @click="buyCredit('medium')" class="edit-button uk-button-primary"><span uk-icon="icon: plus; ratio: 0.8"></span></button></td>
           </tr>
           <tr>
-            <td><p class="info-p">Mari (40 produse/servicii - 120 RON) : {{(large != null) ? large : 'Negasit'}}</p></td>
+            <td><p class="info-p">Mari (40 produse/servicii - GRATIS) : {{(large != null) ? large : 'Negasit'}}</p></td>
             <td><button style="cursor: pointer; background: linear-gradient(45deg, #d6e218, #777400);" @click="buyCredit('large')" class="edit-button uk-button-primary"><span uk-icon="icon: plus; ratio: 0.8"></span></button></td>
           </tr>
           <tr>
-            <td><p class="info-p">Hyper (100 produse/servicii - 250 RON) : {{(unlimited != null) ? unlimited : 'Negasit'}}</p></td>
+            <td><p class="info-p">Hyper (100 produse/servicii - GRATIS) : {{(unlimited != null) ? unlimited : 'Negasit'}}</p></td>
             <td><button style="cursor: pointer; background: linear-gradient(45deg, #d6e218, #777400);" @click="buyCredit('unlimited')" class="edit-button uk-button-primary"><span uk-icon="icon: plus; ratio: 0.8"></span></button></td>
           </tr>
         </table>

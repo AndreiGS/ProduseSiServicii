@@ -24,7 +24,7 @@
         </div>
         <div class="uk-navbar-center">
           <router-link :to="{name: 'Home'}" class="router">
-            <h3 class="uk-text-center title">Produse&Servicii.ro</h3>
+            <h3 class="uk-text-center title">ProduseSiServicii.ro</h3>
           </router-link>
         </div>
         <div class="uk-navbar-right">
@@ -75,7 +75,7 @@
                       
                     </div>
 
-                    <h3>Produse&Servicii.ro</h3>
+                    <h3>ProduseSiServicii.ro</h3>
 
                     <div v-if="logged == false">
                       <button href="#login-sections" uk-toggle class="sign-up-button-mobile uk-flex uk-flex-row uk-flex-middle">
