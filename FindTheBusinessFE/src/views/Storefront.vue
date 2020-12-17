@@ -13,7 +13,7 @@
       </div>
       <div v-else>
         <div class="uk-inline" style="width: 100%">
-          <img loading="lazy" v-if="cannotFindImage == false && ((windowWidth > 640 && store.largePhoto != null) || (windowWidth <= 640 && store.smallPhoto != null))" :src="(windowWidth > 640) ? store.largePhoto : store.smallPhoto" class="cover-image" :class="(editingShop == true) ? 'filter-image' : ''" alt="" @onerror="cannotFindImage = true">
+          <img loading="lazy" v-if="cannotFindImage == false && ((windowWidth > 640 && store.largePhoto != null) || (windowWidth <= 640 && store.smallPhoto != null))" :src="(newImage == null) ? ((windowWidth > 640) ? store.largePhoto : store.smallPhoto) : newImage" class="cover-image" :class="(editingShop == true) ? 'filter-image' : ''" :alt="cannotFindImage = true" @onerror="cannotFindImage = true">
           
           <div v-else class="cover-image no-image-div">
             <p :style="cannotFindImage == true ? 'visibility: visible' : 'visibility: hidden'" v-if="editingShop == false" class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine gasita</p>
@@ -31,8 +31,11 @@
             </button>
           </div>
           <div v-if="isOwner == true" class="uk-overlay uk-position-bottom-right overlay">
-            <button uk-tooltip="Editeaza fatada de magazinul" style="cursor: pointer;" v-if="editingShop == false" @click="changeEdit()" class="edit-button uk-button-primary"><span uk-icon="icon: pencil; ratio: 0.8"></span></button>
-            <button uk-tooltip="Finalizeaza editarea fatadei de magazin" style="cursor: pointer;" v-else @click="changeEdit()" class="edit-button uk-button-primary"><span uk-icon="icon: check; ratio: 0.8"></span></button>
+            <button uk-tooltip="Editeaza fatada de magazinul" style="cursor: pointer;" v-if="editingShop == false" @click="changeEditState()" class="edit-button uk-button-primary"><span uk-icon="icon: pencil; ratio: 0.8"></span></button>
+            <div v-else class="edit-shop-button-container">
+              <button uk-tooltip="Renunta la editarea fatadei de magazin" style="cursor: pointer;" @click="discardEdit()" class="edit-button uk-button-danger"><span uk-icon="icon: ban; ratio: 0.8"></span></button>
+              <button uk-tooltip="Finalizeaza editarea fatadei de magazin" style="cursor: pointer;" @click="saveEdit()" class="edit-button uk-button-primary"><span uk-icon="icon: check; ratio: 0.8"></span></button>
+            </div>
           </div>
           <div @click="showImageEdit = true" v-if="isOwner == true && editingShop == true" :style="(this.editingShop==true) ? 'cursor: pointer;' : ''" style="color: white;" class="uk-overlay uk-position-center overlay change-image-div">
             <span uk-icon="camera" ratio="2"></span>
@@ -77,10 +80,20 @@
         </div>
 
         <vk-grid style="margin-top: 15px"> <!--match height-->
-          <div class="uk-width-2-3@m" style="padding-right: 10px">
-            <article class="uk-article">
-              <p class="uk-text-lead" style="text-transform: uppercase; text-align: left; word-wrap: break-word;"> {{store.name}} </p>
-              <p style="text-align: left; word-wrap: break-word; white-space: pre-line;"> {{displayedDescription}} </p>
+          <div class="uk-width-2-3@m" style="padding: 0">
+            <article class="uk-article" style="height: 100%;">
+
+              <div v-if="editingShop == false" class="info-container">
+                <p class="uk-text-lead" style="text-transform: uppercase; text-align: left; word-wrap: break-word;"> {{store.name}} </p>
+                <p style="text-align: left; word-wrap: break-word; white-space: pre-line;"> {{displayedDescription}} </p>
+              </div>
+              
+              <div v-else class="edit-info-container">
+                <input uk-tooltip="Titlu (maxim 40 caractere)" type="text" maxlength="40" v-model="store.name" style="font-size: 24px; text-transform: uppercase;" placeholder="Titlu" class="uk-textarea custom-textarea-enabled" />
+                <textarea uk-tooltip="Descriere (maxim 255 caractere)" maxlength="255" class="uk-textarea custom-textarea-enabled description-text-area" type="text" placeholder="Descriere" v-model="store.description"></textarea>
+              </div>
+              
+              
               <div v-if="needsCrop == true" class="uk-text-left">
                 <button style="cursor: pointer;" class="custom-showmore-button" v-if="isShowingFullDesc == false" @click="getFullDescription()">Arata toata descrierea</button>
                 <button style="cursor: pointer;" class="custom-showmore-button" v-else @click="cutDescription()">Arata mai putin</button>
@@ -88,7 +101,7 @@
             </article>
           </div>
 
-          <div class="uk-width-1-3@m" style="padding-right: 10px">
+          <div class="uk-width-1-3@m" style="padding: 0">
             <article class="uk-article">
               <vk-card padding="small">
                 <p style="margin-bottom: 0 !important;">Magazinul a fost evaluat ca: <b>{{priceText}}</b></p>
@@ -229,13 +242,16 @@ export default {
               tabs: null,
               hasAutomaticTokenRefresh: null
             },
+            nameCopy: null,
+            descriptionCopy: null,
+            newImage: null,
             priceText: null,
             activeTab: 0,
             loading: false,
             error: false,
             displayedDescription: null,
             isShowingFullDesc: false,
-            needsCrop: true,
+            needsCrop: false,
             isOwner: false,
             editingShop: false,
             newTabAdded: false,
@@ -298,7 +314,7 @@ export default {
         },
         async changeImage(data) {
           this.cannotFindImage = false
-          await this.uploadImage(data.image)
+          this.newImage = data.image
           this.hideModal();
         },
         async wantsAutomaticTokenRefreshChanged() {
@@ -378,6 +394,9 @@ export default {
           this.deleteTab(tab)
           this.saveNewCategory(tab)
           this.categoryHasBeenChanged();
+        },
+        changeEditState() {
+          this.editingShop=!this.editingShop
         },
         getPriceType() {
             if (this.store.price >= 1 && this.store.price < 1.5) {
@@ -488,6 +507,8 @@ export default {
             .then((response) => {
               this.store = response.data;
               this.displayedDescription = this.store.description
+              this.nameCopy=this.store.name;
+              this.descriptionCopy=this.store.description;
 
               this.cutDescription();
               this.getPriceType();
@@ -509,34 +530,50 @@ export default {
               clearTimeout(timeoutVar)
             })
         },
-        async changeEdit() {
-          this.editingShop = !this.editingShop
+        discardEdit() {
+          this.store.name=this.nameCopy;
+          this.store.description=this.descriptionCopy;
+          this.newImage=null;
+          this.changeEditState();
         },
-        async uploadImage(image) {
+        async saveEdit() {
+          await this.saveEditToDb('changeLargeImage');
+          this.changeEditState();
+        },
+        async saveEditToDb(endpoint) {
           var timeoutVar = setTimeout(() => { this.loading = true; }, 1500);
           await axios({
-            url: this.backend+'/api/shops/changeLargeImage?id='+this.$route.params.id,
+            url: `${this.backend}/api/shops/${endpoint}?id=${this.$route.params.id}`,
             method: 'post',
             headers: {
               'X-CSRF-TOKEN': this.$cookie.get('CSRF-TOKEN'),
               'X-REFRESH-TOKEN': this.$cookie.get('REFRESH-TOKEN')
             },
             data: {
-              newImage: image
+              newImage: this.newImage,
+              name: this.store.name,
+              description: this.store.description
             },
             withCredentials: true
           })
             .then((response) => {
               this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
               this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
+
               this.store.largePhoto = response.data.largeImageURL
-              this.newImage = null
-              UIkit.notification({message: 'Poza a fost modificata', status: 'success'})
+              this.nameCopy=this.store.name;
+              this.descriptionCopy=this.store.description;
+              this.displayedDescription=this.store.description;
+              this.newImage = null;
+
+              this.cutDescription();
+
+              UIkit.notification({message: 'Modificarile au fost salvate', status: 'success'})
             })  
             .catch((error) => {
               console.log(error)
               if(error.response.status == 400) {
-                UIkit.notification({message: 'Nu ati adaugat nicio poza fatadei de magazin', status: 'danger'})
+                UIkit.notification({message: 'Modificarile nu au putut fi salvate', status: 'danger'})
                 return
               }
               if(error.response.status == 403) {
@@ -545,7 +582,7 @@ export default {
                 this.$cookie.delete('CSRF-TOKEN')
                 return
               }
-              UIkit.notification({message: 'Nu am reusit sa modificam poza fatadei de magazin. Va rugam sa reincercati', status: 'danger'})
+              UIkit.notification({message: 'Modificarile nu au putut fi salvate', status: 'danger'})
             })
             .finally(() => {
               this.loading = false;
@@ -658,13 +695,16 @@ export default {
 .rating {
   display: block !important;
 }
-@media (min-width: 3000px) {
-  .cover-image {
-    max-height: 1000px !important;
-    width: 100%;
-    object-fit: cover;
-  }
+
+.custom-textarea-enabled {
+	background-color: rgba(112, 196, 43, 0.144);
+	color: rgb(31, 31, 31);
+	border: none;
+	border-bottom: 2px solid #6FC42B;
+	text-align: left;
+  white-space: pre-line;
 }
+
 .custom-showmore-button {
   border: none;
   background-color: transparent;
@@ -707,6 +747,28 @@ export default {
   border: none;
 	border-radius: 10px;
 	padding: 5px 10px!important;
+}
+
+.edit-info-container {
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.description-text-area {
+  min-width: 100%; 
+  height: 100%; 
+  margin-top: 10px;
+}
+
+.edit-shop-button-container {
+  display: flex;
+  flex-direction: row;
+
+  button {
+    margin: 0 5px;
+  }
 }
 
 /*Switch*/
@@ -771,5 +833,23 @@ input:checked + .slider:before {
 }
 
 /* --------- */
+
+@media (min-width: 3000px) {
+  .cover-image {
+    max-height: 1000px !important;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+@media (max-width: 640px) {
+  .edit-info-container {
+    padding: 10px 0;
+    margin: 0 10px;
+  }
+  .info-container {
+    margin: 0 10px;
+  }
+}
 
 </style>

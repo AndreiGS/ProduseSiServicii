@@ -548,14 +548,15 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public ChangeLargeImageResponseDtoWithAccessToken changeLargeImage(String shopId, ChangeLargeImageRequestDto changeLargeImageRequestDto, HttpServletRequest request) throws IOException, NoSuchAlgorithmException {
-        if(changeLargeImageRequestDto.getNewImage() == null)
-            throw new PhotoRequiredException();
-
         String accessToken = getAccessTokenFromRequest(request);
         Shops shop = isOwner(shopId, accessToken, request);
         Users user = shop.getUser();
 
-        String imageUrl = savePhoto(changeLargeImageRequestDto.getNewImage(), LARGE_SHOP_IMAGE);
+        String imageUrl = null;
+        if(changeLargeImageRequestDto.getNewImage() != null) {
+            imageUrl = savePhoto(changeLargeImageRequestDto.getNewImage(), LARGE_SHOP_IMAGE);
+            shop.setLargePhoto(imageUrl);
+        }
 
         if(shop.getLargePhoto() != null) {
             try {
@@ -566,7 +567,8 @@ public class ShopServiceImpl implements ShopService {
             }
         }
 
-        shop.setLargePhoto(imageUrl);
+        shop.setName(changeLargeImageRequestDto.getName());
+        shop.setDescription(changeLargeImageRequestDto.getDescription());
         saveShop(shop);
 
         AuthenticationCredentialsDto auth = authenticationUtil.createCredentials(user, accessToken);

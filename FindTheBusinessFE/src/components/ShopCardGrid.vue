@@ -1,8 +1,7 @@
 <template>
   <div class="uk-padding-small" style="background-color: rgba(111,196,43,0.2)">
     <vk-grid v-if="shops.length>0">
-      <div class="uk-width-5-5@m"
-           style="padding-left: 0 !important;">
+      <div class="uk-width-5-5@m">
         <div class="cards">
           <AddShopCard v-on:add_shop="$emit('add_shop')" style="margin-bottom: 10px"/>
           <ShopCard 

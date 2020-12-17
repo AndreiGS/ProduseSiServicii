@@ -5,8 +5,7 @@
     </div>
     <div v-else>
       <vk-grid>
-        <div class="uk-width-5-5@m"
-            style="padding-left: 0 !important;">
+        <div class="uk-width-5-5@m">
           <div class="cards">
             <AddItemCard v-if="tab == 'all' && isOwner == true" style="margin-bottom: 15px" v-on:add_item="addItem()"/>
             <div v-if="products != null && products.length > 0">

@@ -7,7 +7,7 @@
             <div v-if="promoted=='PROMOTED'" class="uk-card-badge uk-label" style="right: 10px; top: 10px;">PROMOVAT{{promotedDays != null ? ` ${promotedDays} zile` : null}}</div>
             <div @click="showImageEdit = true" class="uk-inline uk-width-1-1" :style="(this.editingShop==true) ? 'cursor: pointer;' : ''">
               
-              <img loading="lazy" v-if="cannotFindImage == false && (oldImage != null || newImage != null)" :src="(newImage != null) ? newImage : oldImage" class="card-image" :class="(this.editingShop==true) ? 'changing-image' : ''" alt="" @onerror="cannotFindImage = true;" @load="onImgLoad">
+              <img loading="lazy" v-if="cannotFindImage == false && (oldImage != null || newImage != null)" :src="(newImage != null) ? newImage : oldImage" class="card-image" :class="(this.editingShop==true) ? 'changing-image' : ''" :alt="cannotFindImage = true" @onerror="cannotFindImage = true;" @load="onImgLoad">
           
               <div v-else class="no-image-div">
                 <p v-if="editingShop == false" class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine gasita</p>

@@ -8,7 +8,7 @@
         <div class="card-image-custom-width">
           <div @click="if(editingItem == true) showImageEdit = true" class="uk-inline uk-width-1-1" :style="(this.editingItem==true) ? 'cursor: pointer;' : ''">
 
-            <img loading="lazy" v-if="cannotFindImage == false && (oldImage != null || newImage != null)" :src="(newImage != null) ? newImage : oldImage" class="card-image" :class="(this.editingItem==true) ? 'changing-image' : ''" alt="" @onerror="this.cannotFindImage=true; this.hasImageLoaded=true" @load="onImgLoad">
+            <img loading="lazy" v-if="cannotFindImage == false && (oldImage != null || newImage != null)" :src="(newImage != null) ? newImage : oldImage" class="card-image" :class="(this.editingItem==true) ? 'changing-image' : ''" :alt="cannotFindImage = true" @onerror="this.cannotFindImage=true; this.hasImageLoaded=true" @load="onImgLoad">
             
             <div v-else class="no-image-div">
               <p v-if="editingItem == false" class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine gasita</p>
@@ -45,11 +45,11 @@
                 <p :id="'ph-desc-desktop'+item.id" class="description-p-props-desktop" style="padding-left: 10px; margin-bottom: 0px; white-space: pre-line;" v-else>{{item.description}}</p>
               </div>
 
-              <div class="showmore-button-container uk-text-center uk-hidden@s" v-if="editingItem == false">
+              <div class="showmore-button-container uk-text-center uk-hidden@s" v-if="editingItem == false && needsCrop == true">
                 <button style="cursor: pointer;" class="custom-showmore-button" v-if="isShowingFullDesc == false" @click="getFullDescription()">Arata toata descrierea</button>
                 <button style="cursor: pointer;" class="custom-showmore-button" v-else @click="cutDescription()">Arata mai putin</button>
               </div>
-              <div style="padding-left: 10px;" class="showmore-button-container uk-visible@s" v-if="editingItem == false">
+              <div style="padding-left: 10px;" class="showmore-button-container uk-visible@s" v-if="editingItem == false && needsCrop == true">
                 <button style="cursor: pointer;" class="custom-showmore-button" v-if="isShowingFullDesc == false" @click="getFullDescription()">Arata toata descrierea</button>
                 <button style="cursor: pointer;" class="custom-showmore-button" v-else @click="cutDescription()">Arata mai putin</button>
               </div>
@@ -240,6 +240,7 @@ export default {
           },
           loading: false,
           isShowingFullDesc: false,
+          needsCrop: true,
 
           newImage: null,
           cannotFindImage: false,
@@ -265,6 +266,12 @@ export default {
 
       editItem() {
         this.editingItem = !this.editingItem
+
+        if(this.editingItem == true)
+          this.item.description = this.oldDescription
+        else {
+          if(this.isStringTooLong()) this.cutDescription();
+        }
       },
       discardItem() {
         if(this.item.id == 'not-set') {
@@ -383,30 +390,73 @@ export default {
       allLowercase(tab) {
         return tab.toLowerCase()
       },
+      doesTextContainLineBreak(text) {
+        return /\r|\n/.exec(text)
+      },
+      isStringTooLong() {
+        let length = 80;
+        let width = window.innerWidth 
+        if(width >= 640 && width < 1280)
+          length = 45
+        else if(width >= 1280 && width <= 1920)
+          length = 200
+        else
+          length = 300
+
+        if(this.item.description.length <= length && !this.doesTextContainLineBreak(this.item.description)) {
+          this.needsCrop = false
+          return false;
+        }
+        return true;
+      },
       cutDescription() {
+        this.item.description = this.item.description.substring(0, 76) + "..."
+        this.isShowingFullDesc = false
+        this.setCutDescriptionStyle()
+      },
+      getFullDescription() {
+        this.item.description = this.oldDescription
+        this.isShowingFullDesc = true
+        this.setGetFullDescriptionStyle()
+      },
+      setCutDescriptionStyle() {
         let elementDesktop = document.getElementById('ph-desc-desktop'+this.item.id)
         let elementMobile = document.getElementById('ph-desc-mobile'+this.item.id)
+
+        if(elementDesktop == null)
+          return;
+
         elementDesktop.classList.remove("description-p-props-desktop-showing-full-desc")
         elementDesktop.classList.add("description-p-props-desktop")
-        elementMobile.classList.add("description-p-props-mobile")
-
         elementDesktop.style.marginTop = null
-        elementMobile.style.marginTop = null
         elementDesktop.style.wordBreak = null
+
+        if(elementMobile == null)
+          return;
+
+        elementMobile.classList.add("description-p-props-mobile")
+        elementMobile.style.marginTop = null
         elementMobile.style.wordBreak = null
 
         this.isShowingFullDesc = false;
       },
-      getFullDescription() {
+      setGetFullDescriptionStyle() {
         let elementDesktop = document.getElementById('ph-desc-desktop'+this.item.id)
         let elementMobile = document.getElementById('ph-desc-mobile'+this.item.id)
+
+        if(elementDesktop == null)
+          return;
+
         elementDesktop.classList.remove("description-p-props-desktop")
         elementDesktop.classList.add("description-p-props-desktop-showing-full-desc")
-        elementMobile.classList.remove("description-p-props-mobile")
-
         elementDesktop.style.marginTop = '10px'
-        elementMobile.style.marginTop = '10px'
         elementDesktop.style.wordBreak = 'break-word'
+
+        if(elementMobile == null)
+          return;
+
+        elementMobile.classList.remove("description-p-props-mobile")
+        elementMobile.style.marginTop = '10px'
         elementMobile.style.wordBreak = 'break-word'
 
         this.isShowingFullDesc = true;
@@ -414,8 +464,20 @@ export default {
     },
     mounted() {
       this.resetValues();
+      if(this.isStringTooLong()) this.cutDescription();
+
+      this.$nextTick(() => {
+        window.addEventListener('resize', () => {
+          if(this.isStringTooLong()) this.cutDescription();
+        });
+      })
       
       this.editingItem = (this.item.id == 'not-set') ? true : false
+    },
+    beforeDestroy() {
+      window.removeEventListener('resize', () => {
+          if(this.isStringTooLong()) this.cutDescription();
+      });
     },
     watch: {
       $props: {
@@ -432,7 +494,7 @@ export default {
         },
         deep: true,
         immediate: true,
-      }
+      },
     }
 }
 </script>
@@ -624,7 +686,7 @@ export default {
     float: right
   }
   .showmore-button-container {
-    margin-top: 0px!important;
+    margin-top: 10px!important;
   }
   .description-p-props-desktop {
     height: 85px; 
@@ -694,9 +756,6 @@ export default {
   .description-p-props-desktop-showing-full-desc {
     min-height: 185px;
   }
-  .showmore-button-container {
-    margin-top: 0px!important
-  }
   .card-image-custom-width {
     height: 300px;
     width: 400px;
@@ -743,11 +802,6 @@ export default {
   }
   .edit-button-item-card {
     margin-left: 5px;
-  }
-
-  .price {
-    font-size: 17px;
-    margin-top: 15px;
   }
 }
 
