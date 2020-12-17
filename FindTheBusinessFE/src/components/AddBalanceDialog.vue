@@ -70,7 +70,7 @@ export default {
     }
   },
   components: {
-    StripeElements
+    StripeElements,
   },
   methods: {
     addBalance(paying) {
