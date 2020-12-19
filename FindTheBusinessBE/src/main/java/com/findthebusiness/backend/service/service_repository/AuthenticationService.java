@@ -26,6 +26,7 @@ public interface AuthenticationService {
     Cookie logoutUser(HttpServletRequest httpServletRequest);
     ResponseEntity<?> loginWithFacebook(String storeId, LoginWithFacebookRequestDto loginWithFacebookRequestDto);
     AuthenticationCredentialsDto checkIdentity(HttpServletRequest request) throws UnsupportedEncodingException, NoSuchAlgorithmException;
+    ResponseEntity<?> sendResetPasswordEmail(SendResetPasswordEmailRequestDto sendResetPasswordEmailRequestDto) throws Exception;
 
     //CUSTOM METHODS
     String getCookieByName(HttpServletRequest request, String name);

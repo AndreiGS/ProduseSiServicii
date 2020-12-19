@@ -72,6 +72,11 @@ const routes = [
     props:  (route) => ({ 
       code: route.query.code 
     })
+  },
+  {
+    path: '/resetPassword',
+    name: 'ResetPassword',
+    component: () => import(/* webpackChunkName: "informations-chunk" */ '../views/ResetPassword.vue'),
   }
 ]
 

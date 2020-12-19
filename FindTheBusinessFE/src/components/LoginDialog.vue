@@ -20,7 +20,7 @@
 							<a v-on:click="changeIsPasswordHidden(true)" v-else class="uk-form-icon uk-form-icon-flip change-password-button" uk-icon="icon: minus"></a>
 					</div>
 
-					<router-link class="forgot-password__button" :to="{name: 'Profile'}"><p>Am uitat parola</p></router-link>
+					<p @click="resetPassword()" class="forgot-password__button">Am uitat parola</p>
 
 					<div style="margin: 5px;">
 						<div v-if="!loading">
@@ -125,6 +125,15 @@ export default {
 					this.loading = false;
 					clearTimeout(timeoutVar)
 				})
+		},
+		resetPassword() {
+			if(this.$router.currentRoute.path == "/resetPassword")
+				this.$router.go();
+			else
+				this.$router.push("/resetPassword")
+
+			UIkit.modal(document.getElementById("login-sections")).hide();
+			this.clearTextFiles();
 		},
 		changeIsPasswordHidden(value) {
 			this.isPasswordHidden = value;

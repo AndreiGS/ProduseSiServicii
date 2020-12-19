@@ -68,6 +68,7 @@ public class StatelessCSRFFilter extends OncePerRequestFilter {
                 "/api/authentication/confirmEmail",
                 "/api/authentication/loginWithFacebook",
                 "/api/authentication/checkIdentity",
+                "/api/authentication/sendResetPasswordEmail",
 
                 "/api/user/getUserProfileInfo",
                 "/api/user/changeInfo",

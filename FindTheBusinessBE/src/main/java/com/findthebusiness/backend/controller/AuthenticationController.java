@@ -99,6 +99,11 @@ public class AuthenticationController {
         }
     }
 
+    @PostMapping("/sendResetPasswordEmail")
+    private ResponseEntity<?> sendResetPasswordEmail(@RequestBody SendResetPasswordEmailRequestDto sendResetPasswordEmailRequestDto) throws Exception {
+        return authenticationService.sendResetPasswordEmail(sendResetPasswordEmailRequestDto);
+    }
+
     @Scheduled(fixedDelay = ScheduleDelayTimes.DELETE_OLD_AUTHS)
     private void delete7DaysOldAuthentications() {
         log.info("Delete old authentication. The time is now {}", dateFormat.format(new Date()));

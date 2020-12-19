@@ -88,7 +88,6 @@ public class RefreshTokenFilter extends OncePerRequestFilter {
 
                 "/api/user/getUserProfileInfo",
                 "/api/user/changeInfo",
-                "/api/user/changePassword",
                 "/api/user/sendEmailForChangingPassword",
                 "/api/user/sendEmailForChangingInformation",
                 "/api/user/charge",

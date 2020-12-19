@@ -62,7 +62,6 @@ public class SpringSecurityAuth extends WebSecurityConfigurerAdapter {
                             "/api/user/sendEmailForChangingInformation",
                             "/api/user/changeInfo",
                             "/api/user/sendEmailForChangingPassword",
-                            "/api/user/changePassword",
                             "/api/user/charge",
                             "/api/user/checkIfCanAddItem",
                             "/api/user/addShopToken",

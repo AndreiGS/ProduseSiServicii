@@ -550,7 +550,6 @@ public class SearchServiceImpl implements SearchService {
         }
     }
 
-    //TODO kmp
     @Override
     public int lcs(char[] title, char[] input) {
         int maxLength = 0;

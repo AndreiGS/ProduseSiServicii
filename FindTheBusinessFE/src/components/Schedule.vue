@@ -18,10 +18,7 @@ export default {
   },
   data() {
     return {
-      scheduleCopy: {
-        type: String,
-        default: '',
-      }
+      scheduleCopy: ''
     }
   },
   mounted() {

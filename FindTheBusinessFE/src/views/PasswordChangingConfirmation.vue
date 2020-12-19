@@ -24,11 +24,10 @@
         </div>
       </div>
     </div>
-    <div></div>
-    <div class="uk-align-center uk-width-2-5@s uk-width-1-5@m uk-margin-xlarge@s uk-margin-small@xs">
+    <div class="uk-align-center uk-width-2-5@s uk-width-1-3@m uk-margin-xlarge@s uk-margin-small@xs">
       <input class="uk-input custom-input-enabled" type="text" placeholder="Parola noua" v-model="newPassword" maxlength="63">
       <Password 
-        v-model="password" 
+        v-model="newPassword" 
         :strength-meter-only="true" 
         class="password-strength-meter" 
         :secureLength="8"
@@ -67,12 +66,15 @@ export default {
     async changePassword() {
       var timeoutVar = setTimeout(() => { this.loading = true; }, 1000);
 
+      let csrfToken=Math.floor(Math.random() * 10000000);
+			
+			this.$cookie.set("CSRF-TOKEN", csrfToken, 7)
+
       await axios({
         method: 'post',
         url: this.backend+"/api/user/changePassword?code="+this.code,
         headers: {
-          "X-CSRF-TOKEN": this.$cookie.get("CSRF-TOKEN"),
-          "X-REFRESH-TOKEN": this.$cookie.get("REFRESH-TOKEN"),
+          "X-CSRF-TOKEN": csrfToken,
         },
         data: {
           password: this.newPassword
@@ -125,9 +127,5 @@ export default {
 	margin-top: 10px;
 	border-radius: 10px;
 	padding: 5px 10px!important;
-}
-
-.password-strength-meter {
-	margin: 0 5px 0 10px;
 }
 </style>

@@ -3,6 +3,8 @@ package com.findthebusiness.backend.service.service_implementation;
 import com.codahale.passpol.BreachDatabase;
 import com.codahale.passpol.PasswordPolicy;
 import com.findthebusiness.backend.dto.authentication.*;
+import com.findthebusiness.backend.dto.users.PasswordChangingResponseDto;
+import com.findthebusiness.backend.dto.users.PasswordChangingResponseDtoWithAccessToken;
 import com.findthebusiness.backend.entity.Authentication;
 import com.findthebusiness.backend.entity.Shops;
 import com.findthebusiness.backend.entity.Users;
@@ -15,6 +17,7 @@ import com.findthebusiness.backend.repository.UserRepository;
 import com.findthebusiness.backend.security.security_config.MyUserDetails;
 import com.findthebusiness.backend.security.utils.AccessTokenUtil;
 import com.findthebusiness.backend.security.utils.AuthenticationUtil;
+import com.findthebusiness.backend.security.utils.ChangePasswordTokenUtil;
 import com.findthebusiness.backend.security.utils.RefreshTokenUtil;
 import com.findthebusiness.backend.service.service_repository.AuthenticationService;
 import com.findthebusiness.backend.utils.BasicEncrypt;
@@ -39,7 +42,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -56,6 +58,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AccessTokenUtil accessTokenUtil;
     private final RefreshTokenUtil refreshTokenUtil;
     private final AuthenticationUtil authenticationUtil;
+    private final ChangePasswordTokenUtil changePasswordTokenUtil;
     private final WebClient.Builder webClient;
 
     private final String ACCESS_TOKEN = "ACCESS-TOKEN";
@@ -65,7 +68,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private  String fbAppId=System.getenv("FACEBOOK_APP_ID");
     private  String fbSecret=System.getenv("FACEBOOK_SECRET");
 
-    public AuthenticationServiceImpl(UserRepository userRepository, AuthenticationRepository authenticationRepository, CommentsRepository commentsRepository, ShopRepository shopRepository, EmailUtil emailUtil, UserMapperImpl userMapper, PasswordEncoder passwordEncoder, AccessTokenUtil accessTokenUtil, RefreshTokenUtil refreshTokenUtil, AuthenticationUtil authenticationUtil, WebClient.Builder webClient) {
+    public AuthenticationServiceImpl(UserRepository userRepository, AuthenticationRepository authenticationRepository, CommentsRepository commentsRepository, ShopRepository shopRepository, EmailUtil emailUtil, UserMapperImpl userMapper, PasswordEncoder passwordEncoder, AccessTokenUtil accessTokenUtil, RefreshTokenUtil refreshTokenUtil, AuthenticationUtil authenticationUtil, ChangePasswordTokenUtil changePasswordTokenUtil, WebClient.Builder webClient) {
         this.userRepository = userRepository;
         this.authenticationRepository = authenticationRepository;
         this.commentsRepository = commentsRepository;
@@ -76,6 +79,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         this.accessTokenUtil = accessTokenUtil;
         this.refreshTokenUtil = refreshTokenUtil;
         this.authenticationUtil = authenticationUtil;
+        this.changePasswordTokenUtil = changePasswordTokenUtil;
         this.webClient = webClient;
     }
 
@@ -243,6 +247,31 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         
         return authenticationUtil.createCredentials(findUserById(userId), accessToken);
+    }
+
+    @Override
+    public ResponseEntity<?> sendResetPasswordEmail(SendResetPasswordEmailRequestDto sendResetPasswordEmailRequestDto) throws Exception {
+        Users user = findUserByEmail(BasicEncrypt.encrypt(sendResetPasswordEmailRequestDto.getEmail()));
+
+        String token = changePasswordTokenUtil.generateChangePasswordToken(user.getId(), 60*24*7);
+
+        String frontendUrlEnvVar = System.getenv("SPRING_APP_FRONTEND_1") == null ? System.getenv("SPRING_APP_FRONTEND_2"): System.getenv("SPRING_APP_FRONTEND_1");
+        String frontendUrl = (frontendUrlEnvVar == null) ? "https://produsesiservicii.ro" : frontendUrlEnvVar;
+        String endpoint = frontendUrl + "/changePassword?code=" + token;
+
+        try {
+            emailUtil.sendConfirmationForRegistrationEmail(sendResetPasswordEmailRequestDto.getEmail(), endpoint, "schimbarea parolei contului");
+            return ResponseEntity.ok("Email sent");
+        }  catch (IOException e) {
+            throw new IOException();
+        } catch (MessagingException e) {
+            System.out.println(e.getMessage());
+            throw new MessagingException();
+        } catch (NoSuchAlgorithmException e) {
+            throw new CannotResponseToRequestException();
+        } catch (Exception e ) {
+            throw new Exception();
+        }
     }
 
     @Override
