@@ -20,6 +20,8 @@
 							<a v-on:click="changeIsPasswordHidden(true)" v-else class="uk-form-icon uk-form-icon-flip change-password-button" uk-icon="icon: minus"></a>
 					</div>
 
+					<router-link class="forgot-password__button" :to="{name: 'Profile'}"><p>Am uitat parola</p></router-link>
+
 					<div style="margin: 5px;">
 						<div v-if="!loading">
 							<div v-if="error==403">Contul dumneavoastra a fost blocat!</div>
@@ -156,6 +158,26 @@ export default {
 	:focus {
 		border: none!important;
 		outline: none!important;
+	}
+}
+
+.forgot-password__button {
+	cursor: pointer;
+	color: #6fc42b;
+	font-weight: 500;
+	font-size: 25;
+	padding: 5px;
+	width: fit-content;
+	margin: 0;
+	text-decoration: none;
+
+	&:hover {
+		color: #5A9E23;
+		font-weight: 600;
+	}
+
+	p {
+		margin: 0;
 	}
 }
 

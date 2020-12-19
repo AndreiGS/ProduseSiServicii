@@ -5,14 +5,25 @@ public class ChangeLargeImageRequestDto {
     private String newImage;
     private String name;
     private String description;
+    private String schedule;
 
     public ChangeLargeImageRequestDto() {
     }
 
-    public ChangeLargeImageRequestDto(String newImage, String name, String description) {
+    public ChangeLargeImageRequestDto(String newImage, String name, String description, String schedule) {
         this.newImage = newImage;
         this.name = name;
         this.description = description;
+        this.schedule = schedule;
+    }
+
+    public String getSchedule() {
+        return schedule;
+    }
+
+    public ChangeLargeImageRequestDto setSchedule(String schedule) {
+        this.schedule = schedule;
+        return this;
     }
 
     public String getNewImage() {

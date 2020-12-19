@@ -23,6 +23,8 @@ public class Shops {
     @NotNull
     private String description;
 
+    private String schedule;
+
     @NotNull
     private String smallPhoto;
 
@@ -329,6 +331,15 @@ public class Shops {
 
     public Shops setCounty(String county) {
         this.county = county;
+        return this;
+    }
+
+    public String getSchedule() {
+        return schedule;
+    }
+
+    public Shops setSchedule(String schedule) {
+        this.schedule = schedule;
         return this;
     }
 }

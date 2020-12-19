@@ -8,6 +8,7 @@ public class StoreFrontRequestDto {
 
     private String name;
     private String description;
+    private String schedule;
     private String email;
     private String smallPhoto;
     private String largePhoto;
@@ -24,9 +25,10 @@ public class StoreFrontRequestDto {
     public StoreFrontRequestDto() {
     }
 
-    public StoreFrontRequestDto(String name, String description, String email, String smallPhoto, String largePhoto, String phone, String websiteLink, String address, String county, Double rating, Double price, String type, Boolean hasAutomaticTokenRefresh, Set<TabResponseDto> tabs) {
+    public StoreFrontRequestDto(String name, String description, String schedule, String email, String smallPhoto, String largePhoto, String phone, String websiteLink, String address, String county, Double rating, Double price, String type, Boolean hasAutomaticTokenRefresh, Set<TabResponseDto> tabs) {
         this.name = name;
         this.description = description;
+        this.schedule = schedule;
         this.email = email;
         this.smallPhoto = smallPhoto;
         this.largePhoto = largePhoto;
@@ -39,6 +41,15 @@ public class StoreFrontRequestDto {
         this.type = type;
         this.hasAutomaticTokenRefresh = hasAutomaticTokenRefresh;
         this.tabs = tabs;
+    }
+
+    public String getSchedule() {
+        return schedule;
+    }
+
+    public StoreFrontRequestDto setSchedule(String schedule) {
+        this.schedule = schedule;
+        return this;
     }
 
     public String getCounty() {

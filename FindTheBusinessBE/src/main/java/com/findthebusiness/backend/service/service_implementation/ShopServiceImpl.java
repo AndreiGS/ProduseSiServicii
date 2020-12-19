@@ -569,6 +569,7 @@ public class ShopServiceImpl implements ShopService {
 
         shop.setName(changeLargeImageRequestDto.getName());
         shop.setDescription(changeLargeImageRequestDto.getDescription());
+        shop.setSchedule(changeLargeImageRequestDto.getSchedule());
         saveShop(shop);
 
         AuthenticationCredentialsDto auth = authenticationUtil.createCredentials(user, accessToken);

@@ -16,7 +16,7 @@
           <img loading="lazy" v-if="cannotFindImage == false && ((windowWidth > 640 && store.largePhoto != null) || (windowWidth <= 640 && store.smallPhoto != null))" :src="(newImage == null) ? ((windowWidth > 640) ? store.largePhoto : store.smallPhoto) : newImage" class="cover-image" :class="(editingShop == true) ? 'filter-image' : ''" :alt="cannotFindImage = true" @onerror="cannotFindImage = true">
           
           <div v-else class="cover-image no-image-div">
-            <p :style="cannotFindImage == true ? 'visibility: visible' : 'visibility: hidden'" v-if="editingShop == false" class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine gasita</p>
+            <p :style="cannotFindImage == true || ((windowWidth > 640) ? store.largePhoto == null : store.smallPhoto == null) ? 'visibility: visible' : 'visibility: hidden'" v-if="editingShop == false" class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine gasita</p>
           </div>
           
           <div class="uk-overlay uk-position-bottom-left overlay uk-flex uk-flex-column">
@@ -79,8 +79,8 @@
           </div>
         </div>
 
-        <vk-grid style="margin-top: 15px"> <!--match height-->
-          <div class="uk-width-2-3@m" style="padding: 0">
+        <vk-grid style="margin-top: 15px" matched>
+          <div class="shop-info-container uk-width-2-3@m">
             <article class="uk-article" style="height: 100%;">
 
               <div v-if="editingShop == false" class="info-container">
@@ -102,7 +102,7 @@
           </div>
 
           <div class="uk-width-1-3@m" style="padding: 0">
-            <article class="uk-article">
+            <article class="uk-article" style="margin-bottom: 10px;">
               <vk-card padding="small">
                 <p style="margin-bottom: 0 !important;">Magazinul a fost evaluat ca: <b>{{priceText}}</b></p>
                 <div>
@@ -122,8 +122,17 @@
                 <vk-button v-if="editingShop == false" @click="isOwner==true ? showTab(store.tabs.length+2) : showTab(store.tabs.length+1)">VEZI COMENTARIILE</vk-button>
               </vk-card>
             </article>
+            <Schedule 
+              :editingShop="editingShop"
+              :schedule="store.schedule"
+              :isOnline="store.county == 'Online' ? true : false"
+
+              @change_schedule="changeSchedule($event)"
+            />
           </div>
         </vk-grid>
+
+        
 
         <div class="uk-margin-medium-top">
           <vk-tabs align="center" :active-tab.sync="activeTab">
@@ -209,6 +218,7 @@ const ProductCardGrid = () => import(/* webpackChunkName: "storefront-chunk" */ 
 const CommentCardGrid = () => import(/* webpackChunkName: "storefront-chunk" */ "../components/CommentCardGrid");
 const TabsLayout = () => import(/* webpackChunkName: "storefront-chunk" */ "../components/TabsLayout");
 const ChangeContactDetailsDialog = () => import(/* webpackChunkName: "storefront-chunk" */ "@/components/ChangeContactDetailsDialog");
+const Schedule = () => import(/* webpackChunkName: "storefront-chunk" */ "@/components/Schedule.vue")
 import CropperDialogComponent from '@/components/CropperDialogComponent.vue'
 import axios from 'axios';
 
@@ -220,7 +230,8 @@ export default {
         StarRating,
         TabsLayout,
         ChangeContactDetailsDialog,
-        CropperDialogComponent
+        CropperDialogComponent,
+        Schedule,
     },
     props: {
       code: null,
@@ -240,8 +251,10 @@ export default {
               type: null,
               photo: null,
               tabs: null,
+              schedule: null,
               hasAutomaticTokenRefresh: null
             },
+            scheduleCopy: null,
             nameCopy: null,
             descriptionCopy: null,
             newImage: null,
@@ -278,6 +291,9 @@ export default {
       }
     },
     methods: {
+        changeSchedule(newSchedule) {
+          this.store.schedule = newSchedule
+        },
         fallbackCopyTextToClipboard(text) {
           var textArea = document.createElement("textarea");
           textArea.value = text;
@@ -416,7 +432,7 @@ export default {
         },
         getDollarClass(x) {
             if(x==1){
-              if(this.priceText != "Neevaluat")
+              if(this.priceText != "Neevaluat" && this.priceText != null)
                 return "dollar-green"
               return "dollar-gray"
             }
@@ -508,6 +524,7 @@ export default {
               this.store = response.data;
               this.displayedDescription = this.store.description
               this.nameCopy=this.store.name;
+              this.scheduleCopy=this.store.schedule
               this.descriptionCopy=this.store.description;
 
               this.cutDescription();
@@ -531,6 +548,7 @@ export default {
             })
         },
         discardEdit() {
+          this.store.schedule=this.scheduleCopy
           this.store.name=this.nameCopy;
           this.store.description=this.descriptionCopy;
           this.newImage=null;
@@ -552,7 +570,8 @@ export default {
             data: {
               newImage: this.newImage,
               name: this.store.name,
-              description: this.store.description
+              description: this.store.description,
+              schedule: this.store.schedule,
             },
             withCredentials: true
           })
@@ -562,6 +581,7 @@ export default {
 
               this.store.largePhoto = response.data.largeImageURL
               this.nameCopy=this.store.name;
+              this.scheduleCopy=this.store.schedule
               this.descriptionCopy=this.store.description;
               this.displayedDescription=this.store.description;
               this.newImage = null;
@@ -842,7 +862,7 @@ input:checked + .slider:before {
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 960px) {
   .edit-info-container {
     padding: 10px 0;
     margin: 0 10px;

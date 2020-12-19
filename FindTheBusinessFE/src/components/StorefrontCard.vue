@@ -155,6 +155,7 @@ export default {
 }
 
 .no-image-div {
+  height: 155px;
   background-color: rgb(136, 136, 136);
 }
 
