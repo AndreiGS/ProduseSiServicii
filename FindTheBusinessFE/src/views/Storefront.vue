@@ -13,7 +13,7 @@
       </div>
       <div v-else>
         <div class="uk-inline" style="width: 100%">
-          <img loading="lazy" v-if="(newImage != null && newImage.includes('base64')) || (cannotFindImage == false && ((windowWidth >= 768 && store.largePhoto != null) || (windowWidth < 768 && store.smallPhoto != null)))" :src="(newImage == null) ? ((windowWidth >= 768) ? store.largePhoto : store.smallPhoto) : newImage" class="cover-image" :class="(editingShop == true) ? 'filter-image' : ''" :alt="cannotFindImage = true" @onerror="cannotFindImage = true">
+          <img loading="lazy" v-if="cannotFindImage == false && ((windowWidth >= 768 && store.largePhoto != null) || (windowWidth < 768 && store.smallPhoto != null))" :src="(newImage == null) ? ((windowWidth >= 768) ? store.largePhoto : store.smallPhoto) : newImage" class="cover-image" :class="(editingShop == true) ? 'filter-image' : ''" :alt="store.name" @error="cannotFindImage = true">
           
           <div v-else class="cover-image no-image-div">
             <p :style="cannotFindImage == true || ((windowWidth >= 768) ? store.largePhoto == null : store.smallPhoto == null) ? 'visibility: visible' : 'visibility: hidden'" v-if="editingShop == false" class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine gasita</p>
@@ -199,7 +199,7 @@
             v-on:change_image="changeImage($event)"
 
             :oldImage="store.photo" 
-            :aspectRatio="32/9"
+            :aspectRatio="(windowWidth >= 768) ? 32/9 : 4/3"
             :minHeight="1000"
             :minWidth="1000*3.55"
             :from="'storefront'"
@@ -669,6 +669,13 @@ export default {
         },
         deep: true,
         immediate: true,
+      },
+      windowWidth: function(newV, oldV) {
+        if(oldV < 768 && newV >= 768)
+          this.cannotFindImage = false;
+
+        if(oldV >= 768 && newV < 768)
+          this.cannotFindImage = false;
       }
     }
 }

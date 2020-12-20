@@ -11,7 +11,7 @@
 
             <div @click="showEditImageModal()" class="uk-inline uk-width-1-1" :style="(this.editingShop==true) ? 'cursor: pointer;' : ''">
               
-              <img loading="lazy" v-if="(newImage != null && newImage.includes('base64')) || (cannotFindImage == false && (oldImage != null || newImage != null))" :src="(newImage != null) ? newImage : oldImage" class="card-image" :class="(this.editingShop==true) ? 'changing-image' : ''" :alt="cannotFindImage = true" @onerror="cannotFindImage = true;" @load="onImgLoad">
+              <img loading="lazy" v-if="(newImage != null && newImage.includes('base64')) || (cannotFindImage == false && (oldImage != null || newImage != null))" :src="(newImage != null) ? newImage : oldImage" class="card-image" :class="(this.editingShop==true) ? 'changing-image' : ''" :alt="title" @error="cannotFindImage = true;" @load="onImgLoad">
           
               <div v-else class="no-image-div">
                 <p v-if="editingShop == false" class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine gasita</p>
@@ -53,7 +53,7 @@
                 <button style="cursor: pointer;" class="custom-showmore-button" v-if="isShowingFullDesc == false" @click="getFullDescription()">Arata toata descrierea</button>
                 <button style="cursor: pointer;" class="custom-showmore-button" v-else @click="cutDescription()">Arata mai putin</button>
               </div>
-              <div :style="cannotFindImage==true ? 'margin-top: 25.5px' : ''" style="padding-left: 10px;" class="showmore-button-container uk-visible@s" v-if="editingShop == false">
+              <div style="padding-left: 10px; margin-top: 26px" class="showmore-button-container uk-visible@s" v-if="editingShop == false">
                 <button style="cursor: pointer;" class="custom-showmore-button" v-if="isShowingFullDesc == false" @click="getFullDescription()">Arata toata descrierea</button>
                 <button style="cursor: pointer;" class="custom-showmore-button" v-else @click="cutDescription()">Arata mai putin</button>
               </div>

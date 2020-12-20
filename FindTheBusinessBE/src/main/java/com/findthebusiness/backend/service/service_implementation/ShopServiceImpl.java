@@ -552,6 +552,9 @@ public class ShopServiceImpl implements ShopService {
         Shops shop = isOwner(shopId, accessToken, request);
         Users user = shop.getUser();
 
+        String largePhoto = shop.getLargePhoto();
+        String smallPhoto = shop.getSmallPhoto();
+
         String imageUrl = null;
         if(changeStorefrontImageRequestDto.getNewImage() != null) {
             if(imageType.equals("LARGE")) {
@@ -567,9 +570,9 @@ public class ShopServiceImpl implements ShopService {
             try {
                 String[] oldPhotoName;
                 if(imageType.equals("LARGE")) {
-                    oldPhotoName = shop.getLargePhoto().split("/");
+                    oldPhotoName = largePhoto.split("/");
                 } else {
-                    oldPhotoName = shop.getSmallPhoto().split("/");
+                    oldPhotoName = smallPhoto.split("/");
                 }
                 deleteFile(oldPhotoName[oldPhotoName.length-1]);
 
