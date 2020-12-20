@@ -6,9 +6,9 @@
       </div>
       <vk-grid v-else>
         <div class="card-image-custom-width">
-          <div @click="if(editingItem == true) showImageEdit = true" class="uk-inline uk-width-1-1" :style="(this.editingItem==true) ? 'cursor: pointer;' : ''">
+          <div @click="showEditImageModal()" class="uk-inline uk-width-1-1" :style="(this.editingItem==true) ? 'cursor: pointer;' : ''">
 
-            <img loading="lazy" v-if="cannotFindImage == false && (oldImage != null || newImage != null)" :src="(newImage != null) ? newImage : oldImage" class="card-image" :class="(this.editingItem==true) ? 'changing-image' : ''" :alt="cannotFindImage = true" @onerror="this.cannotFindImage=true; this.hasImageLoaded=true" @load="onImgLoad">
+            <img loading="lazy" v-if="(newImage != null && newImage.includes('base64')) || (cannotFindImage == false && (oldImage != null || newImage != null))" :src="(newImage != null) ? newImage : oldImage" class="card-image" :class="(this.editingItem==true) ? 'changing-image' : ''" :alt="cannotFindImage = true" @onerror="this.cannotFindImage=true; this.hasImageLoaded=true" @load="onImgLoad">
             
             <div v-else class="no-image-div">
               <p v-if="editingItem == false" class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine gasita</p>
@@ -390,6 +390,9 @@ export default {
       allLowercase(tab) {
         return tab.toLowerCase()
       },
+      showEditImageModal() {
+        if(this.editingItem == true) this.showImageEdit = true;
+      },
       doesTextContainLineBreak(text) {
         return /\r|\n/.exec(text)
       },
@@ -480,14 +483,6 @@ export default {
       });
     },
     watch: {
-      $props: {
-        handler() {
-          if(this.editingShop == false)
-            this.editingItem = false;
-        },
-        deep: true,
-        immediate: true,
-      },
       'showImageEdit': {
         handler() {
           this.showImageEdit === true ? document.body.style.overflow = 'hidden' : document.body.style.overflow = 'unset';

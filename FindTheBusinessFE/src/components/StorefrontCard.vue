@@ -3,7 +3,7 @@
     <vk-card padding="small" class="uk-card-hover uk-flex"> 
       <div class="uk-flex uk-flex-stretch uk-flex-column" style="width: 100%">
         <div>
-          <vk-label class="top-right" v-if="promoted" slot="badge">PROMOVAT</vk-label>
+          <vk-label style="z-index: 1;" class="top-right" v-if="promoted" slot="badge">PROMOVAT</vk-label>
           <img loading="lazy" :style="(hasImageLoaded == false) ? 'visibility: hidden' : 'visibility: visible'" v-if="cannotFindImage == false && image != null" :src="image" :alt="cannotFindImage = true" class="card-image"  @onerror="cannotFindImage = true" @load="onImgLoad">
 
           <div v-else class="card-image no-image-div uk-inline">
@@ -29,27 +29,6 @@
     </vk-card>
   </div>
 </template>
-
-<!--
-COMPONENT CALL:
-
-<vk-grid class="uk-grid-match">
-      <StorefrontCard
-          title="Magazinul lui Gigel"
-          description="Gigel vine doar produse proaspete si de inalta calitate! Produsele sunt BIO 100%!"
-          :rating="3.7"
-          :image="require('../assets/cat.jpg')"
-          :promoted="true"
-      />
-      <StorefrontCard
-          title="Magazinul lui Gigel2"
-          description="Gigel vine doar produse proaspete si de inalta calitate! Produsele sunt BIO 100%!"
-          :rating="3.7"
-          :image="require('../assets/woman.jpg')"
-          :promoted="true"
-      />
-    </vk-grid>
--->
 
 <script>
 import StarRating from 'vue-star-rating'

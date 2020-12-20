@@ -1,7 +1,7 @@
 package com.findthebusiness.backend.dto.search;
 
 import com.findthebusiness.backend.entity.Shops;
-import com.findthebusiness.backend.utils.enums.ShopTypesEnum;
+import com.findthebusiness.backend.utils.enums.ShopPromotionTypesEnum;
 
 import java.util.Date;
 
@@ -47,8 +47,8 @@ public class ShopsByTitleWithPointsDto implements Comparable{
             return 1;
         }
         else {
-            boolean isNewItemPromoted = this.getShops().getType().equals(ShopTypesEnum.PROMOTED.name());
-            boolean isMidPromoted = shop.getShops().getType().equals(ShopTypesEnum.PROMOTED.name());
+            boolean isNewItemPromoted = this.getShops().getPromotedInSearches();
+            boolean isMidPromoted = shop.getShops().getPromotedInSearches();
             if(isNewItemPromoted == true && isMidPromoted == false) {
                 return -1;
             } else if(isNewItemPromoted == false && isMidPromoted == true) {

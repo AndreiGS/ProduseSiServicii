@@ -54,6 +54,7 @@
 							<div v-else-if="error==426">Parola este prea slaba! Utilizati o parola care contine atat litere mici si mari cat si cifre si caractere speciale (@ . /)</div>
 						</div>
 						<div v-else-if="loading">Se incarca</div>
+						<div v-else-if="error != 0 || error == null">Actiunea dumneavoastra nu a putut fi completata. Incercati din nou!</div>
 					</div>
 				</div>
         <div class="uk-width-1-5"></div>

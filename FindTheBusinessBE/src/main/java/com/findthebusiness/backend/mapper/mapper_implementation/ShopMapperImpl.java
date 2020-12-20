@@ -30,30 +30,36 @@ public class ShopMapperImpl implements ShopMapper {
     @Override
     public List<ShopCardDto> convertShopsToShopCardDto(List<Shops> shops) {
         List<ShopCardDto> listOfCardsToReturn = new ArrayList<>();
-        Calendar calendar = Calendar.getInstance();
+
         for (Shops shop : shops) {
             ShopCardDto shopCardDto = modelMapper.map(shop, ShopCardDto.class);
             shopCardDto.setSubcategories(convertSubcategoriesToSubcategoriesDtoList(shop.getSubcategories()));
             shopCardDto.setMaximumSize(getSizeNameBySize(shop.getMaximumSize()));
 
-            if(shop.getPromotedDate() != null && shop.getPromotedDays() != null) {
-                calendar.setTime(shop.getPromotedDate());
-                calendar.add(Calendar.DAY_OF_MONTH, shop.getPromotedDays());
-                Date actualDate = new Date();
-                Date expiryDate = calendar.getTime();
-
-                if(actualDate.before(expiryDate)) {
-                    long diff = expiryDate.getTime() - actualDate.getTime();
-
-                    int diffDays = Math.max(1, (int) (diff / (24 * 60 * 60 * 1000)));
-                    shopCardDto.setPromotedDaysRemaining(diffDays);
-                }
-            }
+            shopCardDto.setPromotedDaysInHomeRemaining(getPromotedDaysRemaining(shop.getPromotedDateInHome(), shop.getPromotedDaysInHome()));
+            shopCardDto.setPromotedDaysInSearchesRemaining(getPromotedDaysRemaining(shop.getPromotedDateInSearches(), shop.getPromotedDaysInSearches()));
 
             listOfCardsToReturn.add(shopCardDto);
         }
 
         return listOfCardsToReturn;
+    }
+
+    private int getPromotedDaysRemaining(Date promotedDate, Integer promotedDays) {
+        Calendar calendar = Calendar.getInstance();
+        if(promotedDate != null && promotedDays != null) {
+            calendar.setTime(promotedDate);
+            calendar.add(Calendar.DAY_OF_MONTH, promotedDays);
+            Date actualDate = new Date();
+            Date expiryDate = calendar.getTime();
+
+            if(actualDate.before(expiryDate)) {
+                long diff = expiryDate.getTime() - actualDate.getTime();
+
+                return Math.max(1, (int) (diff / (24 * 60 * 60 * 1000)));
+            }
+        }
+        return 0;
     }
 
     private String getSizeNameBySize(Integer size) {

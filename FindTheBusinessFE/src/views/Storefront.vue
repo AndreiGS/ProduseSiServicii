@@ -13,15 +13,15 @@
       </div>
       <div v-else>
         <div class="uk-inline" style="width: 100%">
-          <img loading="lazy" v-if="cannotFindImage == false && ((windowWidth > 640 && store.largePhoto != null) || (windowWidth <= 640 && store.smallPhoto != null))" :src="(newImage == null) ? ((windowWidth > 640) ? store.largePhoto : store.smallPhoto) : newImage" class="cover-image" :class="(editingShop == true) ? 'filter-image' : ''" :alt="cannotFindImage = true" @onerror="cannotFindImage = true">
+          <img loading="lazy" v-if="(newImage != null && newImage.includes('base64')) || (cannotFindImage == false && ((windowWidth >= 768 && store.largePhoto != null) || (windowWidth < 768 && store.smallPhoto != null)))" :src="(newImage == null) ? ((windowWidth >= 768) ? store.largePhoto : store.smallPhoto) : newImage" class="cover-image" :class="(editingShop == true) ? 'filter-image' : ''" :alt="cannotFindImage = true" @onerror="cannotFindImage = true">
           
           <div v-else class="cover-image no-image-div">
-            <p :style="cannotFindImage == true || ((windowWidth > 640) ? store.largePhoto == null : store.smallPhoto == null) ? 'visibility: visible' : 'visibility: hidden'" v-if="editingShop == false" class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine gasita</p>
+            <p :style="cannotFindImage == true || ((windowWidth >= 768) ? store.largePhoto == null : store.smallPhoto == null) ? 'visibility: visible' : 'visibility: hidden'" v-if="editingShop == false" class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine gasita</p>
           </div>
           
           <div class="uk-overlay uk-position-bottom-left overlay uk-flex uk-flex-column">
             <vk-label v-if="editingShop == true" class="uk-hidden@s" style="background: #E82901!important; margin-bottom: 5px;">In editare</vk-label>
-            <vk-label v-if="store.type == 'PROMOTED'">PROMOVAT</vk-label>
+            <vk-label v-if="store.promotedInHome || store.promotedInSearches">PROMOVAT</vk-label>
           </div>
 
           <div v-if="editingShop == false" class="uk-overlay uk-position-top-right overlay">
@@ -39,7 +39,7 @@
           </div>
           <div @click="showImageEdit = true" v-if="isOwner == true && editingShop == true" :style="(this.editingShop==true) ? 'cursor: pointer;' : ''" style="color: white;" class="uk-overlay uk-position-center overlay change-image-div">
             <span uk-icon="camera" ratio="2"></span>
-            <p>Schimba imaginea</p>
+            <p>Schimba imaginea {{windowWidth >= 768 ? 'mare' : 'mica'}}</p>
           </div>
 
           <!--DESKTOP-->
@@ -92,7 +92,6 @@
                 <input uk-tooltip="Titlu (maxim 40 caractere)" type="text" maxlength="40" v-model="store.name" style="font-size: 24px; text-transform: uppercase;" placeholder="Titlu" class="uk-textarea custom-textarea-enabled" />
                 <textarea uk-tooltip="Descriere (maxim 255 caractere)" maxlength="255" class="uk-textarea custom-textarea-enabled description-text-area" type="text" placeholder="Descriere" v-model="store.description"></textarea>
               </div>
-              
               
               <div v-if="needsCrop == true" class="uk-text-left">
                 <button style="cursor: pointer;" class="custom-showmore-button" v-if="isShowingFullDesc == false" @click="getFullDescription()">Arata toata descrierea</button>
@@ -555,13 +554,16 @@ export default {
           this.changeEditState();
         },
         async saveEdit() {
-          await this.saveEditToDb('changeLargeImage');
+          if(this.windowWidth >= 768)
+            await this.saveEditToDb('LARGE');
+          else
+            await this.saveEditToDb('SMALL');
           this.changeEditState();
         },
-        async saveEditToDb(endpoint) {
+        async saveEditToDb(imageType) {
           var timeoutVar = setTimeout(() => { this.loading = true; }, 1500);
           await axios({
-            url: `${this.backend}/api/shops/${endpoint}?id=${this.$route.params.id}`,
+            url: `${this.backend}/api/shops/changeStorefrontImage?id=${this.$route.params.id}&image_type=${imageType}`,
             method: 'post',
             headers: {
               'X-CSRF-TOKEN': this.$cookie.get('CSRF-TOKEN'),
@@ -579,7 +581,11 @@ export default {
               this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
               this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
 
-              this.store.largePhoto = response.data.largeImageURL
+              if(imageType == 'LARGE')
+                this.store.largePhoto = response.data.newImageURL
+              else
+                this.store.smallPhoto = response.data.newImageURL
+
               this.nameCopy=this.store.name;
               this.scheduleCopy=this.store.schedule
               this.descriptionCopy=this.store.description;
@@ -789,6 +795,10 @@ export default {
   button {
     margin: 0 5px;
   }
+}
+
+.shop-info-container {
+  padding-left: 0px;
 }
 
 /*Switch*/

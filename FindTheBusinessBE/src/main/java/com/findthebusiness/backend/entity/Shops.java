@@ -31,10 +31,16 @@ public class Shops {
     private String largePhoto;
 
     @NotNull
-    private String type;
+    private Boolean isPromotedInHome;
 
-    private Date promotedDate;
-    private Integer promotedDays;
+    private Date promotedDateInHome;
+    private Integer promotedDaysInHome;
+
+    @NotNull
+    private Boolean isPromotedInSearches;
+
+    private Date promotedDateInSearches;
+    private Integer promotedDaysInSearches;
 
     @NotNull
     private Date boughtAt;
@@ -190,12 +196,57 @@ public class Shops {
         return this;
     }
 
-    public String getType() {
-        return type;
+    public Boolean getPromotedInHome() {
+        return isPromotedInHome;
     }
 
-    public Shops setType(String type) {
-        this.type = type;
+    public Shops setPromotedInHome(Boolean promotedInHome) {
+        isPromotedInHome = promotedInHome;
+        return this;
+    }
+
+    public Date getPromotedDateInHome() {
+        return promotedDateInHome;
+    }
+
+    public Shops setPromotedDateInHome(Date promotedDateInHome) {
+        this.promotedDateInHome = promotedDateInHome;
+        return this;
+    }
+
+    public Integer getPromotedDaysInHome() {
+        return promotedDaysInHome;
+    }
+
+    public Shops setPromotedDaysInHome(Integer promotedDaysInHome) {
+        this.promotedDaysInHome = promotedDaysInHome;
+        return this;
+    }
+
+    public Boolean getPromotedInSearches() {
+        return isPromotedInSearches;
+    }
+
+    public Shops setPromotedInSearches(Boolean promotedInSearches) {
+        isPromotedInSearches = promotedInSearches;
+        return this;
+    }
+
+    public Date getPromotedDateInSearches() {
+        return promotedDateInSearches;
+    }
+
+    public Shops setPromotedDateInSearches(Date promotedDateInSearches) {
+        this.promotedDateInSearches = promotedDateInSearches;
+        return this;
+    }
+
+    public Integer getPromotedDaysInSearches() {
+        return promotedDaysInSearches;
+    }
+
+    public Shops setPromotedDaysInSearches(Integer promotedDaysInSearches) {
+        this.promotedDaysInSearches = promotedDaysInSearches;
         return this;
     }
 
@@ -232,24 +283,6 @@ public class Shops {
 
     public Shops setPriceNumber(Integer priceNumber) {
         this.priceNumber = priceNumber;
-        return this;
-    }
-
-    public Date getPromotedDate() {
-        return promotedDate;
-    }
-
-    public Shops setPromotedDate(Date promotedDate) {
-        this.promotedDate = promotedDate;
-        return this;
-    }
-
-    public Integer getPromotedDays() {
-        return promotedDays;
-    }
-
-    public Shops setPromotedDays(Integer promotedDays) {
-        this.promotedDays = promotedDays;
         return this;
     }
 

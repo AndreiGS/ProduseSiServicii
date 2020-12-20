@@ -4,10 +4,14 @@
       <vk-grid v-if="loading == false">
         <div class="card-image-custom-width">
           <div class="uk-card uk-card-body">
-            <div v-if="promoted=='PROMOTED'" class="uk-card-badge uk-label" style="right: 10px; top: 10px;">PROMOVAT{{promotedDays != null ? ` ${promotedDays} zile` : null}}</div>
-            <div @click="showImageEdit = true" class="uk-inline uk-width-1-1" :style="(this.editingShop==true) ? 'cursor: pointer;' : ''">
+            <!--<div v-if="isPromotedInHome" class="uk-card-badge uk-label" style="right: 10px; top: 10px;">PROMOVAT{{promotedDaysInHomeRemaining != null ? ` ${promotedDaysInHomeRemaining} zile "ACASA"` : null}}</div>
+            <div v-if="isPromotedInSearches" class="uk-card-badge uk-label" style="right: 10px; top: 10px;">PROMOVAT{{promotedDaysInSearchesRemaining != null ? ` ${promotedDaysInSearchesRemaining} zile "CAUTARI"` : null}}</div>-->
+
+            <button @click="openPromotedInfoPanel()" v-if="isPromotedInHome || isPromotedInSearches" uk-tooltip="Informatii promovare" style="cursor: pointer;" class="promote-info-button uk-button-primary uk-card-badge uk-label"><span uk-icon="icon: info; ratio: 0.8"></span></button>
+
+            <div @click="showEditImageModal()" class="uk-inline uk-width-1-1" :style="(this.editingShop==true) ? 'cursor: pointer;' : ''">
               
-              <img loading="lazy" v-if="cannotFindImage == false && (oldImage != null || newImage != null)" :src="(newImage != null) ? newImage : oldImage" class="card-image" :class="(this.editingShop==true) ? 'changing-image' : ''" :alt="cannotFindImage = true" @onerror="cannotFindImage = true;" @load="onImgLoad">
+              <img loading="lazy" v-if="(newImage != null && newImage.includes('base64')) || (cannotFindImage == false && (oldImage != null || newImage != null))" :src="(newImage != null) ? newImage : oldImage" class="card-image" :class="(this.editingShop==true) ? 'changing-image' : ''" :alt="cannotFindImage = true" @onerror="cannotFindImage = true;" @load="onImgLoad">
           
               <div v-else class="no-image-div">
                 <p v-if="editingShop == false" class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine gasita</p>
@@ -49,7 +53,7 @@
                 <button style="cursor: pointer;" class="custom-showmore-button" v-if="isShowingFullDesc == false" @click="getFullDescription()">Arata toata descrierea</button>
                 <button style="cursor: pointer;" class="custom-showmore-button" v-else @click="cutDescription()">Arata mai putin</button>
               </div>
-              <div style="padding-left: 10px;" class="showmore-button-container uk-visible@s" v-if="editingShop == false">
+              <div :style="cannotFindImage==true ? 'margin-top: 25.5px' : ''" style="padding-left: 10px;" class="showmore-button-container uk-visible@s" v-if="editingShop == false">
                 <button style="cursor: pointer;" class="custom-showmore-button" v-if="isShowingFullDesc == false" @click="getFullDescription()">Arata toata descrierea</button>
                 <button style="cursor: pointer;" class="custom-showmore-button" v-else @click="cutDescription()">Arata mai putin</button>
               </div>
@@ -174,6 +178,16 @@
           </vk-grid>
         </div>
 
+        <PromotedInfoDialog
+          :id="id"
+          :isPromotedInHome="isPromotedInHome"
+          :isPromotedInSearches="isPromotedInSearches"
+          :promotedDaysInHomeRemaining="promotedDaysInHomeRemaining"
+          :promotedDaysInSearchesRemaining="promotedDaysInSearchesRemaining"
+
+          @promote_shop="$emit('promote_shop', id)"
+        />
+
         <vk-modal-full :show.sync="showImageEdit">
           <vk-modal-full-close></vk-modal-full-close>
           <vk-modal-title>Poza fatada de magazin</vk-modal-title>
@@ -209,6 +223,7 @@
 
 <script>
 const ContactData = () => import (/* webpackChunkName: "profile-chunk" */ "./ContactData");
+const PromotedInfoDialog = () => import (/* webpackChunkName: "profile-chunk" */ "./PromotedInfoDialog");
 import CropperDialogComponent from '@/components/CropperDialogComponent.vue'
 import StarRating from 'vue-star-rating'
 import axios from 'axios'
@@ -218,7 +233,8 @@ export default {
   components: {
       ContactData,
       StarRating,
-      CropperDialogComponent
+      CropperDialogComponent,
+      PromotedInfoDialog,
   },
   props: {
       shopId: null,
@@ -226,12 +242,14 @@ export default {
       oldDescription: null,
       rating: null,
       oldImage: null,
-      promoted: false,
+      isPromotedInSearches: false,
+      isPromotedInHome: false,
       subcategories: null,
       shopSubcategoriesProp: null,
       oldShopSize: null,
       oldIsPublished: null,
-      promotedDays: null
+      promotedDaysInHomeRemaining: null,
+      promotedDaysInSearchesRemaining: null,
   },
   data () {
       return {
@@ -264,6 +282,9 @@ export default {
       }
   },
   methods: {
+    openPromotedInfoPanel() {
+      UIkit.modal("#promote-info-sections").show();
+    },
     onImgLoad() {
       this.hasImageLoaded = true;
     },
@@ -427,6 +448,9 @@ export default {
           this.loading = false;
           clearTimeout(timeoutVar)
         }) 
+    },
+    showEditImageModal() {
+      if(this.editingShop == true) this.showImageEdit = true;
     },
     discardChanges() {
       if(this.id.includes('not-set')) {
@@ -659,9 +683,15 @@ export default {
   border: none;
 	margin: 0 0 0 10px;
 	border-radius: 10px;
-  
-  :focus, :active {
-    border: none
+}
+
+.promote-info-button {
+  outline: 0;
+  border: none;
+  right: 10px; 
+  top: 10px;
+  span {
+    padding: 5px;
   }
 }
 

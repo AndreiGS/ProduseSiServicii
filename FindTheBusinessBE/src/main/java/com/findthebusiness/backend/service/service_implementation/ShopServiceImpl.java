@@ -19,7 +19,7 @@ import com.findthebusiness.backend.utils.UUIDGeneratorUtil;
 import com.findthebusiness.backend.utils.enums.ShopActionsPriceEnum;
 import com.findthebusiness.backend.utils.enums.ShopAttributesMaxSizeEnum;
 import com.findthebusiness.backend.utils.enums.ShopSizesEnum;
-import com.findthebusiness.backend.utils.enums.ShopTypesEnum;
+import com.findthebusiness.backend.utils.enums.ShopPromotionTypesEnum;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,7 +103,7 @@ public class ShopServiceImpl implements ShopService {
                                                         Sort.Order.desc("actualSize")
                                                 )
                                             );
-        List<Shops> shopsList = findAllByType(ShopTypesEnum.PROMOTED.name(), pageable);
+        List<Shops> shopsList = findAllByIsPromotedInHome(true, pageable);
         int noOfElementsRetrieved = shopsList.size();
 
         if(noOfElementsRetrieved >= 24 || page > 0) {
@@ -123,7 +123,7 @@ public class ShopServiceImpl implements ShopService {
                                     )
                                 );
 
-        List<Shops> notPromotedShops = findAllByType(ShopTypesEnum.NOT_PROMOTED.name(), pageable);
+        List<Shops> notPromotedShops = findAllByIsPromotedInHome(false, pageable);
         int noOfNotPromotedShops = notPromotedShops.size();
 
         if(noOfNotPromotedShops == 0 && noOfElementsRetrieved == 0){
@@ -218,20 +218,8 @@ public class ShopServiceImpl implements ShopService {
 
     @Override
     public void setShopsNotPromotedAfterExpiring() {
-        List<Shops> shops = findAllPromotedShops();
-        Calendar calendar = Calendar.getInstance();
-        for(Shops shop : shops) {
-            calendar.setTime(shop.getPromotedDate());
-            calendar.add(Calendar.DAY_OF_MONTH, shop.getPromotedDays());
-            Date expiryDate = calendar.getTime();
-            Date currentDate = new Date();
-            if(currentDate.after(expiryDate)) {
-                shop.setPromotedDate(null);
-                shop.setType(ShopTypesEnum.NOT_PROMOTED.name());
-                shop.setPromotedDays(null);
-            }
-        }
-        saveAllShops(shops);
+        setShopsNotPromotedInHomeAfterExpiring();
+        setShopsNotPromotedInSearchesAfterExpiring();
     }
 
     @Override
@@ -310,8 +298,19 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public PromoteShopResponseWithAccessToken promoteShop(String id, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public PromoteShopResponseWithAccessToken promoteShop(String id, String type, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         String accessToken = getAccessTokenFromRequest(request);
+
+        Shops shop = isOwner(id, accessToken, request);
+        Users user = shop.getUser();
+
+        if(type.equals(ShopPromotionTypesEnum.HOME.name())) {
+            promoteShopInHome(shop, user);
+        } else if(type.equals(ShopPromotionTypesEnum.SEARCHES.name())) {
+            promoteShopInSearches(shop, user);
+        }
+
+        /*String accessToken = getAccessTokenFromRequest(request);
 
         Shops shop = isOwner(id, accessToken, request);
         String previousType = shop.getType();
@@ -334,7 +333,7 @@ public class ShopServiceImpl implements ShopService {
         saveShop(shop);
 
         user.setBalance(userNewBalance);
-        saveUser(user);
+        saveUser(user);*/
 
         AuthenticationCredentialsDto auth = authenticationUtil.createCredentials(user, accessToken);
         return new PromoteShopResponseWithAccessToken(auth.getAccessToken(), new PromoteShopResponse(auth.getRefreshToken(), auth.getCsrfToken()));
@@ -423,7 +422,8 @@ public class ShopServiceImpl implements ShopService {
         if(photoUrl == null)
             throw new Exception();
 
-        newShop.setType(ShopTypesEnum.NOT_PROMOTED.name())
+        newShop.setPromotedInSearches(false)
+                .setPromotedInHome(false)
                 .setBoughtAt(new Date())
                 .setRefreshedAt(new Date())
                 .setPublished(false)
@@ -523,7 +523,7 @@ public class ShopServiceImpl implements ShopService {
         user.setNoOfShopsInAccount(user.getNoOfShopsInAccount() - 1);
         saveUser(user);
 
-        if(shops.getType().equals(ShopTypesEnum.PROMOTED.name())) {
+        if(shops.getPromotedInHome() == true) {
             try {
                 subtractPromotedShopToPages();
             } catch (Exception e) {
@@ -547,33 +547,44 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public ChangeLargeImageResponseDtoWithAccessToken changeLargeImage(String shopId, ChangeLargeImageRequestDto changeLargeImageRequestDto, HttpServletRequest request) throws IOException, NoSuchAlgorithmException {
+    public ChangeStorefrontImageResponseDtoWithAccessToken changeStorefrontImage(String shopId, String imageType, ChangeStorefrontImageRequestDto changeStorefrontImageRequestDto, HttpServletRequest request) throws IOException, NoSuchAlgorithmException {
         String accessToken = getAccessTokenFromRequest(request);
         Shops shop = isOwner(shopId, accessToken, request);
         Users user = shop.getUser();
 
         String imageUrl = null;
-        if(changeLargeImageRequestDto.getNewImage() != null) {
-            imageUrl = savePhoto(changeLargeImageRequestDto.getNewImage(), LARGE_SHOP_IMAGE);
-            shop.setLargePhoto(imageUrl);
+        if(changeStorefrontImageRequestDto.getNewImage() != null) {
+            if(imageType.equals("LARGE")) {
+                imageUrl = savePhoto(changeStorefrontImageRequestDto.getNewImage(), LARGE_SHOP_IMAGE);
+                shop.setLargePhoto(imageUrl);
+            } else {
+                imageUrl = savePhoto(changeStorefrontImageRequestDto.getNewImage(), SMALL_SHOP_IMAGE);
+                shop.setSmallPhoto(imageUrl);
+            }
         }
 
         if(shop.getLargePhoto() != null) {
             try {
-                String[] oldPhotoName = shop.getLargePhoto().split("/");
+                String[] oldPhotoName;
+                if(imageType.equals("LARGE")) {
+                    oldPhotoName = shop.getLargePhoto().split("/");
+                } else {
+                    oldPhotoName = shop.getSmallPhoto().split("/");
+                }
                 deleteFile(oldPhotoName[oldPhotoName.length-1]);
+
             } catch (Exception e) {
 
             }
         }
 
-        shop.setName(changeLargeImageRequestDto.getName());
-        shop.setDescription(changeLargeImageRequestDto.getDescription());
-        shop.setSchedule(changeLargeImageRequestDto.getSchedule());
+        shop.setName(changeStorefrontImageRequestDto.getName());
+        shop.setDescription(changeStorefrontImageRequestDto.getDescription());
+        shop.setSchedule(changeStorefrontImageRequestDto.getSchedule());
         saveShop(shop);
 
         AuthenticationCredentialsDto auth = authenticationUtil.createCredentials(user, accessToken);
-        return new ChangeLargeImageResponseDtoWithAccessToken(auth.getAccessToken(), new ChangeLargeImageResponseDto(auth.getRefreshToken(), auth.getCsrfToken(), imageUrl));
+        return new ChangeStorefrontImageResponseDtoWithAccessToken(auth.getAccessToken(), new ChangeStorefrontImageResponseDto(auth.getRefreshToken(), auth.getCsrfToken(), imageUrl));
     }
 
     @Override
@@ -768,6 +779,42 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
+    public void setShopsNotPromotedInHomeAfterExpiring() {
+        List<Shops> shops = findAllPromotedInHomeShops();
+        Calendar calendar = Calendar.getInstance();
+        for(Shops shop : shops) {
+            calendar.setTime(shop.getPromotedDateInHome());
+            calendar.add(Calendar.DAY_OF_MONTH, shop.getPromotedDaysInHome());
+            Date expiryDate = calendar.getTime();
+            Date currentDate = new Date();
+            if(currentDate.after(expiryDate)) {
+                shop.setPromotedDateInHome(null);
+                shop.setPromotedInHome(false);
+                shop.setPromotedDaysInHome(null);
+            }
+        }
+        saveAllShops(shops);
+    }
+
+    @Override
+    public void setShopsNotPromotedInSearchesAfterExpiring() {
+        List<Shops> shops = findAllPromotedInSearchesShops();
+        Calendar calendar = Calendar.getInstance();
+        for(Shops shop : shops) {
+            calendar.setTime(shop.getPromotedDateInSearches());
+            calendar.add(Calendar.DAY_OF_MONTH, shop.getPromotedDaysInSearches());
+            Date expiryDate = calendar.getTime();
+            Date currentDate = new Date();
+            if(currentDate.after(expiryDate)) {
+                shop.setPromotedDateInSearches(null);
+                shop.setPromotedInSearches(false);
+                shop.setPromotedDaysInSearches(null);
+            }
+        }
+        saveAllShops(shops);
+    }
+
+    @Override
     public List<Subcategories> findSubcategoriesForShop(List<String> subcategories) {
         List<Subcategories> subcategoriesList = new ArrayList<>();
         for(String subcategory : subcategories) {
@@ -780,6 +827,55 @@ public class ShopServiceImpl implements ShopService {
         }
 
         return subcategoriesList;
+    }
+
+    @Override
+    public void promoteShopInHome(Shops shop, Users user) {
+        Boolean isPromotedInHome = shop.getPromotedInHome();
+
+        long userNewBalance = user.getBalance() - ShopActionsPriceEnum.PROMOTE_SHOP_PROMOTE_HOME.price;
+        if(userNewBalance < 0)
+            throw new NotEnoughCreditException();
+
+        shop.setPromotedInHome(true);
+        if(!isPromotedInHome) {
+            shop.setPromotedDateInHome(new Date());
+        }
+
+        if(shop.getPromotedDaysInHome() == null) {
+            shop.setPromotedDaysInHome(0);
+            addPromotedShopToPages();
+        }
+
+        shop.setPromotedDaysInHome(shop.getPromotedDaysInHome()+30);
+        saveShop(shop);
+
+        user.setBalance(userNewBalance);
+        saveUser(user);
+    }
+
+    @Override
+    public void promoteShopInSearches(Shops shop, Users user) {
+        Boolean isPromotedInSearches = shop.getPromotedInSearches();
+
+        long userNewBalance = user.getBalance() - ShopActionsPriceEnum.PROMOTE_SHOP_PROMOTE_SEARCHES.price;
+        if(userNewBalance < 0)
+            throw new NotEnoughCreditException();
+
+        shop.setPromotedInSearches(true);
+        if(!isPromotedInSearches) {
+            shop.setPromotedDateInSearches(new Date());
+        }
+
+        if(shop.getPromotedDaysInSearches() == null) {
+            shop.setPromotedDaysInSearches(0);
+        }
+
+        shop.setPromotedDaysInSearches(shop.getPromotedDaysInSearches()+30);
+        saveShop(shop);
+
+        user.setBalance(userNewBalance);
+        saveUser(user);
     }
 
     @Override
@@ -819,13 +915,18 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<Shops> findAllByType(String type, Pageable pageable) {
-        return shopRepository.findAllByTypeAndIsPublished(type, true, pageable).orElseGet(ArrayList::new);
+    public List<Shops> findAllByIsPromotedInHome(Boolean isPromoted, Pageable pageable) {
+        return shopRepository.findAllByIsPromotedInHomeAndIsPublished(isPromoted, true, pageable).orElseGet(ArrayList::new);
     }
 
     @Override
-    public List<Shops> findAllPromotedShops() {
-        return shopRepository.findAllByType(ShopTypesEnum.PROMOTED.name()).orElseGet(ArrayList::new);
+    public List<Shops> findAllPromotedInHomeShops() {
+        return shopRepository.findAllByIsPromotedInHome(true).orElseGet(ArrayList::new);
+    }
+
+    @Override
+    public List<Shops> findAllPromotedInSearchesShops() {
+        return shopRepository.findAllByIsPromotedInSearches(true).orElseGet(ArrayList::new);
     }
 
     @Override

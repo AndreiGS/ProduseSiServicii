@@ -14,7 +14,7 @@
 							:description="shop.description" 
 							:title="shop.name"
 							:image="shop.smallPhoto || require('../assets/logo.png')"
-							:promoted="shop.type == 'PROMOTED'"
+							:promoted="shop.promotedInHome"
 						/>
 					</div>
 					<div v-else class="uk-width-1-1 uk-grid-match custom-grid" uk-grid>
@@ -26,7 +26,7 @@
 							:title="shop.shop.name"
 							:image="shop.shop.smallPhoto || require('../assets/logo.png')"
 							:foundItemsIds="shop.itemsIds"
-							:promoted="shop.shop.type == 'PROMOTED'"
+							:promoted="shop.shop.promotedInSearches"
 						/>
 					</div>
 				</div>

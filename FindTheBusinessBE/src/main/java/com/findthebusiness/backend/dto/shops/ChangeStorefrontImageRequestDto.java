@@ -1,16 +1,16 @@
 package com.findthebusiness.backend.dto.shops;
 
-public class ChangeLargeImageRequestDto {
+public class ChangeStorefrontImageRequestDto {
 
     private String newImage;
     private String name;
     private String description;
     private String schedule;
 
-    public ChangeLargeImageRequestDto() {
+    public ChangeStorefrontImageRequestDto() {
     }
 
-    public ChangeLargeImageRequestDto(String newImage, String name, String description, String schedule) {
+    public ChangeStorefrontImageRequestDto(String newImage, String name, String description, String schedule) {
         this.newImage = newImage;
         this.name = name;
         this.description = description;
@@ -21,7 +21,7 @@ public class ChangeLargeImageRequestDto {
         return schedule;
     }
 
-    public ChangeLargeImageRequestDto setSchedule(String schedule) {
+    public ChangeStorefrontImageRequestDto setSchedule(String schedule) {
         this.schedule = schedule;
         return this;
     }
@@ -30,7 +30,7 @@ public class ChangeLargeImageRequestDto {
         return newImage;
     }
 
-    public ChangeLargeImageRequestDto setNewImage(String newImage) {
+    public ChangeStorefrontImageRequestDto setNewImage(String newImage) {
         this.newImage = newImage;
         return this;
     }
@@ -39,7 +39,7 @@ public class ChangeLargeImageRequestDto {
         return name;
     }
 
-    public ChangeLargeImageRequestDto setName(String name) {
+    public ChangeStorefrontImageRequestDto setName(String name) {
         this.name = name;
         return this;
     }
@@ -48,7 +48,7 @@ public class ChangeLargeImageRequestDto {
         return description;
     }
 
-    public ChangeLargeImageRequestDto setDescription(String description) {
+    public ChangeStorefrontImageRequestDto setDescription(String description) {
         this.description = description;
         return this;
     }

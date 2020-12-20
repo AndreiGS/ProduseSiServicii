@@ -4,7 +4,6 @@ import com.findthebusiness.backend.dto.shops.*;
 import com.findthebusiness.backend.exception.*;
 import com.findthebusiness.backend.service.service_implementation.ShopServiceImpl;
 import com.findthebusiness.backend.utils.ScheduleDelayTimes;
-import com.sun.mail.iap.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -69,9 +68,9 @@ public class ShopController {
     }
 
     @PatchMapping("/promoteShop")
-    private ResponseEntity<?> promoteShop(@RequestParam("id") String shopId, HttpServletResponse response, HttpServletRequest request) {
+    private ResponseEntity<?> promoteShop(@RequestParam("id") String shopId, @RequestParam("type") String promotionType, HttpServletResponse response, HttpServletRequest request) {
         try {
-            PromoteShopResponseWithAccessToken promoteShopResponseWithAccessToken = shopService.promoteShop(shopId, request, response);
+            PromoteShopResponseWithAccessToken promoteShopResponseWithAccessToken = shopService.promoteShop(shopId, promotionType, request, response);
 
             response.addCookie(promoteShopResponseWithAccessToken.getAccessToken());
             return ResponseEntity.ok(promoteShopResponseWithAccessToken.getPromoteShopResponse());
@@ -185,13 +184,13 @@ public class ShopController {
         }
     }
 
-    @PostMapping("/changeLargeImage")
-    private ResponseEntity<?> changeLargeImage(@RequestParam("id") String shopId, @RequestBody ChangeLargeImageRequestDto changeLargeImageRequestDto, HttpServletRequest request, HttpServletResponse response) {
+    @PostMapping("/changeStorefrontImage")
+    private ResponseEntity<?> changeLargeImage(@RequestParam("id") String shopId, @RequestParam("image_type") String imageType, @RequestBody ChangeStorefrontImageRequestDto changeStorefrontImageRequestDto, HttpServletRequest request, HttpServletResponse response) {
         try {
-            ChangeLargeImageResponseDtoWithAccessToken changeLargeImageResponseDtoWithAccessToken = shopService.changeLargeImage(shopId, changeLargeImageRequestDto, request);
+            ChangeStorefrontImageResponseDtoWithAccessToken changeStorefrontImageResponseDtoWithAccessToken = shopService.changeStorefrontImage(shopId, imageType, changeStorefrontImageRequestDto, request);
 
-            response.addCookie(changeLargeImageResponseDtoWithAccessToken.getAccessToken());
-            return ResponseEntity.ok(changeLargeImageResponseDtoWithAccessToken.getChangeLargeImageResponseDto());
+            response.addCookie(changeStorefrontImageResponseDtoWithAccessToken.getAccessToken());
+            return ResponseEntity.ok(changeStorefrontImageResponseDtoWithAccessToken.getChangeStorefrontImageResponseDto());
         } catch (PhotoRequiredException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (NotTheOwnerException e) {

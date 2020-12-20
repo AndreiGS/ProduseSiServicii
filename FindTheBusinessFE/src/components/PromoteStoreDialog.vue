@@ -7,16 +7,28 @@
       </div>
       <div class="uk-modal-body">
         <p>Daca alegeti aceasta optiune, 60 RON vor fi retrasi din contul dumneavoastra pentru ca magazinul sa ajunga pe paginile de inceput ale site-ului si sa apara cat mai sus in cautarile utilizatorilor</p>
+        <hr>
+
+        <vk-grid divided class="uk-child-width-expand@s">
+          <div class="promote-button uk-first-column">
+            <vk-button @click="promoteStore('HOME')" class="custom-button" type="primary">Promoveaza pe ecranul "Acasa"</vk-button>
+            <p>Acest tip de promovare plaseaza magazinul pe ecranul de pornire al website-ului</p>
+          </div>
+
+          <div class="promote-button">
+            <vk-button @click="promoteStore('SEARCHES')" class="custom-button" type="primary">Promoveaza in timpul cautarilor</vk-button>
+            <p>Acest tip de promovare plaseaza toate magazinele astfel promovate pe primele pozitii in cautarile clientilor</p>
+          </div>
+        </vk-grid>
       </div>
+      
       <div class="uk-modal-footer uk-text-right">
         <div class="uk-hidden@s">
-					<button class="uk-button uk-button-default custom-dialog-button uk-button-small" type="button" @click="hideModal()">Inchide</button>
-					<button @click="promoteStore()" class="uk-button uk-button-primary custom-dialog-button uk-button-small" type="button">Continua</button>
-				</div>
-				<div class="uk-visible@s">
-					<button class="uk-button uk-button-default custom-dialog-button" type="button" @click="hideModal()">Inchide</button>
-					<button @click="promoteStore()" class="uk-button uk-button-primary custom-dialog-button" type="button">Continua</button>
-				</div>
+          <button class="uk-button uk-button-default custom-dialog-button uk-button-small" type="button" @click="hideModal()">Inchide</button>
+        </div>
+        <div class="uk-visible@s">
+          <button class="uk-button uk-button-default custom-dialog-button" type="button" @click="hideModal()">Inchide</button>
+        </div>
       </div>
     </div>
   </div>
@@ -42,10 +54,10 @@ export default {
     hideModal() {
       UIkit.modal('#promote-shop-sections').hide()
     },
-    async promoteStore() {
+    async promoteStore(type) {
       var timeoutVar = setTimeout(() => { this.loading = true; }, 1000);
       await axios({
-        url: this.backend+'/api/shops/promoteShop?id='+this.shopIdToModify, //TODO
+        url: `${this.backend}/api/shops/promoteShop?id=${this.shopIdToModify}&type=${type}`,
         method: 'patch',
         withCredentials: true,
         headers: {
@@ -80,8 +92,23 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .custom-dialog-button{
 	margin-right: 2px;
+}
+
+.promote-button {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+
+  .custom-button {
+    padding: 5px 10px;
+  }
+
+  p{
+    margin: 10px;
+  }
+
 }
 </style>

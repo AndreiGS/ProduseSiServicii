@@ -6,18 +6,18 @@ public class ShopDto {
     private String name;
     private String smallPhoto;
     private Double rating;
-    private String type;
+    private Boolean isPromotedInSearches;
     private String description;
 
     public ShopDto() {
     }
 
-    public ShopDto(String id, String name, String smallPhoto, Double rating, String type, String description) {
+    public ShopDto(String id, String name, String smallPhoto, Double rating, Boolean isPromotedInSearches, String description) {
         this.id = id;
         this.name = name;
         this.smallPhoto = smallPhoto;
         this.rating = rating;
-        this.type = type;
+        this.isPromotedInSearches = isPromotedInSearches;
         this.description = description;
     }
 
@@ -57,12 +57,12 @@ public class ShopDto {
         return this;
     }
 
-    public String getType() {
-        return type;
+    public Boolean getPromotedInSearches() {
+        return isPromotedInSearches;
     }
 
-    public ShopDto setType(String type) {
-        this.type = type;
+    public ShopDto setPromotedInSearches(Boolean promotedInSearches) {
+        isPromotedInSearches = promotedInSearches;
         return this;
     }
 

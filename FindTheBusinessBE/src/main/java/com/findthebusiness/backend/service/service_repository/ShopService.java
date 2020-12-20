@@ -21,14 +21,14 @@ public interface ShopService {
     ResponseEntity<StoreFrontRequestDto> getShopDetailsById(String shopId);
     ResponseEntity<ReloadRatingAndPriceResponseDto> getRatingAndPrice(String shopId);
     RefreshShopResponseWithAccessToken refreshShop(String id, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, NoSuchAlgorithmException;
-    PromoteShopResponseWithAccessToken promoteShop(String id, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, NoSuchAlgorithmException;
+    PromoteShopResponseWithAccessToken promoteShop(String id, String type, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, NoSuchAlgorithmException;
     SaveShopResponseDtoWithAccessToken uploadShop(String shopId, SaveShopRequestDto saveShopRequestDto, HttpServletRequest request, HttpServletResponse response) throws Exception;
     DeleteShopResponseDtoWithAccessToken deleteShop(String shopId, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, NoSuchAlgorithmException;
     CheckIfShopOwnerReponseDtoWithAccessToken checkIfShopOwner(String shopId, HttpServletRequest request) throws UnsupportedEncodingException, NoSuchAlgorithmException;
     ChangeContactDataResponseDtoWithAccessToken changeContactData(String shopId, ChangeContactDataRequestDto changeContactDataRequestDto, HttpServletRequest request) throws UnsupportedEncodingException, NoSuchAlgorithmException;
     ChangePublishedResponseDtoWithAccessToken changePublished(String shopId, Boolean wantsToContinue, HttpServletRequest request) throws UnsupportedEncodingException, NoSuchAlgorithmException;
     ChangeHasAutomaticTokenRefreshResponseDtoWithAccessToken changeHasAutomaticTokenRefresh(String shopId, HttpServletRequest request) throws UnsupportedEncodingException, NoSuchAlgorithmException;
-    ChangeLargeImageResponseDtoWithAccessToken changeLargeImage(String shopId, ChangeLargeImageRequestDto changeLargeImageRequestDto, HttpServletRequest request) throws IOException, NoSuchAlgorithmException;
+    ChangeStorefrontImageResponseDtoWithAccessToken changeStorefrontImage(String shopId, String imageType, ChangeStorefrontImageRequestDto changeStorefrontImageRequestDto, HttpServletRequest request) throws IOException, NoSuchAlgorithmException;
 
     void setShopsNotPromotedAfterExpiring();
     void unpublishShopsIfUserDoesNotHaveAnotherTokenAndAutomaticTokenRefreshEnabled();
@@ -38,6 +38,10 @@ public interface ShopService {
     Shops saveNewShop(Users user, SaveShopRequestDto saveShopRequestDto) throws Exception;
     Shops updateShop(String shopId, SaveShopRequestDto saveShopRequestDto, HttpServletRequest request) throws Exception;
 
+    void setShopsNotPromotedInHomeAfterExpiring();
+    void setShopsNotPromotedInSearchesAfterExpiring();
+    void promoteShopInHome(Shops shop, Users user);
+    void promoteShopInSearches(Shops shop, Users user);
     List<Subcategories> findSubcategoriesForShop(List<String> subcategories);
     Subcategories findSubcategoryByName(String subcategory);
     ShopSizesEnum getShopSize(Integer size);
@@ -59,8 +63,9 @@ public interface ShopService {
     void addPromotedShopToPages();
     Pages findPages();
     void savePages(Pages pages);
-    List<Shops> findAllByType(String type, Pageable pageable);
-    List<Shops> findAllPromotedShops();
+    List<Shops> findAllByIsPromotedInHome(Boolean isPromoted, Pageable pageable);
+    List<Shops> findAllPromotedInHomeShops();
+    List<Shops> findAllPromotedInSearchesShops();
     List<Shops> findAllPublishedShopsAndAutomaticTokenRefreshTrue();
     List<Shops> findAllPublishedShopsAndAutomaticTokenRefreshFalse();
     void deleteShopById(String id);

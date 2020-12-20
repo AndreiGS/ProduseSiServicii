@@ -10,14 +10,31 @@ public class ShopCardDto {
     private String name;
     private String smallPhoto;
     private Double rating;
-    private String type;
-    private Integer promotedDaysRemaining = null;
+    private Boolean isPromotedInHome;
+    private Boolean isPromotedInSearches;
+    private Integer promotedDaysInHomeRemaining = null;
+    private Integer promotedDaysInSearchesRemaining = null;
     private String description;
     private String maximumSize;
     private Boolean isPublished;
     private List<SubcategoriesDto> subcategories;
 
     public ShopCardDto() {
+    }
+
+    public ShopCardDto(String id, String name, String smallPhoto, Double rating, Boolean isPromotedInHome, Boolean isPromotedInSearches, Integer promotedDaysInHomeRemaining, Integer promotedDaysInSearchesRemaining, String description, String maximumSize, Boolean isPublished, List<SubcategoriesDto> subcategories) {
+        this.id = id;
+        this.name = name;
+        this.smallPhoto = smallPhoto;
+        this.rating = rating;
+        this.isPromotedInHome = isPromotedInHome;
+        this.isPromotedInSearches = isPromotedInSearches;
+        this.promotedDaysInHomeRemaining = promotedDaysInHomeRemaining;
+        this.promotedDaysInSearchesRemaining = promotedDaysInSearchesRemaining;
+        this.description = description;
+        this.maximumSize = maximumSize;
+        this.isPublished = isPublished;
+        this.subcategories = subcategories;
     }
 
     public String getId() {
@@ -56,12 +73,12 @@ public class ShopCardDto {
         return this;
     }
 
-    public String getType() {
-        return type;
+    public Boolean getPromotedInHome() {
+        return isPromotedInHome;
     }
 
-    public ShopCardDto setType(String type) {
-        this.type = type;
+    public ShopCardDto setPromotedInHome(Boolean promotedInHome) {
+        isPromotedInHome = promotedInHome;
         return this;
     }
 
@@ -101,12 +118,30 @@ public class ShopCardDto {
         return this;
     }
 
-    public Integer getPromotedDaysRemaining() {
-        return promotedDaysRemaining;
+    public Boolean getPromotedInSearches() {
+        return isPromotedInSearches;
     }
 
-    public ShopCardDto setPromotedDaysRemaining(Integer promotedDaysRemaining) {
-        this.promotedDaysRemaining = promotedDaysRemaining;
+    public ShopCardDto setPromotedInSearches(Boolean promotedInSearches) {
+        isPromotedInSearches = promotedInSearches;
+        return this;
+    }
+
+    public Integer getPromotedDaysInHomeRemaining() {
+        return promotedDaysInHomeRemaining;
+    }
+
+    public ShopCardDto setPromotedDaysInHomeRemaining(Integer promotedDaysInHomeRemaining) {
+        this.promotedDaysInHomeRemaining = promotedDaysInHomeRemaining;
+        return this;
+    }
+
+    public Integer getPromotedDaysInSearchesRemaining() {
+        return promotedDaysInSearchesRemaining;
+    }
+
+    public ShopCardDto setPromotedDaysInSearchesRemaining(Integer promotedDaysInSearchesRemaining) {
+        this.promotedDaysInSearchesRemaining = promotedDaysInSearchesRemaining;
         return this;
     }
 }

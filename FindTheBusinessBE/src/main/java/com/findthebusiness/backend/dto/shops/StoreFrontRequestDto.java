@@ -18,14 +18,15 @@ public class StoreFrontRequestDto {
     private String county;
     private Double rating;
     private Double price;
-    private String type;
+    private Boolean isPromotedInHome;
+    private Boolean isPromotedInSearches;
     private Boolean hasAutomaticTokenRefresh;
     private Set<TabResponseDto> tabs;
 
     public StoreFrontRequestDto() {
     }
 
-    public StoreFrontRequestDto(String name, String description, String schedule, String email, String smallPhoto, String largePhoto, String phone, String websiteLink, String address, String county, Double rating, Double price, String type, Boolean hasAutomaticTokenRefresh, Set<TabResponseDto> tabs) {
+    public StoreFrontRequestDto(String name, String description, String schedule, String email, String smallPhoto, String largePhoto, String phone, String websiteLink, String address, String county, Double rating, Double price, Boolean isPromotedInHome, Boolean isPromotedInSearches, Boolean hasAutomaticTokenRefresh, Set<TabResponseDto> tabs) {
         this.name = name;
         this.description = description;
         this.schedule = schedule;
@@ -38,7 +39,8 @@ public class StoreFrontRequestDto {
         this.county = county;
         this.rating = rating;
         this.price = price;
-        this.type = type;
+        this.isPromotedInHome = isPromotedInHome;
+        this.isPromotedInSearches = isPromotedInSearches;
         this.hasAutomaticTokenRefresh = hasAutomaticTokenRefresh;
         this.tabs = tabs;
     }
@@ -142,12 +144,21 @@ public class StoreFrontRequestDto {
         return this;
     }
 
-    public String getType() {
-        return type;
+    public Boolean getPromotedInHome() {
+        return isPromotedInHome;
     }
 
-    public StoreFrontRequestDto setType(String type) {
-        this.type = type;
+    public StoreFrontRequestDto setPromotedInHome(Boolean promotedInHome) {
+        isPromotedInHome = promotedInHome;
+        return this;
+    }
+
+    public Boolean getPromotedInSearches() {
+        return isPromotedInSearches;
+    }
+
+    public StoreFrontRequestDto setPromotedInSearches(Boolean promotedInSearches) {
+        isPromotedInSearches = promotedInSearches;
         return this;
     }
 

@@ -15,7 +15,7 @@ import com.findthebusiness.backend.repository.ShopRepository;
 import com.findthebusiness.backend.repository.SubcategoriesRepository;
 import com.findthebusiness.backend.service.service_repository.SearchService;
 
-import com.findthebusiness.backend.utils.enums.ShopTypesEnum;
+import com.findthebusiness.backend.utils.enums.ShopPromotionTypesEnum;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -388,7 +388,7 @@ public class SearchServiceImpl implements SearchService {
             return -1;
 
         if(input == null) {
-            if(shops.getType().equals(ShopTypesEnum.PROMOTED.name()))
+            if(shops.getPromotedInSearches() == true)
                 return 1000;
             return 0;
         }
@@ -405,7 +405,7 @@ public class SearchServiceImpl implements SearchService {
         if(points == -1)
             return points;
 
-        if(shops.getType().equals(ShopTypesEnum.PROMOTED.name()))
+        if(shops.getPromotedInSearches() == true)
             points += 1000;
 
         return points;
@@ -419,7 +419,7 @@ public class SearchServiceImpl implements SearchService {
             return -1;
 
         if(input == null) {
-            if(shop.getType().equals(ShopTypesEnum.PROMOTED.name()))
+            if(shop.getPromotedInSearches() == true)
                 return 1000;
             return 0;
         }
@@ -431,7 +431,7 @@ public class SearchServiceImpl implements SearchService {
         if(points == -1)
             return -1;
 
-        if(shop.getType().equals(ShopTypesEnum.PROMOTED.name()))
+        if(shop.getPromotedInSearches() == true)
             points += 1000;
 
         return points;
