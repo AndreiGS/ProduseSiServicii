@@ -4,7 +4,7 @@
       <div class="uk-flex uk-flex-stretch uk-flex-column" style="width: 100%">
         <div>
           <vk-label style="z-index: 1;" class="top-right" v-if="promoted" slot="badge">PROMOVAT</vk-label>
-          <img loading="lazy" :style="(hasImageLoaded == false) ? 'visibility: hidden' : 'visibility: visible'" v-if="cannotFindImage == false && image != null" :src="image" :alt="cannotFindImage = true" class="card-image"  @onerror="cannotFindImage = true" @load="onImgLoad">
+          <img loading="lazy" :style="(hasImageLoaded == false) ? 'visibility: hidden' : 'visibility: visible'" v-if="cannotFindImage == false && image != null" :src="image" :alt="title" class="card-image"  @error="cannotFindImage = true" @load="onImgLoad">
 
           <div v-else class="card-image no-image-div uk-inline">
             <p style="color: white;" class="uk-overlay uk-position-center overlay">Nicio imagine gasita</p>
