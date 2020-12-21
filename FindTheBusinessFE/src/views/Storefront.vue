@@ -554,6 +554,15 @@ export default {
           this.changeEditState();
         },
         async saveEdit() {
+          if(this.store.schedule == this.scheduleCopy &&
+             this.store.name ==  this.nameCopy && 
+             this.store.description == this.descriptionCopy && 
+             this.newImage == null) {
+               this.discardEdit()
+               return;
+             }
+             
+
           if(this.windowWidth >= 768)
             await this.saveEditToDb('LARGE');
           else
@@ -581,9 +590,9 @@ export default {
               this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
               this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
 
-              if(imageType == 'LARGE')
+              if(imageType == 'LARGE' && response.data.newImageURL != null)
                 this.store.largePhoto = response.data.newImageURL
-              else
+              else if(imageType == 'SMALL' && response.data.newImageURL != null)
                 this.store.smallPhoto = response.data.newImageURL
 
               this.nameCopy=this.store.name;
