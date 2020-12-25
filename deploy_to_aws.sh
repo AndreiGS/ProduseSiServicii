@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo 'Starting to Deploy...'
-ssh ec2-user@ip-172-31-45-201 " 
+ssh ec2-user@ec2-18-198-47-240.eu-central-1.compute.amazonaws.com " 
         sudo docker image prune -f 
         cd ProduseSiServicii
         sudo docker-compose down
