@@ -3,9 +3,11 @@
 
 echo 'Starting to Deploy...'
 ssh ec2-user@ec2-18-198-47-240.eu-central-1.compute.amazonaws.com " 
-        sudo docker image prune -f 
         cd ProduseSiServicii
         sudo docker-compose down
+        sudo docker image prune -f 
+        sudo docker rmi -f findthebusinessfe
+        sudo docker rmi -f findthebusinessbe
         git fetch origin
         git reset --hard origin/master
         
