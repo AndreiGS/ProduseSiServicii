@@ -39,4 +39,4 @@ jobs:
           SPRING_APP_TOKEN_SECRET_CHANGE_INFO: ${{secrets.SPRING_APP_TOKEN_SECRET_CHANGE_INFO}}
           EMAIL_APP_PASS: ${{secrets.EMAIL_APP_PASS}}
           CRYPT_KEY: ${{secrets.CRYPT_KEY}}
-        run: ./deploy_to_aws.sh
+        run: sh ./deploy_to_aws.sh
