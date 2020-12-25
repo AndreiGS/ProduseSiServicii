@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo 'Starting to Deploy...'
 ssh ec2-user@ip-172-31-45-201 " 
         sudo docker image prune -f 
