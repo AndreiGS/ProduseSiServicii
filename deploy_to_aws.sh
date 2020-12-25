@@ -6,7 +6,7 @@ ssh ec2-user@ec2-18-198-47-240.eu-central-1.compute.amazonaws.com "
         cd ProduseSiServicii
         sudo docker-compose down
         git fetch origin
-        git reset --hard origin/master  &&  echo 'You are doing well'
+        git reset --hard origin/master  &&  echo 'You are doing well' && echo ${NODE_ENV}
         docker-compose build && 
         
         export NODE_ENV=${NODE_ENV}
