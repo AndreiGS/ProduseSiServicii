@@ -6,6 +6,7 @@ import VueCookie from 'vue-cookie'
 import axios from 'axios'
 import vueCountryRegionSelect from 'vue-country-region-select'
 import VueMeta from 'vue-meta'
+import './registerServiceWorker'
 
 Vue.config.productionTip = false
 

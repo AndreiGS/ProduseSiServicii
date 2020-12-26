@@ -26,6 +26,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.856);
   color: white;
   padding: 5px;
+  z-index: 100;
 
   p {
     margin: 10px;
