@@ -10,6 +10,14 @@ ssh ec2-user@ec2-18-198-47-240.eu-central-1.compute.amazonaws.com << HERE
         sudo docker rmi -f findthebusinessbe
         git fetch origin
         git reset --hard origin/master
+        cd FindTheBusinessFE
+        touch .env
+        echo "
+                VUE_APP_STRIPE_PUBLIC_KEY=${VUE_APP_STRIPE_PUBLIC_KEY}
+                VUE_APP_FACEBOOK_CLIENT_ID=${VUE_APP_FACEBOOK_CLIENT_ID}
+                VUE_APP_BACKEND=${VUE_APP_BACKEND}
+                VUE_APP_FRONTEND=${VUE_APP_FRONTEND}
+        " > .env.production
         
         export NODE_ENV=${NODE_ENV}
         export VUE_APP_STRIPE_PUBLIC_KEY=${VUE_APP_STRIPE_PUBLIC_KEY}
