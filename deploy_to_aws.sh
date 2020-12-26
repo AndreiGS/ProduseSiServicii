@@ -52,11 +52,5 @@ ssh ec2-user@ec2-18-198-47-240.eu-central-1.compute.amazonaws.com << HERE
         CRYPT_KEY=${CRYPT_KEY}
         " > .env
         docker-compose up -d --build
-        rm -rf .env
-        cd FindTheBusinessFE
-        rm -rf .env
-        rm -rf .env.production
-        cd ..
-        cd ..
 HERE
 echo 'Deployment completed successfully'

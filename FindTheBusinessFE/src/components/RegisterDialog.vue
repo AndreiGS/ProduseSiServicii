@@ -45,13 +45,13 @@
 
 					<div style="margin: 5px">
 						<div v-if="!loading">
-							<div v-if="error==404 || error==419">Actiunea dumneavoastra nu a putut fi completata. Incercati din nou!</div>
-							<div v-else-if="error==409">Email-ul exista deja in baza de date a aplicatiei!</div>
+							<div v-if="error==409">Email-ul exista deja in baza de date a aplicatiei!</div>
 							<div v-else-if="error==423">Parola apare printre parolele scapate pe internet in trecut! Va rugam sa incercati alta parola</div>
 							<div v-else-if="error==403">Termenii si conditiile nu au fost acceptate!</div>
 							<div v-else-if="error==406">Parolele nu coincid!</div>
 							<div v-else-if="error==411">Parola trebuie sa aiba minim 8 caractere!</div>
 							<div v-else-if="error==426">Parola este prea slaba! Utilizati o parola care contine atat litere mici si mari cat si cifre si caractere speciale (@ . /)</div>
+							<div v-else>Actiunea dumneavoastra nu a putut fi completata. Incercati din nou!</div>
 						</div>
 						<div v-else-if="loading">Se incarca</div>
 						<div v-else-if="error != 0 || error == null">Actiunea dumneavoastra nu a putut fi completata. Incercati din nou!</div>
