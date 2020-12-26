@@ -5,7 +5,7 @@ echo 'Starting to Deploy...'
 ssh ec2-user@ec2-18-198-47-240.eu-central-1.compute.amazonaws.com << HERE
 cd ProduseSiServicii
 sudo docker-compose down
-sudo docker image prune -f 
+sudo docker system prune -f 
 sudo docker rmi -f findthebusinessfe
 sudo docker rmi -f findthebusinessbe
 git fetch origin
@@ -23,8 +23,7 @@ cd ..
 echo "
 #client
 NODE_ENV=${NODE_ENV}
-VUE_APP_STRI
-PE_PUBLIC_KEY=${VUE_APP_STRIPE_PUBLIC_KEY}
+VUE_APP_STRIPE_PUBLIC_KEY=${VUE_APP_STRIPE_PUBLIC_KEY}
 VUE_APP_FACEBOOK_CLIENT_ID=${VUE_APP_FACEBOOK_CLIENT_ID}
 VUE_APP_BACKEND=${VUE_APP_BACKEND}
 VUE_APP_FRONTEND=${VUE_APP_FRONTEND}
@@ -52,12 +51,6 @@ SPRING_APP_TOKEN_SECRET_CHANGE_INFO=${SPRING_APP_TOKEN_SECRET_CHANGE_INFO}
 EMAIL_APP_PASS=${EMAIL_APP_PASS}
 CRYPT_KEY=${CRYPT_KEY}
 " > .env
-docker-compose up -d --build
-rm -rf .env
-cd FindTheBusinessFE
-rm -rf .env
-rm -rf .env.production
-cd ..
-cd ..
+sudo docker-compose up --build
 HERE
 echo 'Deployment completed successfully'
