@@ -2,7 +2,7 @@
 #!/bin/bash
 
 echo 'Starting to Deploy...'
-ssh ec2-user@ec2-18-198-47-240.eu-central-1.compute.amazonaws.com " 
+ssh ec2-user@ec2-18-198-47-240.eu-central-1.compute.amazonaws.com << HERE
         cd ProduseSiServicii
         sudo docker-compose down
         sudo docker image prune -f 
@@ -32,7 +32,7 @@ ssh ec2-user@ec2-18-198-47-240.eu-central-1.compute.amazonaws.com "
         export SPRING_APP_TOKEN_SECRET_CHANGE_PASSWORD=${SPRING_APP_TOKEN_SECRET_CHANGE_PASSWORD}
         export SPRING_APP_TOKEN_SECRET_CHANGE_INFO=${SPRING_APP_TOKEN_SECRET_CHANGE_INFO}
         export EMAIL_APP_PASS=${EMAIL_APP_PASS}
-        export CRYPT_KEY=${CRYPT_KEY}
+        export CRYPT_KEY="${CRYPT_KEY}"
         docker-compose up -d --build
-"
+HERE
 echo 'Deployment completed successfully'
