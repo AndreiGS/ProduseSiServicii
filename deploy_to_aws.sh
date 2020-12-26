@@ -52,5 +52,11 @@ EMAIL_APP_PASS=${EMAIL_APP_PASS}
 CRYPT_KEY=${CRYPT_KEY}
 " > .env
 sudo docker-compose up -d --build
+rm -rf .env
+cd FindTheBusinessFE
+rm -rf .env
+rm -rf .env.production
+cd..
+cd..
 HERE
 echo 'Deployment completed successfully'
