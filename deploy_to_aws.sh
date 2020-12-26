@@ -56,7 +56,7 @@ rm -rf .env
 cd FindTheBusinessFE
 rm -rf .env
 rm -rf .env.production
-cd..
-cd..
+cd ..
+cd ..
 HERE
 echo 'Deployment completed successfully'
