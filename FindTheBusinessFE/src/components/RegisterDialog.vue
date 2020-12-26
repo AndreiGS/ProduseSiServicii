@@ -51,7 +51,7 @@
 							<div v-else-if="error==406">Parolele nu coincid!</div>
 							<div v-else-if="error==411">Parola trebuie sa aiba minim 8 caractere!</div>
 							<div v-else-if="error==426">Parola este prea slaba! Utilizati o parola care contine atat litere mici si mari cat si cifre si caractere speciale (@ . /)</div>
-							<div v-else>Actiunea dumneavoastra nu a putut fi completata. Incercati din nou!</div>
+							<div v-else-if="error!=0 || error!=null">Actiunea dumneavoastra nu a putut fi completata. Incercati din nou!</div>
 						</div>
 						<div v-else-if="loading">Se incarca</div>
 						<div v-else-if="error != 0 || error == null">Actiunea dumneavoastra nu a putut fi completata. Incercati din nou!</div>
