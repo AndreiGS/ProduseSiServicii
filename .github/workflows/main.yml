@@ -18,10 +18,10 @@ jobs:
     - name: rsync over ssh
       env: 
         NODE_ENV: ${{secrets.NODE_ENV}}
-        VUE_APP_STRIPE_PUBLIC_KEY: ${{VUE_APP_STRIPE_PUBLIC_KEY}}
-        VUE_APP_FACEBOOK_CLIENT_ID: ${{VUE_APP_FACEBOOK_CLIENT_ID}} 
-        VUE_APP_BACKEND: ${{VUE_APP_BACKEND}}
-        VUE_APP_FRONTEND: ${{VUE_APP_FRONTEND}}
+        VUE_APP_STRIPE_PUBLIC_KEY: ${{secrets.VUE_APP_STRIPE_PUBLIC_KEY}}
+        VUE_APP_FACEBOOK_CLIENT_ID: ${{secrets.VUE_APP_FACEBOOK_CLIENT_ID}} 
+        VUE_APP_BACKEND: ${{secrets.VUE_APP_BACKEND}}
+        VUE_APP_FRONTEND: ${{secrets.VUE_APP_FRONTEND}}
         SPRING_ENV: ${{secrets.SPRING_ENV}}
         JDBC_DATABASE_URL: ${{secrets.JDBC_DATABASE_URL}}
         JDBC_DATABASE_NAME: ${{secrets.JDBC_DATABASE_NAME}}
