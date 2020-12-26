@@ -1,5 +1,5 @@
 <script>
-import UpdateMixin from '@/components/mixins/update.js'
+import UpdateMixin from '@/mixins/update.js'
 
 export default {
   name: 'UpdateAvailableDialog',
@@ -10,7 +10,7 @@ export default {
 </script>
 
 <template>
-  <div v-if="updateExists" id="modal-sections" uk-modal>
+  <div id="modal-update" uk-modal>
     <div class="uk-modal-dialog uk-margin-auto-vertical">
         <div class="uk-modal-header">
           <h2 class="uk-modal-title">Actualizare</h2>

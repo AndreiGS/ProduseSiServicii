@@ -18,9 +18,11 @@ export default {
     updateAvailable(event) {
       this.registration = event.detail
       this.updateExists = true
+      UIkit.modal("#modal-update").show();
     },
     refreshApp() {
       this.updateExists = false
+      UIkit.modal("#modal-offline").hide();
       // Make sure we only send a 'skip waiting' message if the SW is waiting
       if (!this.registration || !this.registration.waiting) return
       // Send message to SW to skip the waiting and activate the new SW

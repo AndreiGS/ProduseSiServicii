@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <NewNewNewNavbar />
-    <CookiesPopup v-if="hasAcceptedCookies == false" @set_has_accepted_cookies_true="setHasAcceptedCookiesTrue"/>
+    <CookiesPopup v-if="hasAcceptedCookies == false" @set_has_accepted_cookies_true="setHasAcceptedCookiesTrue" />
+    <UpdateAvailableDialog />
+    <OfflineDialog />
     <router-view/>
   </div>
 </template>
@@ -9,12 +11,16 @@
 <script>
 const NewNewNewNavbar = () => import(/* webpackChunkName: "others-chunk" */ '@/components/NewNewNewNavbar.vue')
 const CookiesPopup = () => import(/* webpackChunkName: "others-chunk" */ '@/components/CookiesPopup.vue')
+const UpdateAvailableDialog = () => import(/* webpackChunkName: "others-chunk" */ '@/components/UpdateAvailableDialog.vue')
+const OfflineDialog = () => import(/* webpackChunkName: "others-chunk" */ '@/components/OfflineDialog.vue')
 
 export default {
   name: 'App',
   components: {
     NewNewNewNavbar,
-    CookiesPopup
+    CookiesPopup,
+    OfflineDialog,
+    UpdateAvailableDialog,
   },
   data() {
     return {
