@@ -54,7 +54,6 @@
 							<div v-else-if="error!=0 || error!=null">Actiunea dumneavoastra nu a putut fi completata. Incercati din nou!</div>
 						</div>
 						<div v-else-if="loading">Se incarca</div>
-						<div v-else-if="error != 0 || error == null">Actiunea dumneavoastra nu a putut fi completata. Incercati din nou!</div>
 					</div>
 				</div>
         <div class="uk-width-1-5"></div>
