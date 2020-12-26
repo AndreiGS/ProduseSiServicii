@@ -51,6 +51,6 @@ SPRING_APP_TOKEN_SECRET_CHANGE_INFO=${SPRING_APP_TOKEN_SECRET_CHANGE_INFO}
 EMAIL_APP_PASS=${EMAIL_APP_PASS}
 CRYPT_KEY=${CRYPT_KEY}
 " > .env
-sudo docker-compose up --build
+sudo docker-compose up -d --build
 HERE
 echo 'Deployment completed successfully'
