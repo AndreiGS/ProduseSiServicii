@@ -21,6 +21,10 @@ services:
       - "3000:3000"
     environment: 
       NODE_ENV: ${NODE_ENV}
+      VUE_APP_STRIPE_PUBLIC_KEY: ${VUE_APP_STRIPE_PUBLIC_KEY}
+      VUE_APP_FACEBOOK_CLIENT_ID: ${VUE_APP_FACEBOOK_CLIENT_ID}
+      VUE_APP_BACKEND: ${VUE_APP_BACKEND}
+      VUE_APP_FRONTEND: ${VUE_APP_FRONTEND}
     volumes:
       - './FindTheBusinessFE:/app'
       - '/app/node_modules'
