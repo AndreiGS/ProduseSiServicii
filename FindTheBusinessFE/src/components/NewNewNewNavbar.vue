@@ -172,7 +172,6 @@ export default {
 
 <style lang="scss" scoped>
 .navbar {
-  //background: radial-gradient(circle, rgba(27,156,0,0.8463760504201681) 0%, rgba(0,74,5,1) 50%);
   background: radial-gradient(circle, rgba(43, 43, 43, 1) 0%, #000000 50%);
   height: 60px;
 }
