@@ -12,6 +12,10 @@ ssh ec2-user@ec2-18-198-47-240.eu-central-1.compute.amazonaws.com << HERE
         git reset --hard origin/master
         
         export NODE_ENV=${NODE_ENV}
+        export VUE_APP_STRIPE_PUBLIC_KEY=${VUE_APP_STRIPE_PUBLIC_KEY}
+        export VUE_APP_FACEBOOK_CLIENT_ID=${VUE_APP_FACEBOOK_CLIENT_ID}
+        export VUE_APP_BACKEND=${VUE_APP_BACKEND}
+        export VUE_APP_FRONTEND=${VUE_APP_FRONTEND}
         export SPRING_ENV=${SPRING_ENV}
         export JDBC_DATABASE_URL=${JDBC_DATABASE_URL}
         export JDBC_DATABASE_NAME=${JDBC_DATABASE_NAME}
