@@ -15,7 +15,7 @@ workbox.routing.registerRoute(
   })
 );
 
-/*workbox.routing.registerRoute(
+workbox.routing.registerRoute(
   new RegExp("https://produsesiservicii.ro/api/(.*)"),
   workbox.strategies.networkFirst({
     cacheName: "produsesiserviciiapis",
@@ -28,7 +28,7 @@ workbox.routing.registerRoute(
     method: "GET",
     cacheableResponse: { statuses: [0, 299] }
   })
-)*/
+)
 
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
