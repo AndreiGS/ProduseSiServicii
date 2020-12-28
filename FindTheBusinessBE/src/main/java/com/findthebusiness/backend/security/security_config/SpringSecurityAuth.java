@@ -112,6 +112,7 @@ public class SpringSecurityAuth extends WebSecurityConfigurerAdapter {
 
         if(frontendUrl1 == null && frontendUrl2 == null) {
             frontendUrls.add("http://localhost:8081");
+            frontendUrls.add("http://127.0.0.1:8887");
         }
 
         configuration.setAllowedOrigins(frontendUrls);

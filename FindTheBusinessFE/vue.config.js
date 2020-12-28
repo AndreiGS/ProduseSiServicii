@@ -12,10 +12,11 @@ module.exports = {
     },
     manifestOptions: {
       name: "ProduseSiServicii.ro",
-      short_name: "P&S.ro",
+      short_name: "ProduseSiServicii",
       start_url: ".",
       display: "standalone",
       theme_color: "#6fc42b",
+      background_color: "#6fc42b",
     }
   }
 };
