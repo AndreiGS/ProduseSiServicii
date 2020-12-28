@@ -35,6 +35,7 @@
               <p class="under-icon-text">Profil</p>
             </button>
           </router-link>
+          <button v-if="shouldShowInstallButton" @click="installApp" class="search-button"><span uk-icon="icon: download; ratio: 1.2"></span></button>
           <button class="search-button" href="#search-sections" uk-toggle ><span uk-icon="icon: search; ratio: 1.2"></span></button>
         </div>
       </nav>
@@ -76,6 +77,13 @@
                     </div>
 
                     <h3>ProduseSiServicii.ro</h3>
+
+                    <button v-if="shouldShowInstallButton" @click="installApp" class="others-nav-button uk-flex uk-flex-row uk-flex-middle">
+                      <span uk-icon="icon: download; ratio: 1"></span>
+                      <p class="under-icon-text-others">Instaleaza aplicatia</p>
+                    </button>
+
+                    <hr>
 
                     <div v-if="logged == false">
                       <button href="#login-sections" uk-toggle class="sign-up-button-mobile uk-flex uk-flex-row uk-flex-middle">
@@ -119,6 +127,7 @@
 const SearchDialog = () => import('@/components/SearchDialog.vue')
 const LoginDialog = () => import('@/components/LoginDialog.vue')
 const RegisterDialog = () => import('@/components/RegisterDialog.vue')
+import InstallMixin from '@/mixins/install.js'
 
 export default {
   name: 'NewNewNewNavbar',
@@ -131,8 +140,11 @@ export default {
     components: {
         SearchDialog,
         LoginDialog,
-        RegisterDialog
+        RegisterDialog,
     },
+    mixins:[
+      InstallMixin
+    ],
     methods: {
       setPage() {
         if(this.$router.currentRoute.name == 'Home')
@@ -148,7 +160,7 @@ export default {
       },
       closeOffCanvas() {
         UIkit.offcanvas('#offcanvas-others-menu').hide();
-      }
+      },
     },
     created() {
         return this.$store.watch(
@@ -269,6 +281,29 @@ export default {
   }
 }
 
+.install-button {
+  border: none;
+  outline: 0;
+
+  width: 50px;
+  height: 50px;
+
+  margin-left: 10px;
+
+  border-radius: 50%;
+
+  background-color: #6fc42b;
+  color: white;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: #1e87f0;
+  }
+}
+
 .sign-up-button {
   border: none;
   outline: 0;
@@ -337,6 +372,12 @@ export default {
   .nav-margin {
     padding: 0 70px;
     margin-bottom: 30px;
+  }
+}
+
+@media(max-width: 1079px) {
+  .nav-margin {
+    padding: 0 30px;
   }
 }
 </style>

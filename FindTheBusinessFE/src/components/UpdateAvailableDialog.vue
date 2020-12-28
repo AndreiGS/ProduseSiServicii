@@ -34,4 +34,8 @@ export default {
 .custom-dialog-button{
 	margin-right: 2px;
 }
+
+#modal-update {
+  z-index: 10000;
+}
 </style>
