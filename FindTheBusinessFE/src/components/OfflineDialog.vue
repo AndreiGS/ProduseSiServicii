@@ -33,4 +33,8 @@ export default {
 .custom-dialog-button{
 	margin-right: 2px;
 }
+
+#modal-offline {
+  z-index: 10000;
+}
 </style>
