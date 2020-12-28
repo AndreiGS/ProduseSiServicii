@@ -15,7 +15,7 @@ workbox.routing.registerRoute(
   })
 );
 
-/*workbox.routing.registerRoute(
+workbox.routing.registerRoute(
   new RegExp("https://produsesiservicii.ro/api/(.*)"),
   workbox.strategies.networkFirst({
     cacheName: "produsesiserviciiapis",
@@ -29,21 +29,6 @@ workbox.routing.registerRoute(
     cacheableResponse: { statuses: [0, 299] }
   })
 );
-
-workbox.routing.registerRoute(
-  new RegExp("https://produsesiservicii-media.s3.amazonaws.com/(.*)"),
-  workbox.strategies.cacheFirst({
-    cacheName: "produsesiserviciiapis-media",
-    plugins: [
-      new workbox.expiration.Plugin({
-        maxEntries: 30,
-        maxAgeSeconds: 7 * 24 * 60 * 60
-      })
-    ],
-    method: "GET",
-    cacheableResponse: { statuses: [0, 299] }
-  })
-);*/
 
 workbox.routing.registerRoute(
   new RegExp("http://localhost:8080/api/(.*)"),
