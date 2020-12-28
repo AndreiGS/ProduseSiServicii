@@ -158,7 +158,7 @@ export default {
     methods: {
       changeImage(data) {
         this.data.id = data.id
-        this.data.image = data.image || require('../assets/4k.jpg')
+        this.data.image = data.image || require('../assets/logo.png')
       },
       saveNewImage(data) {
         this.products.forEach(product => {
