@@ -29,15 +29,15 @@ export default {
     setShouldShow(val) {
       this.shouldShow = val;
     },
-  },
-  mounted() {
-    var isAppInstalled = localStorage.getItem("isAppInstalled");
-    var hasRespondedToPopUp = localStorage.getItem("hasRespondedToPopUp");
-    if(isAppInstalled && !hasRespondedToPopUp) {
-      this.setShouldShow(true);
-      return;
+    setShouldShowBasedOnResponses() {
+      var isAppInstalled = localStorage.getItem("isAppInstalled");
+      var hasRespondedToPopUp = localStorage.getItem("hasRespondedToPopUp");
+      if(isAppInstalled && !hasRespondedToPopUp) {
+        this.setShouldShow(true);
+        return;
+      }
+      this.setShouldShow(false)
     }
-    this.setShouldShow(false)
   },
   created() {
     window.addEventListener('DOMContentLoaded', () => {
@@ -56,7 +56,7 @@ export default {
       this.shouldShowInstallButton = true;
       e.preventDefault();
       this.deferredPrompt = e;
-      this.setShouldShow(true);
+      this.setShouldShowBasedOnResponses();
     });
 
     window.addEventListener('appinstalled', (evt) => {
