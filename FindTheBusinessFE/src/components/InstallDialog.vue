@@ -81,19 +81,23 @@ export default {
     background: radial-gradient(circle, rgba(43, 43, 43, 1) 0%, #000000 50%);
     border-radius: 50px;
     text-align: center;
+    max-width: 50%;
 
     .container__button {
       flex-direction: column;
       place-items: center;
 
-      .button {
-        width: 50%;
-      }
-
       .install {
         margin-top: 10px;
       }
     }
+  }
+}
+
+@media (max-width: 560px) {
+  .container {
+    padding: 30px;
+    width: 70%;
   }
 }
 </style>

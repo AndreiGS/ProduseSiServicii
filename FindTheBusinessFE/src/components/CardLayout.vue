@@ -1,5 +1,5 @@
 <template>
-	<div :class="windowWidth > 960 ? 'uk-padding-large uk-padding-remove-top' : ''">
+	<div :class="windowWidth > 960 ? 'uk-padding-large' : ''">
 		<div v-if="!loading">
 			<!--<vk-card class="uk-width-1-1 ad" type="primary" style="padding-left: 0 !important;">
 				<vk-card-title> RECLAME </vk-card-title>
