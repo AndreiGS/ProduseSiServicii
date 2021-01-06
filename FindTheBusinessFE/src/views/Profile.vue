@@ -323,7 +323,7 @@ export default {
 			})
 				.finally(() => {
 					this.error=0;
-					this.UIkit.notification({message: 'V-ati deconectat cu succes', status: 'success'})
+					UIkit.notification({message: 'V-ati deconectat cu succes', status: 'success'})
 					this.$cookie.delete("CSRF-TOKEN");
 					this.$cookie.delete("REFRESH-TOKEN");
 
