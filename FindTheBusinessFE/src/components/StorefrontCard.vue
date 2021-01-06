@@ -113,6 +113,7 @@ export default {
 }
 
 .custom-showmore-button {
+  outline: 0;
   border: none;
   background-color: transparent;
   color: #6FC42B

@@ -7,11 +7,14 @@ import axios from 'axios'
 import vueCountryRegionSelect from 'vue-country-region-select'
 import VueMeta from 'vue-meta'
 import './registerServiceWorker'
+import UIkit from 'uikit';
+import Icons from 'uikit/dist/js/uikit-icons';
 
 Vue.config.productionTip = false
 
 Vue.use(vueCountryRegionSelect)
 Vue.use(VueCookie);
+UIkit.use(Icons);
 
 new Vue({
   async beforeCreate() { 

@@ -116,7 +116,7 @@ export default {
 					this.clearTextFiles();
 				})
 				.catch(error => {
-					if(error.response.status != undefined)
+					if(error.response != undefined)
 						this.error = error.response.status;
 					else
 						this.error = 0

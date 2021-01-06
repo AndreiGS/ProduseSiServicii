@@ -139,7 +139,8 @@
 					v-on:add_shop="addShop()" 
 					v-on:refresh_page="refreshPage()" 
 					:shops="user.shops" 
-					:subcategories="subcategories"/>
+					:subcategories="subcategories"
+					:categories="categories"/>
 			</div>
 
 			<AddBalanceDialog v-on:change_balance="changeBalance($event)" />
@@ -186,6 +187,7 @@ export default {
 				unlimitedTokens: null
 			},
 			subcategories: [],
+			categories: [],
 			editedEmail: '',
 			editedName: '',
 			editing: false,
@@ -256,6 +258,7 @@ export default {
 					this.user.balance = response.data.balance;
 					this.user.shops = response.data.shops;
 					this.subcategories = response.data.subcategories;
+					this.categories = response.data.categories;
 					this.user.smallTokens = response.data.smallTokens;
 					this.user.mediumTokens = response.data.mediumTokens;
 					this.user.largeTokens = response.data.largeTokens;
@@ -320,7 +323,7 @@ export default {
 			})
 				.finally(() => {
 					this.error=0;
-					UIkit.notification({message: 'V-ati deconectat cu succes', status: 'success'})
+					this.UIkit.notification({message: 'V-ati deconectat cu succes', status: 'success'})
 					this.$cookie.delete("CSRF-TOKEN");
 					this.$cookie.delete("REFRESH-TOKEN");
 
@@ -350,7 +353,9 @@ export default {
 					this.user.shops[i].id = shop.id
 					this.user.shops[i].smallPhoto = shop.image
 					this.user.shops[i].subcategories = shop.subcategories
+					this.user.shops[i].categories = shop.category
 					this.user.shops[i].maximumSize = shop.shopSize
+					this.user.shops[i].published = shop.published
 
 					break;
 				}

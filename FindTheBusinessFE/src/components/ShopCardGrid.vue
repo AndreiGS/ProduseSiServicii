@@ -28,7 +28,9 @@
               :promotedDaysInHomeRemaining="shop.promotedDaysInHomeRemaining"
               :promotedDaysInSearchesRemaining="shop.promotedDaysInSearchesRemaining"
               :shopSubcategoriesProp="shop.subcategories"
+              :oldShopCategories="shop.categories"
               :subcategories="subcategories"
+              :categories="categories"
               :newImage="shop.newImage"
               :oldImage="shop.smallPhoto"
           /><!--shop image-->
@@ -81,6 +83,7 @@ export default {
     props: {
       shops: null,
       subcategories: null,
+      categories: null,
     },
     methods: {
       showRefresh(id) {

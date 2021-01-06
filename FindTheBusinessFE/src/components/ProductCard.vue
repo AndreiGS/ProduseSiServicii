@@ -146,7 +146,7 @@
       </vk-grid>
     </vk-card>
 
-    <vk-modal center :show.sync="showContact">
+    <vk-modal :stuck="true" center :show.sync="showContact">
       <vk-modal-close></vk-modal-close>
       <vk-modal-title>DATE DE CONTACT</vk-modal-title>
       <ContactData
@@ -161,7 +161,7 @@
       </p>
     </vk-modal>
 
-    <vk-modal-full :show.sync="showImageEdit">
+    <vk-modal-full :stuck="true" :show.sync="showImageEdit">
       <vk-modal-full-close></vk-modal-full-close>
       <vk-modal-title>Poza produs</vk-modal-title>
       <!--<VueCropper style="height: 500px; text-align: center"

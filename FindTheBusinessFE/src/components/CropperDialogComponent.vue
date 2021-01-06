@@ -25,25 +25,26 @@
     <h3 v-if="loadingImage == true">Se incarca</h3>
     <h3 v-if="errorImage == true">Nu am putut incarca imaginea. Va rugam reincercati</h3>
     <div class="uk-flex@s uk-flex-row uk-flex-center uk-flex-middle">
-      <div v-if="loadingImage == false" class="button-wrapper" style="margin-bottom: 20px;">
-        <span class="button uk-button uk-button-primary" @click="$refs.file.click()">
-          <input type="file" ref="file" @change="uploadImage($event)" accept="image/*">
-          Incarca
-        </span>
-      </div>
-      <div v-if="loadingImage == false" class="button-wrapper">
-        <span class="button uk-button uk-button-primary" @click="rotateImage">
-          Roteste
-        </span>
-      </div>
       <!--<div v-if="loading == false" class="button-wrapper">
         <span class="button uk-button uk-button-primary" @click="resetImage">
           Reseteaza
         </span>
       </div>-->
-      <div style="margin-top: 20px;" class="uk-flex-row uk-text-center">
+      <div style="margin-bottom: 20px;" class="uk-flex-row uk-text-center">
         <vk-button @click="closeModal()" class="uk-margin-small-right uk-margin-small-left">Inchide</vk-button>
-        <vk-button v-if="loadingImage == false" @click="saveNewImage(getEdittedImage())" class="uk-button-primary uk-margin-small-right uk-margin-small-left">Salveaza</vk-button>
+        <vk-button v-if="loadingImage == false && uploadedImage != null" @click="saveNewImage(getEdittedImage())" class="uk-button-primary uk-margin-small-right uk-margin-small-left">Adauga</vk-button>
+      </div>
+
+      <div v-if="loadingImage == false" class="button-wrapper" style="margin-bottom: 20px;">
+        <span class="button uk-button uk-button-primary" @click="$refs.file.click()">
+          <input type="file" ref="file" @change="uploadImage($event)" accept="image/*">
+          Incarca {{uploadedImage != null ? 'alta imagine' : 'imagine'}}
+        </span>
+      </div>
+      <div v-if="loadingImage == false" class="button-wrapper" style="padding-bottom: 20px;">
+        <span class="button uk-button uk-button-primary" @click="rotateImage">
+          Roteste
+        </span>
       </div>
     </div>
   </div>

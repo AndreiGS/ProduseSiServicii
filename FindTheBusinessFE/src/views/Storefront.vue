@@ -190,7 +190,7 @@
           :oldCounty="store.county"
           />
 
-        <vk-modal-full :show.sync="showImageEdit">
+        <vk-modal-full :stuck="true" :show.sync="showImageEdit">
           <vk-modal-full-close></vk-modal-full-close>
           <vk-modal-title>Poza magazin</vk-modal-title>
 
