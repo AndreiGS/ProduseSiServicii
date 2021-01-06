@@ -1,9 +1,11 @@
 package com.findthebusiness.backend.service.service_repository;
 
 import com.findthebusiness.backend.dto.authentication.AuthenticationCredentialsDto;
+import com.findthebusiness.backend.dto.categories.CategoriesDto;
 import com.findthebusiness.backend.dto.shops.ShopCardDto;
 import com.findthebusiness.backend.dto.subcategories.SubcategoriesDto;
 import com.findthebusiness.backend.dto.users.*;
+import com.findthebusiness.backend.entity.Categories;
 import com.findthebusiness.backend.entity.Shops;
 import com.findthebusiness.backend.entity.Subcategories;
 import com.findthebusiness.backend.entity.Users;
@@ -46,7 +48,9 @@ public interface UserService {
     void deleteUserById(String userId);
     void saveUserWithoutReturning(Users user);
     List<SubcategoriesDto> findAllSubcategoriesDto();
+    List<CategoriesDto> findAllCategoriesDto();
     List<Subcategories> findAllSubcategories();
+    List<Categories> findAllCategories();
     Shops findShopById(String shopId);
 
 }

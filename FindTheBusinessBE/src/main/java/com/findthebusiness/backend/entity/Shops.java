@@ -76,6 +76,8 @@ public class Shops {
     private Users user;
     @ManyToMany
     private List<Subcategories> subcategories;
+    @OneToOne
+    private Categories categories;
     @OneToMany(mappedBy = "shop", cascade = CascadeType.REMOVE)
     private List<Items> items;
     @OneToMany(mappedBy = "shops", cascade = CascadeType.REMOVE)
@@ -283,6 +285,15 @@ public class Shops {
 
     public Shops setPriceNumber(Integer priceNumber) {
         this.priceNumber = priceNumber;
+        return this;
+    }
+
+    public Categories getCategories() {
+        return categories;
+    }
+
+    public Shops setCategories(Categories categories) {
+        this.categories = categories;
         return this;
     }
 

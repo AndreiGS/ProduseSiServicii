@@ -1,5 +1,7 @@
 package com.findthebusiness.backend.dto.shops;
 
+import com.findthebusiness.backend.dto.categories.CategoriesDto;
+
 import java.util.List;
 
 public class SaveShopRequestDto {
@@ -7,6 +9,7 @@ public class SaveShopRequestDto {
     private String photo;
     private String name;
     private String description;
+    private CategoriesDto category;
     private List<String> subcategories;
     private String shopSize;
     private String base64SmallImage;
@@ -14,10 +17,11 @@ public class SaveShopRequestDto {
     public SaveShopRequestDto() {
     }
 
-    public SaveShopRequestDto(String photo, String name, String description, List<String> subcategories, String shopSize, String base64SmallImage) {
+    public SaveShopRequestDto(String photo, String name, String description, CategoriesDto category, List<String> subcategories, String shopSize, String base64SmallImage) {
         this.photo = photo;
         this.name = name;
         this.description = description;
+        this.category = category;
         this.subcategories = subcategories;
         this.shopSize = shopSize;
         this.base64SmallImage = base64SmallImage;
@@ -56,6 +60,15 @@ public class SaveShopRequestDto {
 
     public SaveShopRequestDto setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    public CategoriesDto getCategory() {
+        return category;
+    }
+
+    public SaveShopRequestDto setCategory(CategoriesDto category) {
+        this.category = category;
         return this;
     }
 

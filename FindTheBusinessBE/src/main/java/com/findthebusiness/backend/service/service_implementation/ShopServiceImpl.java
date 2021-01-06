@@ -426,7 +426,7 @@ public class ShopServiceImpl implements ShopService {
                 .setPromotedInHome(false)
                 .setBoughtAt(new Date())
                 .setRefreshedAt(new Date())
-                .setPublished(false)
+                .setPublished(true)
                 .setActualSize(0)
                 .setLargePhoto(null)
                 .setSmallPhoto(photoUrl)
@@ -469,6 +469,7 @@ public class ShopServiceImpl implements ShopService {
         updatedShop.setName(saveShopRequestDto.getName());
         updatedShop.setDescription(saveShopRequestDto.getDescription());
         updatedShop.setSubcategories(findSubcategoriesForShop(saveShopRequestDto.getSubcategories()));
+        updatedShop.setCategories(shopMapperImpl.convertCategoriesDtoToCategories(saveShopRequestDto.getCategory()));
         updatedShop.setMaximumSize(newSize);
 
         if(saveShopRequestDto.getBase64SmallImage() != null) {

@@ -1,10 +1,12 @@
 package com.findthebusiness.backend.mapper.mapper_repository;
 
+import com.findthebusiness.backend.dto.categories.CategoriesDto;
 import com.findthebusiness.backend.dto.search.ShopDto;
 import com.findthebusiness.backend.dto.shops.SaveShopRequestDto;
 import com.findthebusiness.backend.dto.shops.ShopCardDto;
 import com.findthebusiness.backend.dto.shops.StoreFrontRequestDto;
 import com.findthebusiness.backend.dto.subcategories.SubcategoriesDto;
+import com.findthebusiness.backend.entity.Categories;
 import com.findthebusiness.backend.entity.Shops;
 import com.findthebusiness.backend.entity.Subcategories;
 import com.findthebusiness.backend.entity.Users;
@@ -15,6 +17,9 @@ public interface ShopMapper {
     List<ShopCardDto> convertShopsToShopCardDto(List<Shops> shops);
     StoreFrontRequestDto convertShopsToStoreFrontRequestDto(Shops shop);
     List<SubcategoriesDto> convertSubcategoriesToSubcategoriesDtoList(List<Subcategories> subcategories);
+    List<CategoriesDto> convertCategoriesToCategoriesDtoList(List<Categories> categories);
+    CategoriesDto convertCategoriesToCategoriesDto(Categories categories);
+    Categories convertCategoriesDtoToCategories(CategoriesDto categoriesDto);
     Shops convertSaveShopRequestDtoToShop(SaveShopRequestDto saveShopRequestDto, Users user);
     ShopDto convertShopsToShopDto(Shops shops);
 
