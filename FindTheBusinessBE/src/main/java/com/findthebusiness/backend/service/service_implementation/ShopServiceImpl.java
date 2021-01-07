@@ -15,6 +15,8 @@ import com.findthebusiness.backend.repository.*;
 import com.findthebusiness.backend.security.utils.AccessTokenUtil;
 import com.findthebusiness.backend.security.utils.AuthenticationUtil;
 import com.findthebusiness.backend.service.service_repository.ShopService;
+import com.findthebusiness.backend.utils.BasicEncrypt;
+import com.findthebusiness.backend.utils.EmailUtil;
 import com.findthebusiness.backend.utils.UUIDGeneratorUtil;
 import com.findthebusiness.backend.utils.enums.ShopActionsPriceEnum;
 import com.findthebusiness.backend.utils.enums.ShopAttributesMaxSizeEnum;
@@ -60,11 +62,12 @@ public class ShopServiceImpl implements ShopService {
     private final AccessTokenUtil accessTokenUtil;
     private final AuthenticationUtil authenticationUtil;
     private final AmazonS3 amazonS3;
+    private final EmailUtil emailUtil;
 
     @Value("${aws.s3.bucket}")
     private String bucketName;
 
-    public ShopServiceImpl(ShopRepository shopRepository, ShopMapperImpl shopMapperImpl, PagesRepository pagesRepository, UserRepository userRepository, SubcategoriesRepository subcategoriesRepository, TabRepository tabRepository, ItemsServiceImpl itemsService, AccessTokenUtil accessTokenUtil, AuthenticationUtil authenticationUtil, AmazonS3 amazonS3) {
+    public ShopServiceImpl(ShopRepository shopRepository, ShopMapperImpl shopMapperImpl, PagesRepository pagesRepository, UserRepository userRepository, SubcategoriesRepository subcategoriesRepository, TabRepository tabRepository, ItemsServiceImpl itemsService, AccessTokenUtil accessTokenUtil, AuthenticationUtil authenticationUtil, AmazonS3 amazonS3, EmailUtil emailUtil) {
         this.shopRepository = shopRepository;
         this.shopMapperImpl = shopMapperImpl;
         this.pagesRepository = pagesRepository;
@@ -75,6 +78,7 @@ public class ShopServiceImpl implements ShopService {
         this.accessTokenUtil = accessTokenUtil;
         this.authenticationUtil = authenticationUtil;
         this.amazonS3 = amazonS3;
+        this.emailUtil = emailUtil;
     }
 
     @Override
@@ -440,6 +444,14 @@ public class ShopServiceImpl implements ShopService {
         newShop = saveShop(newShop);
 
         saveUser(user);
+
+        try {
+            String content = "Magazinul " + newShop.getName() + " a fost adaugat in contul dumneavoastra! Recomandam adaugarea unei a doua imagini in interiorul magazinului, aceasta urmand sa fie vizibila doar pe calculatoare, laptop-uri si unele tablete la accesarea fatadei de magazin. Acest lucru schimba aspectul fatadei in cazul in care doriti acest lucru. Pentru a adauga aceasta noua fotografie accesati website-ul de pe un laptop sau calculator, intrati in \"Profil\", deschideti fatada de magazin in care doriti sa schimbati imaginea si apasati butonul \"Editeaza\"(cu o iconita de creion). Din acest moment puteti schimba diferite informatii ale fatadei de magazin, inclusiv fotografiile acesteia";
+            emailUtil.sendEmail(BasicEncrypt.decrypt(user.getEmail()), content);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Could not send new shop email");
+        }
 
         return newShop;
     }
