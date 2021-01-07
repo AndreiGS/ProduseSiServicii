@@ -258,7 +258,7 @@ export default {
         this.showImageEdit = false
       },
       changeImage(data) {
-        this.newImage = data.image 
+        this.newImage = data.newImage.image 
         this.cannotFindImage = false
         this.hideModal();
       },

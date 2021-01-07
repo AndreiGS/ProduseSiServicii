@@ -1,5 +1,6 @@
 package com.findthebusiness.backend.repository;
 
+import com.findthebusiness.backend.entity.Categories;
 import com.findthebusiness.backend.entity.Shops;
 import com.findthebusiness.backend.entity.Subcategories;
 import com.findthebusiness.backend.entity.Users;
@@ -24,6 +25,7 @@ public interface ShopRepository extends JpaRepository<Shops, String> {
     Optional<List<Shops>> findAllByCountyEqualsAndRatingGreaterThanEqual(String county, Double rating);
     Optional<List<Shops>> findAllByRatingGreaterThanEqual(Double rating);
     Optional<List<Shops>> findAllByCountyEquals(String county);
+    Optional<List<Shops>> findAllByCategories(Categories categories);
 
 
     @Modifying

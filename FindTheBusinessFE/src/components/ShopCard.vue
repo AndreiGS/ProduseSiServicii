@@ -359,7 +359,7 @@ export default {
     },
     changeImage(data) {
       this.cannotFindImage = false
-      this.newImage = data.image 
+      this.newImage = data.newImage.image 
       this.hideModal();
     },
     getShopSizeName() {
@@ -900,11 +900,11 @@ export default {
   }
   .card-image-custom-width {
     height: 300px;
-    width: 410px;
+    width: 410px!important;
   }
 
   .card-body-custom-width {
-    width: calc(100% - 410px);
+    width: calc(100% - 410px)!important;
   }
   .no-image-div {
     height: 300px;

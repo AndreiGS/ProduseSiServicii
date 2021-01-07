@@ -5,14 +5,25 @@ public class ChangeStorefrontImageResponseDto {
     private String refreshToken;
     private String csrfToken;
     private String newImageURL;
+    private String newSmallImageURL;
 
     public ChangeStorefrontImageResponseDto() {
     }
 
-    public ChangeStorefrontImageResponseDto(String refreshToken, String csrfToken, String newImageURL) {
+    public ChangeStorefrontImageResponseDto(String refreshToken, String csrfToken, String newImageURL, String newSmallImageURL) {
         this.refreshToken = refreshToken;
         this.csrfToken = csrfToken;
         this.newImageURL = newImageURL;
+        this.newSmallImageURL = newSmallImageURL;
+    }
+
+    public String getNewSmallImageURL() {
+        return newSmallImageURL;
+    }
+
+    public ChangeStorefrontImageResponseDto setNewSmallImageURL(String newSmallImageURL) {
+        this.newSmallImageURL = newSmallImageURL;
+        return this;
     }
 
     public String getRefreshToken() {

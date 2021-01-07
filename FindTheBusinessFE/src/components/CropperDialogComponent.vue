@@ -91,14 +91,19 @@ export default {
       this.uploadedImage = null
     },
     saveNewImage(data) {
-      this.$emit('change_image', data)
+      let object = {
+        newImage: data,
+        from: this.from,
+      }
+
+      this.$emit('change_image', object)
     },
     getEdittedImage() {
       const { coordinates, canvas, } = this.$refs.cropper.getResult();
       this.coordinates = coordinates;
       try {
         let quality = 0.2;
-        if(this.from == 'storefront')
+        if(this.from.includes('storefront'))
           quality = 0.3
         else if(this.from == 'productcard')
           quality = 0.1
@@ -108,13 +113,13 @@ export default {
           //image: this.$refs.cropper.getCroppedCanvas().toDataURL()
           image: canvas.toDataURL('image/jpeg', quality)
         }
-        if(this.from != 'storefront')
+        if(!this.from.includes('storefront'))
           UIkit.notification({message: 'Poza dumneavoastra a fost modificata', status: 'success'})
         return data;
       } catch(error) {
         this.errorImage=true;
         this.loadingImage=false;
-        if(this.from != 'storefront')
+        if(!this.from.includes('storefront'))
           UIkit.notification({message: 'Nu am putut modifica poza. Va rugam sa reincercati pagina si sa reincercati', status: 'danger'})
       }
       return null;

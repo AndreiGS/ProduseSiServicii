@@ -556,7 +556,7 @@ public class ShopServiceImpl implements ShopService {
         String largePhoto = shop.getLargePhoto();
         String smallPhoto = shop.getSmallPhoto();
 
-        String imageUrl = null;
+        String imageUrl = null, newSmallImageUrl = null;
         if(changeStorefrontImageRequestDto.getNewImage() != null) {
             if(imageType.equals("LARGE")) {
                 imageUrl = savePhoto(changeStorefrontImageRequestDto.getNewImage(), LARGE_SHOP_IMAGE);
@@ -567,16 +567,35 @@ public class ShopServiceImpl implements ShopService {
             }
         }
 
-        if(shop.getLargePhoto() != null) {
-            try {
-                String[] oldPhotoName;
-                if(imageType.equals("LARGE")) {
-                    oldPhotoName = largePhoto.split("/");
-                } else {
-                    oldPhotoName = smallPhoto.split("/");
-                }
-                deleteFile(oldPhotoName[oldPhotoName.length-1]);
+        if(changeStorefrontImageRequestDto.getNewSmallImage() != null && imageType.equals("LARGE")) {
+            newSmallImageUrl = savePhoto(changeStorefrontImageRequestDto.getNewSmallImage(), SMALL_SHOP_IMAGE);
+            shop.setSmallPhoto(newSmallImageUrl);
+        }
 
+        String[] oldPhotoName;
+
+        if(imageType.equals("LARGE")) {
+            try {
+                oldPhotoName = largePhoto.split("/");
+                deleteFile(oldPhotoName[oldPhotoName.length-1]);
+            } catch (Exception e) {
+
+            }
+
+            if(newSmallImageUrl != null) {
+                try {
+                    oldPhotoName = smallPhoto.split("/");
+                    deleteFile(oldPhotoName[oldPhotoName.length-1]);
+                } catch (Exception e) {
+
+                }
+            }
+        }
+
+        if(imageType.equals("SMALL")) {
+            try {
+                oldPhotoName = smallPhoto.split("/");
+                deleteFile(oldPhotoName[oldPhotoName.length-1]);
             } catch (Exception e) {
 
             }
@@ -588,7 +607,7 @@ public class ShopServiceImpl implements ShopService {
         saveShop(shop);
 
         AuthenticationCredentialsDto auth = authenticationUtil.createCredentials(user, accessToken);
-        return new ChangeStorefrontImageResponseDtoWithAccessToken(auth.getAccessToken(), new ChangeStorefrontImageResponseDto(auth.getRefreshToken(), auth.getCsrfToken(), imageUrl));
+        return new ChangeStorefrontImageResponseDtoWithAccessToken(auth.getAccessToken(), new ChangeStorefrontImageResponseDto(auth.getRefreshToken(), auth.getCsrfToken(), imageUrl, newSmallImageUrl));
     }
 
     @Override

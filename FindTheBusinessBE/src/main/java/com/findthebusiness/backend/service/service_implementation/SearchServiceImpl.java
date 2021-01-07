@@ -681,7 +681,16 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public List<Items> findItemsByCategory(Categories categories) {
-        //Get all subcategories for category
+        List<Shops> shopsByCategory = findAllShopsByCategory(categories);
+        List<Items> items = new ArrayList<>();
+
+        for(Shops shop : shopsByCategory) {
+            items.addAll(shop.getItems());
+        }
+
+        return items;
+
+        /*//Get all subcategories for category
         List<Subcategories> subcategoriesList = findAllSubcategoriesByCategory(categories);
         //Find all items for each subcategory found
         List<Items> items = new ArrayList<>();
@@ -694,7 +703,7 @@ public class SearchServiceImpl implements SearchService {
             items.addAll(foundItemsBySubcategory);
         }
 
-        return items;
+        return items;*/
     }
 
     @Override
@@ -730,11 +739,12 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public List<Shops> findAllShopsByCategory(Categories categories) {
         List<Shops> shops = new ArrayList<>();
-        List<Subcategories> allSubcategoriesForCategory = findAllSubcategoriesByCategory(categories);
+        shops = shopRepository.findAllByCategories(categories).orElseGet(ArrayList::new);
+        /*List<Subcategories> allSubcategoriesForCategory = findAllSubcategoriesByCategory(categories);
 
         for(Subcategories subcategories : allSubcategoriesForCategory) {
             shops.addAll(findAllShopsBySubcategory(subcategories));
-        }
+        }*/
 
         return shops.size() > 0 ? shops : null;
     }
