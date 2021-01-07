@@ -18,5 +18,13 @@ module.exports = {
       theme_color: "#6fc42b",
       background_color: "#6fc42b",
     }
+  },
+  configureWebpack:{
+    optimization: {
+      splitChunks: {
+        minSize: 10000,
+        maxSize: 250000,
+      }
+    }
   }
 };

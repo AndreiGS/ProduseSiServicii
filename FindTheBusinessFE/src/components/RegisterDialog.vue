@@ -1,5 +1,5 @@
 <template>
-  <div id="register-sections" uk-modal>
+  <div id="register-sections" bg-close="false" uk-modal>
 		<div class="uk-modal-dialog uk-margin-auto-vertical">
 
 			<button v-on:click="clearTextFiles()" class="uk-modal-close-default" type="button" uk-close></button>

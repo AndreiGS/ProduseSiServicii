@@ -38,9 +38,9 @@ export default {
 </script>
 
 <template>
-  <div>
-    <article class="uk-article">
-      <vk-card padding="small">
+  <article class="uk-article" style="margin: 0;">
+    <vk-card padding="small" class="uk-height-1-1 uk-flex schedule-card-container">
+      <div>
         <div class="header">
           <h2>Program de lucru</h2>
           <h5 v-if="isOnline">* Magazinul este online, orarul fiind destinat suportului</h5>
@@ -52,9 +52,9 @@ export default {
         />
         <p v-else-if="scheduleCopy == null" class="custom-schedule-paragraph no-schedule">Magazinul nu a adaugat un program de lucru</p>
         <p v-else class="custom-schedule-paragraph">{{scheduleCopy}}</p>
-      </vk-card>
-    </article>
-  </div>
+      </div>
+    </vk-card>
+  </article>
 </template>
 
 <style lang="scss" scoped>
@@ -65,6 +65,7 @@ export default {
 	border-bottom: 2px solid #6FC42B;
 	text-align: center;
   white-space: pre-line;
+  min-width: 100%;
 }
 
 .custom-schedule-paragraph {
@@ -92,5 +93,10 @@ export default {
 
 .no-schedule {
   color: #666
+}
+
+.schedule-card-container {
+  place-content: center;
+  align-items: center;
 }
 </style>

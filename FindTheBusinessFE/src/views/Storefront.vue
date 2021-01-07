@@ -12,11 +12,11 @@
         </div>
       </div>
       <div v-else>
-        <div class="uk-inline" style="width: 100%">
+        <div v-if="store.largePhoto != null || isOwner" class="uk-inline" style="width: 100%">
           <img loading="lazy" v-if="(newImage != null && newImage.includes('base64')) || (cannotFindImage == false && ((windowWidth >= 768 && store.largePhoto != null) || (windowWidth < 768 && store.smallPhoto != null)))" :src="(newImage == null) ? ((windowWidth >= 768) ? store.largePhoto : store.smallPhoto) : newImage" class="cover-image" :class="(editingShop == true) ? 'filter-image' : ''" :alt="store.name" @error="cannotFindImage = true">
           
-          <div v-else class="cover-image no-image-div">
-            <p :style="cannotFindImage == true || ((windowWidth >= 768) ? store.largePhoto == null : store.smallPhoto == null) ? 'visibility: visible' : 'visibility: hidden'" v-if="editingShop == false" class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine gasita</p>
+          <div v-else-if="isOwner" class="cover-image no-image-div">
+            <p :style="cannotFindImage == true || ((windowWidth >= 768) ? store.largePhoto == null : store.smallPhoto == null) ? 'visibility: visible' : 'visibility: hidden'" v-if="editingShop == false" class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine mare gasita</p>
           </div>
           
           <div class="uk-overlay uk-position-bottom-left overlay uk-flex uk-flex-column">
@@ -79,46 +79,70 @@
           </div>
         </div>
 
-        <vk-grid style="margin-top: 15px" matched>
+        <vk-grid :style="(store.largePhoto == null && windowWidth < 768) ? '' : 'margin-top: 15px'" matched>
           <div class="shop-info-container uk-width-2-3@m">
             <article class="uk-article" style="height: 100%;">
+              <vk-grid style="height: 100%" matched>
+                <div v-if="windowWidth >= 768 && (store.largePhoto == null || isOwner)" :style="(windowWidth >= 960) ? 'padding: 0;' : ''" class="uk-inline" :class="(windowWidth >= 768 && (store.largePhoto == null || isOwner)) ? 'uk-width-1-2' : ''">
+                  <img v-if="cannotFindSmallImage == false" loading="lazy" :src="newSmallImage || store.smallPhoto" class="cover-image cover-small-image" :class="(editingShop == true) ? 'filter-image' : ''" :alt="store.name" @error="cannotFindSmallImage = true">
+                  
+                  <div v-else class="cover-image no-image-div">
+                    <p class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine mici gasita</p>
+                  </div>
+                  
+                  <div v-if="store.largePhoto == null && !isOwner" class="uk-overlay uk-position-top-left overlay">
+                    <button style="cursor: pointer;" v-on:click="copyShareLink()" class="copy-link-button uk-button-primary uk-flex uk-flex-middle">
+                      <span style="margin-right: 5px" uk-icon="icon: social; ratio: 0.8"></span>
+                      <p style="margin: 0">Link distribuire</p>
+                    </button>
+                  </div>
 
-              <div v-if="editingShop == false" class="info-container">
-                <p class="uk-text-lead" style="text-transform: uppercase; text-align: left; word-wrap: break-word;"> {{store.name}} </p>
-                <p style="text-align: left; word-wrap: break-word; white-space: pre-line;"> {{displayedDescription}} </p>
-              </div>
-              
-              <div v-else class="edit-info-container">
-                <input uk-tooltip="Titlu (maxim 40 caractere)" type="text" maxlength="40" v-model="store.name" style="font-size: 24px; text-transform: uppercase;" placeholder="Titlu" class="uk-textarea custom-textarea-enabled" />
-                <textarea uk-tooltip="Descriere (maxim 255 caractere)" maxlength="255" class="uk-textarea custom-textarea-enabled description-text-area" type="text" placeholder="Descriere" v-model="store.description"></textarea>
-              </div>
-              
-              <div v-if="needsCrop == true" class="uk-text-left">
-                <button style="cursor: pointer;" class="custom-showmore-button" v-if="isShowingFullDesc == false" @click="getFullDescription()">Arata toata descrierea</button>
-                <button style="cursor: pointer;" class="custom-showmore-button" v-else @click="cutDescription()">Arata mai putin</button>
-              </div>
+                  <div @click="showSmallImageEdit = true" v-if="isOwner == true && editingShop == true" :style="(this.editingShop==true) ? 'cursor: pointer;' : ''" style="color: white;" class="uk-overlay uk-position-center overlay change-image-div">
+                    <span uk-icon="camera" ratio="2"></span>
+                    <p>Schimba imaginea mica</p>
+                  </div>
+                </div>
+                <div :class="(windowWidth >= 768 && (store.largePhoto == null || isOwner)) ? 'uk-width-1-2' : 'uk-width-2-2 uk-padding-remove'">
+                  <div v-if="editingShop == false" class="info-container">
+                    <p class="uk-text-lead" style="text-transform: uppercase; text-align: left; word-wrap: break-word;"> {{store.name}} </p>
+                    <p style="text-align: left; word-wrap: break-word; white-space: pre-line;"> {{displayedDescription}} </p>
+                  </div>
+                  
+                  <div v-else class="edit-info-container">
+                    <input uk-tooltip="Titlu (maxim 40 caractere)" type="text" maxlength="40" v-model="store.name" style="font-size: 24px; text-transform: uppercase;" placeholder="Titlu" class="uk-textarea custom-textarea-enabled" />
+                    <textarea uk-tooltip="Descriere (maxim 255 caractere)" maxlength="255" class="uk-textarea custom-textarea-enabled description-text-area" type="text" placeholder="Descriere" v-model="store.description"></textarea>
+                  </div>
+                  
+                  <div v-if="needsCrop == true" class="uk-text-left">
+                    <button style="cursor: pointer;" class="custom-showmore-button" v-if="isShowingFullDesc == false" @click="getFullDescription()">Arata toata descrierea</button>
+                    <button style="cursor: pointer;" class="custom-showmore-button" v-else @click="cutDescription()">Arata mai putin</button>
+                  </div>
+                </div>
+              </vk-grid>
             </article>
           </div>
 
           <div class="uk-width-1-3@m" style="padding: 0">
             <article class="uk-article" style="margin-bottom: 10px;">
-              <vk-card padding="small">
-                <p style="margin-bottom: 0 !important;">Magazinul a fost evaluat ca: <b>{{priceText}}</b></p>
+              <vk-card padding="small" class="uk-height-1-1 uk-flex comment-card-container">
                 <div>
-                  <p :class="getDollarClass(1)">$ </p>
-                  <p :class="getDollarClass(2)">$ </p>
-                  <p :class="getDollarClass(3)">$ </p>
-                  <StarRating
-                      class="uk-flex uk-flex-center"
-                      :rating="store.rating"
-                      :star-size="25"
-                      :show-rating="false"
-                      :increment="0.1"
-                      :read-only="true"
-                  />
+                  <p style="margin-bottom: 0 !important;">Magazinul a fost evaluat ca: <b>{{priceText}}</b></p>
+                  <div>
+                    <p :class="getDollarClass(1)">$ </p>
+                    <p :class="getDollarClass(2)">$ </p>
+                    <p :class="getDollarClass(3)">$ </p>
+                    <StarRating
+                        class="uk-flex uk-flex-center"
+                        :rating="store.rating"
+                        :star-size="25"
+                        :show-rating="false"
+                        :increment="0.1"
+                        :read-only="true"
+                    />
+                  </div>
+                  <br>
+                  <vk-button v-if="editingShop == false" @click="isOwner==true ? showTab(store.tabs.length+2) : showTab(store.tabs.length+1)">VEZI COMENTARIILE</vk-button>
                 </div>
-                <br>
-                <vk-button v-if="editingShop == false" @click="isOwner==true ? showTab(store.tabs.length+2) : showTab(store.tabs.length+1)">VEZI COMENTARIILE</vk-button>
               </vk-card>
             </article>
             <Schedule 
@@ -130,8 +154,6 @@
             />
           </div>
         </vk-grid>
-
-        
 
         <div class="uk-margin-medium-top">
           <vk-tabs align="center" :active-tab.sync="activeTab">
@@ -190,9 +212,9 @@
           :oldCounty="store.county"
           />
 
-        <vk-modal-full :show.sync="showImageEdit">
+        <vk-modal-full :stuck="true" :show.sync="showImageEdit">
           <vk-modal-full-close></vk-modal-full-close>
-          <vk-modal-title>Poza magazin</vk-modal-title>
+          <vk-modal-title>Poza mare magazin</vk-modal-title>
 
           <CropperDialogComponent 
             v-on:hide_modal="hideModal()"
@@ -202,7 +224,23 @@
             :aspectRatio="(windowWidth >= 768) ? 32/9 : 4/3"
             :minHeight="1000"
             :minWidth="1000*3.55"
-            :from="'storefront'"
+            :from="'storefront_both'"
+          />
+        </vk-modal-full>
+
+        <vk-modal-full :stuck="true" :show.sync="showSmallImageEdit">
+          <vk-modal-full-close></vk-modal-full-close>
+          <vk-modal-title>Poza mica magazin</vk-modal-title>
+
+          <CropperDialogComponent 
+            v-on:hide_modal="hideModal()"
+            v-on:change_image="changeImage($event)"
+
+            :oldImage="store.photo" 
+            :aspectRatio="4/3"
+            :minHeight="1000"
+            :minWidth="1000*3.55"
+            :from="'storefront_small'"
           />
         </vk-modal-full>
       </div>
@@ -248,7 +286,8 @@ export default {
               address: null,
               phone: null,
               type: null,
-              photo: null,
+              smallPhoto: null,
+              largePhoto: null,
               tabs: null,
               schedule: null,
               hasAutomaticTokenRefresh: null
@@ -257,6 +296,7 @@ export default {
             nameCopy: null,
             descriptionCopy: null,
             newImage: null,
+            newSmallImage: null,
             priceText: null,
             activeTab: 0,
             loading: false,
@@ -274,7 +314,9 @@ export default {
             isSearchingData: null,
             
             showImageEdit: false,
-            cannotFindImage: false
+            showSmallImageEdit: false,
+            cannotFindImage: false,
+            cannotFindSmallImage: false,
         }
     },
     metaInfo() {
@@ -325,11 +367,15 @@ export default {
           }
         },
         hideModal() {
-          this.showImageEdit = false
+          this.showImageEdit = false;
+          this.showSmallImageEdit = false;
         },
         async changeImage(data) {
           this.cannotFindImage = false
-          this.newImage = data.image
+          if(data.from == 'storefront_both')
+            this.newImage = data.newImage.image
+          else
+            this.newSmallImage = data.newImage.image
           this.hideModal();
         },
         async wantsAutomaticTokenRefreshChanged() {
@@ -551,13 +597,14 @@ export default {
           this.store.name=this.nameCopy;
           this.store.description=this.descriptionCopy;
           this.newImage=null;
+          this.newSmallImage=null;
           this.changeEditState();
         },
         async saveEdit() {
           if(this.store.schedule == this.scheduleCopy &&
              this.store.name ==  this.nameCopy && 
              this.store.description == this.descriptionCopy && 
-             this.newImage == null) {
+             this.newImage == null && this.newSmallImage == null) {
                this.discardEdit()
                return;
              }
@@ -580,6 +627,7 @@ export default {
             },
             data: {
               newImage: this.newImage,
+              newSmallImage: this.newSmallImage,
               name: this.store.name,
               description: this.store.description,
               schedule: this.store.schedule,
@@ -590,8 +638,14 @@ export default {
               this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
               this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
 
-              if(imageType == 'LARGE' && response.data.newImageURL != null)
-                this.store.largePhoto = response.data.newImageURL
+              if(imageType == 'LARGE') {
+                if(response.data.newImageURL != null) {
+                  this.store.largePhoto = response.data.newImageURL
+                }
+                if(response.data.newSmallImageURL != null) {
+                  this.store.smallPhoto = response.data.newSmallImageURL
+                }
+              }
               else if(imageType == 'SMALL' && response.data.newImageURL != null)
                 this.store.smallPhoto = response.data.newImageURL
 
@@ -600,6 +654,7 @@ export default {
               this.descriptionCopy=this.store.description;
               this.displayedDescription=this.store.description;
               this.newImage = null;
+              this.newSmallImage = null;
 
               this.cutDescription();
 
@@ -712,6 +767,7 @@ export default {
   min-height: 250px !important;
   width: 100%;
   object-fit: cover;
+  
 }
 .header {
   padding-left: 0 !important;
@@ -816,6 +872,11 @@ export default {
   padding-left: 0px;
 }
 
+.comment-card-container {
+  place-content: center;
+  align-items: center;
+}
+
 /*Switch*/
 .switch {
   position: relative;
@@ -889,11 +950,17 @@ input:checked + .slider:before {
 
 @media (max-width: 960px) {
   .edit-info-container {
-    padding: 10px 0;
     margin: 0 10px;
+    padding-right: 0;
   }
   .info-container {
     margin: 0 10px;
+  }
+}
+
+@media (min-width: 960px) and (max-width: 1350px) {
+  .cover-small-image {
+    height: -webkit-fill-available;
   }
 }
 

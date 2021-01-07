@@ -25,25 +25,26 @@
     <h3 v-if="loadingImage == true">Se incarca</h3>
     <h3 v-if="errorImage == true">Nu am putut incarca imaginea. Va rugam reincercati</h3>
     <div class="uk-flex@s uk-flex-row uk-flex-center uk-flex-middle">
-      <div v-if="loadingImage == false" class="button-wrapper" style="margin-bottom: 20px;">
-        <span class="button uk-button uk-button-primary" @click="$refs.file.click()">
-          <input type="file" ref="file" @change="uploadImage($event)" accept="image/*">
-          Incarca
-        </span>
-      </div>
-      <div v-if="loadingImage == false" class="button-wrapper">
-        <span class="button uk-button uk-button-primary" @click="rotateImage">
-          Roteste
-        </span>
-      </div>
       <!--<div v-if="loading == false" class="button-wrapper">
         <span class="button uk-button uk-button-primary" @click="resetImage">
           Reseteaza
         </span>
       </div>-->
-      <div style="margin-top: 20px;" class="uk-flex-row uk-text-center">
+      <div style="margin-bottom: 20px;" class="uk-flex-row uk-text-center">
         <vk-button @click="closeModal()" class="uk-margin-small-right uk-margin-small-left">Inchide</vk-button>
-        <vk-button v-if="loadingImage == false" @click="saveNewImage(getEdittedImage())" class="uk-button-primary uk-margin-small-right uk-margin-small-left">Salveaza</vk-button>
+        <vk-button v-if="loadingImage == false && uploadedImage != null" @click="saveNewImage(getEdittedImage())" class="uk-button-primary uk-margin-small-right uk-margin-small-left">Adauga</vk-button>
+      </div>
+
+      <div v-if="loadingImage == false" class="button-wrapper" style="margin-bottom: 20px;">
+        <span class="button uk-button uk-button-primary" @click="$refs.file.click()">
+          <input type="file" ref="file" @change="uploadImage($event)" accept="image/*">
+          Incarca {{uploadedImage != null ? 'alta imagine' : 'imagine'}}
+        </span>
+      </div>
+      <div v-if="loadingImage == false" class="button-wrapper" style="padding-bottom: 20px;">
+        <span class="button uk-button uk-button-primary" @click="rotateImage">
+          Roteste
+        </span>
       </div>
     </div>
   </div>
@@ -90,14 +91,19 @@ export default {
       this.uploadedImage = null
     },
     saveNewImage(data) {
-      this.$emit('change_image', data)
+      let object = {
+        newImage: data,
+        from: this.from,
+      }
+
+      this.$emit('change_image', object)
     },
     getEdittedImage() {
       const { coordinates, canvas, } = this.$refs.cropper.getResult();
       this.coordinates = coordinates;
       try {
         let quality = 0.2;
-        if(this.from == 'storefront')
+        if(this.from.includes('storefront'))
           quality = 0.3
         else if(this.from == 'productcard')
           quality = 0.1
@@ -107,13 +113,13 @@ export default {
           //image: this.$refs.cropper.getCroppedCanvas().toDataURL()
           image: canvas.toDataURL('image/jpeg', quality)
         }
-        if(this.from != 'storefront')
+        if(!this.from.includes('storefront'))
           UIkit.notification({message: 'Poza dumneavoastra a fost modificata', status: 'success'})
         return data;
       } catch(error) {
         this.errorImage=true;
         this.loadingImage=false;
-        if(this.from != 'storefront')
+        if(!this.from.includes('storefront'))
           UIkit.notification({message: 'Nu am putut modifica poza. Va rugam sa reincercati pagina si sa reincercati', status: 'danger'})
       }
       return null;

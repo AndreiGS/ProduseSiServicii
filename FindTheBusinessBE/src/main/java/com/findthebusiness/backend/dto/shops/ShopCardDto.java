@@ -1,5 +1,6 @@
 package com.findthebusiness.backend.dto.shops;
 
+import com.findthebusiness.backend.dto.categories.CategoriesDto;
 import com.findthebusiness.backend.dto.subcategories.SubcategoriesDto;
 
 import java.util.List;
@@ -18,11 +19,12 @@ public class ShopCardDto {
     private String maximumSize;
     private Boolean isPublished;
     private List<SubcategoriesDto> subcategories;
+    private CategoriesDto categories;
 
     public ShopCardDto() {
     }
 
-    public ShopCardDto(String id, String name, String smallPhoto, Double rating, Boolean isPromotedInHome, Boolean isPromotedInSearches, Integer promotedDaysInHomeRemaining, Integer promotedDaysInSearchesRemaining, String description, String maximumSize, Boolean isPublished, List<SubcategoriesDto> subcategories) {
+    public ShopCardDto(String id, String name, String smallPhoto, Double rating, Boolean isPromotedInHome, Boolean isPromotedInSearches, Integer promotedDaysInHomeRemaining, Integer promotedDaysInSearchesRemaining, String description, String maximumSize, Boolean isPublished, List<SubcategoriesDto> subcategories, CategoriesDto categories) {
         this.id = id;
         this.name = name;
         this.smallPhoto = smallPhoto;
@@ -35,6 +37,7 @@ public class ShopCardDto {
         this.maximumSize = maximumSize;
         this.isPublished = isPublished;
         this.subcategories = subcategories;
+        this.categories = categories;
     }
 
     public String getId() {
@@ -88,6 +91,15 @@ public class ShopCardDto {
 
     public ShopCardDto setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    public CategoriesDto getCategories() {
+        return categories;
+    }
+
+    public ShopCardDto setCategories(CategoriesDto categories) {
+        this.categories = categories;
         return this;
     }
 

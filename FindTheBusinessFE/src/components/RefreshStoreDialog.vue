@@ -1,5 +1,5 @@
 <template>
-  <div id="refresh-shop-sections" uk-modal>
+  <div id="refresh-shop-sections" bg-close="false" uk-modal>
     <div class="uk-modal-dialog uk-margin-auto-vertical">
       <button class="uk-modal-close-default" type="button" uk-close></button>
       <div class="uk-modal-header">

@@ -76,10 +76,14 @@
                     <option value="LARGE">Mare (40 produse)</option>
                     <option value="UNLIMITED">Extra (100 produse)</option>
                   </select>
+
+                  <button class="uk-button uk-button-primary custom-change-subcategories-button" @click="showChangeSubcategories = true">Modifica categorii</button>
                 </div>
+
+                
               </div>
 
-              <div v-if="editingShop == true" style="margin-bottom: 20px" class="uk-hidden@s">
+              <!--<div v-if="editingShop == true" style="margin-bottom: 20px" class="uk-hidden@s">
                 <div class="uk-text-center" style="margin: 20px 0 10px 0">
                   Subcategorii
                 </div>
@@ -100,7 +104,7 @@
                     <option v-for="(subcategoryFromAll, index) in subcategories" :key="index" :value="subcategoryFromAll.name">{{subcategoryFromAll.name}}</option>
                   </select>
                 </div>
-              </div>
+              </div>-->
 
               <div class="edit-buttons-container uk-hidden@s" style="margin-bottom: 15px">
                 <div v-if="editingShop == false">
@@ -133,13 +137,16 @@
                 </div>
               </div>
 
-              <select uk-tooltip="title: Schimba marimea fatadei de magazin; pos: left" style="cursor: pointer; border: rgb(197, 166, 11) 2px solid;" v-if="editingShop == true" v-model="shopSize" class="uk-select subcategory-custom-select shop-type-select">
-                <option value="FREE">Gratis (1 produs)</option>
-                <option value="SMALL">Mic (5 produse)</option>
-                <option value="MEDIUM">Mediu (15 produse)</option>
-                <option value="LARGE">Mare (40 produse)</option>
-                <option value="UNLIMITED">Extra (100 produse)</option>
-              </select>
+              <div v-if="editingShop == true">
+                <select uk-tooltip="title: Schimba marimea fatadei de magazin; pos: left" style="cursor: pointer; border: rgb(197, 166, 11) 2px solid;" v-model="shopSize" class="uk-select subcategory-custom-select shop-type-select">
+                  <option value="FREE">Gratis (1 produs)</option>
+                  <option value="SMALL">Mic (5 produse)</option>
+                  <option value="MEDIUM">Mediu (15 produse)</option>
+                  <option value="LARGE">Mare (40 produse)</option>
+                  <option value="UNLIMITED">Extra (100 produse)</option>
+                </select>
+                <button class="uk-button uk-button-primary custom-change-subcategories-button uk-flex uk-flex-middle uk-align-center" @click="showChangeSubcategories = true"><span style="margin: 3px" uk-icon="icon: settings; ratio: 1"></span><p style="margin: 0">Categorii</p></button>
+              </div>
 
               <div v-if="editingShop == false">
                 <div class="shop-type">
@@ -152,7 +159,7 @@
                 <router-link :to="{ name: 'Storefront', params: { id: id }, query: { owner: true }}"><vk-button v-if="id.includes('not-set') == false && editingShop == false" class="uk-visible@s custom-button" type="primary">VEZI MAGAZIN</vk-button></router-link>
               </div>
 
-              <div v-else>
+              <!--<div v-else>
                 <div class="subcategories-title uk-width-1-5 uk-text-center">
                   Subcategorii
                 </div>
@@ -173,7 +180,7 @@
                     <option v-for="(subcategoryFromAll, index) in subcategories" :key="index" :value="subcategoryFromAll.name">{{subcategoryFromAll.name}}</option>
                   </select>
                 </div>
-              </div>
+              </div>-->
             </div>
           </vk-grid>
         </div>
@@ -188,7 +195,7 @@
           @promote_shop="$emit('promote_shop', id)"
         />
 
-        <vk-modal-full :show.sync="showImageEdit">
+        <vk-modal-full :stuck="true" :show.sync="showImageEdit">
           <vk-modal-full-close></vk-modal-full-close>
           <vk-modal-title>Poza fatada de magazin</vk-modal-title>
           <!--<VueCropper style="height: 500px; text-align: center"
@@ -213,6 +220,32 @@
             :from="'shopcard'"
           />
         </vk-modal-full>
+
+        <vk-modal :stuck="true" overflow-auto center :show.sync="showChangeSubcategories">
+          <vk-modal-title slot="header" style="white-space: pre-line;">Schimba subcategoriile magazinului {{'\n' + title}}</vk-modal-title>
+          
+          <div style="margin-bottom: 20px;">
+            <h3>Categorie</h3>
+            <select uk-tooltip="Schimba categoria" style="cursor: pointer;" v-model="shopCategory" class="uk-select subcategory-custom-select">
+              <option :value="{id: 'none', name: 'none'}">Neselectat</option>
+              <option v-for="(categoryFromAll, index) in categories" :key="index" :value="categoryFromAll">{{categoryFromAll.name}}</option>
+            </select>
+          </div>
+
+          <div>
+            <h3>Subcategorie</h3>
+            <select uk-tooltip="Schimba subcategoria" style="cursor: pointer;" v-for="(select, index) in getArrayToCompleteOptionsArray()" v-model="subcategoriesToPost[index]" :key="select.id || index" class="uk-select subcategory-custom-select">
+              <option value="none">Neselectat</option>
+              <option v-for="(subcategoryFromAll, optionIndex) in findSubcategoriesByCategoryId(index)" :key="optionIndex" :value="subcategoryFromAll.name">{{subcategoryFromAll.name}}</option>
+            </select>
+          </div>
+
+          <div slot="footer" class="uk-text-right">
+            <vk-button :class="windowWidth <= 640 ? 'uk-button-small' : ''" style="margin-right: 2px;" @click="setShopCategoriesModelArray">Reseteaza</vk-button>
+            <vk-button :class="windowWidth <= 640 ? 'uk-button-small' : ''" @click="showChangeSubcategories = false" type="primary">OK</vk-button>
+          </div>
+        </vk-modal>
+        
       </vk-grid>
 
       <div v-else>Se incarca</div>
@@ -245,7 +278,17 @@ export default {
       isPromotedInSearches: false,
       isPromotedInHome: false,
       subcategories: null,
+      categories: null,
       shopSubcategoriesProp: null,
+      oldShopCategories: {
+        type: Object,
+        default: function() {
+          return {
+            id: 'none',
+            name: 'none'
+          }
+        }
+      },
       oldShopSize: null,
       oldIsPublished: null,
       promotedDaysInHomeRemaining: null,
@@ -265,6 +308,7 @@ export default {
 
         loading: false,
         subcategoriesToPost: [],
+        shopCategory: this.oldShopCategories,
 
         displayedDescription: null,
 
@@ -276,12 +320,34 @@ export default {
         isPublished: this.oldIsPublished,
 
         showImageEdit: false,
+        showChangeSubcategories: false,
         newImage: null,
         cannotFindImage: false,
         hasImageLoaded: false
       }
   },
   methods: {
+    shouldShowSubcategory(subcategory, index) {
+      if(this.subcategoriesToPost[index] == subcategory.name)
+        return true;
+
+      return subcategory.categoryId == this.shopCategory.id && !this.subcategoriesToPost.includes(subcategory.name)
+    },
+    findSubcategoriesByCategoryId(index) {
+			if(this.subcategories == null || this.shopCategory.id == null)
+				return
+
+			return this.subcategories.filter(subcategory => this.shouldShowSubcategory(subcategory, index)).sort((s1, s2) => {
+        return s1.name > s2.name ? 1 : s1.name < s2.name ? -1 : 0;
+      });
+
+			/*this.subcategories.forEach(subcategory => {
+				if(subcategory.categoryId == this.shopCategory.id)
+					subcategoriesToReturn.push(subcategory)
+			});
+
+			return subcategoriesToReturn*/
+		},
     openPromotedInfoPanel() {
       UIkit.modal("#promote-info-sections").show();
     },
@@ -293,7 +359,7 @@ export default {
     },
     changeImage(data) {
       this.cannotFindImage = false
-      this.newImage = data.image 
+      this.newImage = data.newImage.image 
       this.hideModal();
     },
     getShopSizeName() {
@@ -311,38 +377,33 @@ export default {
       return 'NEGASIT'
     },
     getSubcategoriesToDisplay(subcategoryToPass) {
-      let subcat = []
-      this.subcategories.filter((subcategory) => {
-        if(subcategory.name != subcategoryToPass)
-          subcat.push(subcategory)
+      return this.subcategories.filter((subcategory) => {
+        return subcategory.name != subcategoryToPass ? true : false;
       })
-      return subcat
     },
     getArrayToCompleteOptionsArray() {
-      let array = []
-
-      let length = 0;
-
-      if(this.shopSubcategories != undefined)
-        length = this.shopSubcategories.length;
+      let array = this.shopSubcategories?.slice() || []
+      let length = array.length;
 
       for(let i = 0; i<3-length; i++)
         array.push(i);
       return array
     },
     setShopCategoriesModelArray() {
+      this.shopSubcategories = this.shopSubcategoriesProp?.slice() || []
+      Object.assign(this.shopCategory, this.oldShopCategories)
       let length = 0;
 
       if(this.shopSubcategories != undefined)
         length = this.shopSubcategories.length;
 
-      if(this.shopSubcategories == undefined) {
+      if(this.shopSubcategories == undefined || this.shopSubcategories == null) {
         this.shopSubcategories = []
       }
 
-      for(let i=0; i<Math.max(3, length); i++) {
+      for(let i=0; i<3; i++) {
         if(this.shopSubcategories[i] != undefined) {
-          this.subcategoriesToPost[i] = this.shopSubcategories[i].name
+          this.$set(this.subcategoriesToPost, i, this.shopSubcategories[i].name)
         } else {
           this.subcategoriesToPost[i] = 'none'
         }
@@ -369,6 +430,7 @@ export default {
         data: {
           base64SmallImage: this.newImage,
           subcategories: Array.from(subcategories),
+          category: this.shopCategory,
           name: this.title,
           description: this.description,
           shopSize: this.shopSize
@@ -382,7 +444,7 @@ export default {
           this.id = response.data.shopId;
           let imageUrl = response.data.smallPhotoUrl;
 
-          this.shopSubcategories = []
+          this.shopSubcategories = [];
           
           subcategories.forEach(element => {
             this.shopSubcategories.push({
@@ -397,7 +459,9 @@ export default {
             description: this.description,
             image: imageUrl,
             subcategories: this.shopSubcategories,
-            shopSize: this.shopSize
+            shopSize: this.shopSize,
+            category: this.shopCategory,
+            published: true
           }
 
           this.$emit('new_shop_added', shopToSave)
@@ -461,6 +525,7 @@ export default {
       this.title = this.oldTitle
       this.description = this.oldDescription
       this.shopSize = this.oldShopSize
+      this.setShopCategoriesModelArray();
       this.newImage = null;
 
       //this.resetDescription();
@@ -560,13 +625,15 @@ export default {
       this.editShop()
     }
     this.setShopCategoriesModelArray();
+
+    this.categories.sort((s1, s2) => {
+        return s1.name > s2.name ? 1 : s1.name < s2.name ? -1 : 0;
+    });
   },
   watch: {
     $props: {
       handler() {
         this.isPublished = this.oldIsPublished
-      
-          
       },
       deep: true,
       immediate: true,
@@ -574,6 +641,16 @@ export default {
     'showImageEdit': {
       handler() {
         this.showImageEdit === true ? document.body.style.overflow = 'hidden' : document.body.style.overflow = 'unset';
+      },
+      deep: true,
+      immediate: true,
+    },
+    'shopCategory': {
+      handler() {
+        if(this.shopCategory.id == this.oldShopCategories.id)
+          return;
+
+        this.subcategoriesToPost.fill('none');
       },
       deep: true,
       immediate: true,
@@ -640,7 +717,7 @@ export default {
   position: absolute;
   top: 50px;
   right: 20px;
-  width: 130px;
+  width: 125px;
 }
 
 .custom-input-disabled {
@@ -683,6 +760,19 @@ export default {
   border: none;
 	margin: 0 0 0 10px;
 	border-radius: 10px;
+}
+
+.custom-change-subcategories-button {
+  outline: 0;
+  border: none;
+  border-radius: 10px;
+  margin-top: 10px;
+  position: absolute; 
+  top: 80px; 
+  right: 20px;
+  max-width: 125px;
+  text-transform: capitalize;
+  padding: 0 20px;
 }
 
 .promote-info-button {
@@ -792,21 +882,55 @@ export default {
   right: 20px;
 }
 
-@media (max-width: 639px) {
-  .custom-button {
-    width: 100%;
+@media (min-width: 2000px) {
+  .text-area-props{
+    height: 250px!important;
   }
-  .edit-buttons-container{
-    text-align: center;
-    margin: 20px 0px;
+  .description-p-props-desktop{
+    height: 185px; 
+  }
+  .description-p-props-desktop-showing-full-desc {
+    min-height: 185px;
+  }
+  .subcategories-panel {
+    height: 150px;
+  }
+  .showmore-button-container {
+    margin-top: 43.2px!important
   }
   .card-image-custom-width {
-    width: 100%;
-    height: 100%;
+    height: 300px;
+    width: 410px!important;
   }
 
   .card-body-custom-width {
-    width: 100%;
+    width: calc(100% - 410px)!important;
+  }
+  .no-image-div {
+    height: 300px;
+  }
+  .textarea-desc {
+    min-height: 185px;
+  }
+}
+
+@media (max-width: 660px) {
+  .card-image-custom-width {
+    .uk-card {
+      margin-right: 5px
+    } 
+  }
+  .shop-type-select, .custom-change-subcategories-button {
+    width: 110px;
+  }
+  .subcategories-panel {
+    width: 110px;
+  }
+  .subcategories-title {
+    right: 15px;
+  }
+  .custom-action-button {
+    margin-left: 5px;
   }
 }
 
@@ -852,55 +976,35 @@ export default {
   }
 }
 
-@media (max-width: 660px) {
-  .card-image-custom-width {
-    .uk-card {
-      margin-right: 5px
-    } 
+@media (max-width: 639px) {
+  .custom-button {
+    width: 100%;
   }
-  .shop-type-select {
-    width: 110px
-  }
-  .subcategories-panel {
-    width: 110px
-  }
-  .subcategories-title {
-    right: 15px
-  }
-  .custom-action-button {
-    margin-left: 5px;
-  }
-}
-
-@media (min-width: 2000px) {
-  .text-area-props{
-    height: 250px!important;
-  }
-  .description-p-props-desktop{
-    height: 185px; 
-  }
-  .description-p-props-desktop-showing-full-desc {
-    min-height: 185px;
-  }
-  .subcategories-panel {
-    height: 150px;
-  }
-  .showmore-button-container {
-    margin-top: 43.2px!important
+  .edit-buttons-container{
+    text-align: center;
+    margin: 20px 0px;
   }
   .card-image-custom-width {
-    height: 300px;
-    width: 410px;
+    width: 100%;
+    height: 100%;
   }
 
   .card-body-custom-width {
-    width: calc(100% - 410px);
+    width: 100%;
   }
-  .no-image-div {
-    height: 300px;
+
+  .custom-change-subcategories-button {
+    position: initial;
+    max-width: revert;
+    width: 50%;
+    margin: 10px 25%;
   }
-  .textarea-desc {
-    min-height: 185px;
+}
+
+@media (max-width: 450px) {
+  .custom-change-subcategories-button {
+    width: 100%;
+    margin: 10px 0;
   }
 }
 </style>

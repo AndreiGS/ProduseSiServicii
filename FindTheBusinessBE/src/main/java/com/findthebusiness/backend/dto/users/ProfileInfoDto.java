@@ -1,5 +1,6 @@
 package com.findthebusiness.backend.dto.users;
 
+import com.findthebusiness.backend.dto.categories.CategoriesDto;
 import com.findthebusiness.backend.dto.shops.ShopCardDto;
 import com.findthebusiness.backend.dto.subcategories.SubcategoriesDto;
 import com.findthebusiness.backend.entity.Subcategories;
@@ -13,6 +14,7 @@ public class ProfileInfoDto {
     private Long balance;
     private List<ShopCardDto> shops;
     private List<SubcategoriesDto> subcategories;
+    private List<CategoriesDto> categories;
     private Integer smallTokens;
     private Integer mediumTokens;
     private Integer largeTokens;
@@ -24,12 +26,13 @@ public class ProfileInfoDto {
     public ProfileInfoDto() {
     }
 
-    public ProfileInfoDto(String email, String name, Long balance, List<ShopCardDto> shops, List<SubcategoriesDto> subcategories, Integer smallTokens, Integer mediumTokens, Integer largeTokens, Integer unlimitedTokens, String refreshToken, String csrfToken) {
+    public ProfileInfoDto(String email, String name, Long balance, List<ShopCardDto> shops, List<SubcategoriesDto> subcategories, List<CategoriesDto> categories, Integer smallTokens, Integer mediumTokens, Integer largeTokens, Integer unlimitedTokens, String refreshToken, String csrfToken) {
         this.email = email;
         this.name = name;
         this.balance = balance;
         this.shops = shops;
         this.subcategories = subcategories;
+        this.categories = categories;
         this.smallTokens = smallTokens;
         this.mediumTokens = mediumTokens;
         this.largeTokens = largeTokens;
@@ -98,6 +101,15 @@ public class ProfileInfoDto {
 
     public ProfileInfoDto setSubcategories(List<SubcategoriesDto> subcategories) {
         this.subcategories = subcategories;
+        return this;
+    }
+
+    public List<CategoriesDto> getCategories() {
+        return categories;
+    }
+
+    public ProfileInfoDto setCategories(List<CategoriesDto> categories) {
+        this.categories = categories;
         return this;
     }
 

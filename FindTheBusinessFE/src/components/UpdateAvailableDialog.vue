@@ -10,7 +10,7 @@ export default {
 </script>
 
 <template>
-  <div id="modal-update" uk-modal>
+  <div id="modal-update" bg-close="false" uk-modal>
     <div class="uk-modal-dialog uk-margin-auto-vertical">
         <div class="uk-modal-header">
           <h2 class="uk-modal-title">Actualizare</h2>

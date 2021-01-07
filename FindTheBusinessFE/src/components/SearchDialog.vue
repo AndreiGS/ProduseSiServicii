@@ -1,5 +1,5 @@
 <template>
-	<div id="search-sections" uk-modal>
+	<div id="search-sections" bg-close="false" uk-modal>
 		<div class="uk-modal-dialog uk-margin-auto-vertical">
 			<button class="uk-modal-close-default" type="button" uk-close></button>
 			<div v-if="loading == false">

@@ -1,5 +1,5 @@
 <template>
-  <div id="user-tokens-sections" uk-modal>
+  <div id="user-tokens-sections" uk-modal bg-close="false">
     <div class="uk-modal-dialog uk-margin-auto-vertical">
       <button class="uk-modal-close-default" type="button" uk-close></button>
       <div class="uk-modal-header">
