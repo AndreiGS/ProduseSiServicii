@@ -12,11 +12,11 @@
         </div>
       </div>
       <div v-else>
-        <div v-if="store.largePhoto != null || isOwner" class="uk-inline" style="width: 100%">
-          <img loading="lazy" v-if="(newImage != null && newImage.includes('base64')) || (cannotFindImage == false && ((windowWidth >= 768 && store.largePhoto != null) || (windowWidth < 768 && store.smallPhoto != null)))" :src="(newImage == null) ? ((windowWidth >= 768) ? store.largePhoto : store.smallPhoto) : newImage" class="cover-image" :class="(editingShop == true) ? 'filter-image' : ''" :alt="store.name" @error="cannotFindImage = true">
+        <div v-if="windowWidth < 640 || store.largePhoto != null || isOwner" class="uk-inline" style="width: 100%; margin-bottom: 15px;">
+          <img loading="lazy" v-if="(newImage != null && newImage.includes('base64')) || (cannotFindImage == false && ((windowWidth >= 640 && store.largePhoto != null) || (windowWidth < 640 && store.smallPhoto != null)))" :src="(newImage == null) ? ((windowWidth >= 640) ? store.largePhoto : store.smallPhoto) : newImage" class="cover-image" :class="(editingShop == true) ? 'filter-image' : ''" :alt="store.name" @error="cannotFindImage = true">
           
           <div v-else-if="isOwner" class="cover-image no-image-div">
-            <p :style="cannotFindImage == true || ((windowWidth >= 768) ? store.largePhoto == null : store.smallPhoto == null) ? 'visibility: visible' : 'visibility: hidden'" v-if="editingShop == false" class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine mare gasita</p>
+            <p :style="cannotFindImage == true || ((windowWidth >= 640) ? store.largePhoto == null : store.smallPhoto == null) ? 'visibility: visible' : 'visibility: hidden'" v-if="editingShop == false" class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine mare gasita</p>
           </div>
           
           <div class="uk-overlay uk-position-bottom-left overlay uk-flex uk-flex-column">
@@ -79,11 +79,11 @@
           </div>
         </div>
 
-        <vk-grid :style="(store.largePhoto == null && windowWidth < 768) ? '' : 'margin-top: 15px'" matched>
-          <div class="shop-info-container uk-width-2-3@m">
+        <vk-grid :style="(store.largePhoto == null || windowWidth < 640) ? '' : 'margin-top: 15px'" matched>
+          <div class="shop-info-container uk-width-2-3@xl">
             <article class="uk-article" style="height: 100%;">
               <vk-grid style="height: 100%" matched>
-                <div v-if="windowWidth >= 768 && (store.largePhoto == null || isOwner)" :style="(windowWidth >= 960) ? 'padding: 0;' : ''" class="uk-inline" :class="(windowWidth >= 768 && (store.largePhoto == null || isOwner)) ? 'uk-width-1-2' : ''">
+                <div v-if="windowWidth >= 640 && (store.largePhoto == null || isOwner)" :style="(windowWidth >= 640) ? 'padding: 0;' : ''" class="uk-inline" :class="(windowWidth >= 640 && (store.largePhoto == null || isOwner)) ? 'uk-width-1-2' : ''">
                   <img v-if="cannotFindSmallImage == false" loading="lazy" :src="newSmallImage || store.smallPhoto" class="cover-image cover-small-image" :class="(editingShop == true) ? 'filter-image' : ''" :alt="store.name" @error="cannotFindSmallImage = true">
                   
                   <div v-else class="cover-image no-image-div">
@@ -102,7 +102,7 @@
                     <p>Schimba imaginea mica</p>
                   </div>
                 </div>
-                <div :class="(windowWidth >= 768 && (store.largePhoto == null || isOwner)) ? 'uk-width-1-2' : 'uk-width-2-2 uk-padding-remove'">
+                <div :class="(windowWidth >= 640 && (store.largePhoto == null || isOwner)) ? 'uk-width-1-2' : 'uk-width-2-2 uk-padding-remove'">
                   <div v-if="editingShop == false" class="info-container">
                     <p class="uk-text-lead" style="text-transform: uppercase; text-align: left; word-wrap: break-word;"> {{store.name}} </p>
                     <p style="text-align: left; word-wrap: break-word; white-space: pre-line;"> {{displayedDescription}} </p>
@@ -122,7 +122,7 @@
             </article>
           </div>
 
-          <div class="uk-width-1-3@m" style="padding: 0">
+          <div class="uk-width-1-3@xl" style="padding: 0">
             <article class="uk-article" style="margin-bottom: 10px;">
               <vk-card padding="small" class="uk-height-1-1 uk-flex comment-card-container">
                 <div>
@@ -957,11 +957,4 @@ input:checked + .slider:before {
     margin: 0 10px;
   }
 }
-
-@media (min-width: 960px) and (max-width: 1350px) {
-  .cover-small-image {
-    height: -webkit-fill-available;
-  }
-}
-
 </style>
