@@ -1,12 +1,17 @@
 <template>
   <vk-card padding="small" class="card" @click="$emit('add_shop')">
-    <vk-icon icon="plus" ratio="2" class="plusButton"/>
+    <vk-icons-plus :height="'30px'" :width="'30px'" class="plusButton"/>
   </vk-card>
 </template>
 
 <script>
+import VkIconsPlus from '@vuikit/icons/lib/plus'
+
 export default {
-  name: 'AddShopCard'
+  name: 'AddShopCard',
+  components: {
+    VkIconsPlus,
+  }
 }
 </script>
 

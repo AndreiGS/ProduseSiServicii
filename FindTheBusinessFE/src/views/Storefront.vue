@@ -254,7 +254,7 @@ const StarRating = () => import('vue-star-rating')
 const ProductCardGrid = () => import(/* webpackChunkName: "storefront-chunk" */ "../components/ProductCardGrid");
 const CommentCardGrid = () => import(/* webpackChunkName: "storefront-chunk" */ "../components/CommentCardGrid");
 const TabsLayout = () => import(/* webpackChunkName: "storefront-chunk" */ "../components/TabsLayout");
-const ChangeContactDetailsDialog = () => import(/* webpackChunkName: "storefront-chunk" */ "@/components/ChangeContactDetailsDialog");
+const ChangeContactDetailsDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ "@/components/ChangeContactDetailsDialog");
 const Schedule = () => import(/* webpackChunkName: "storefront-chunk" */ "@/components/Schedule.vue")
 import CropperDialogComponent from '@/components/CropperDialogComponent.vue'
 import axios from 'axios';

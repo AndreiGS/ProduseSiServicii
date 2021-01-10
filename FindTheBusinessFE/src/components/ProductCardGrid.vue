@@ -7,7 +7,7 @@
       <vk-grid>
         <div class="uk-width-5-5@m">
           <div class="cards">
-            <AddItemCard v-if="tab == 'all' && isOwner == true" style="margin-bottom: 15px" v-on:add_item="addItem()"/>
+            <AddItemCard v-if="tab == 'all' && isOwner == true && !itemAdded" style="margin-bottom: 15px" v-on:add_item="addItem()"/>
             <div v-if="products != null && products.length > 0">
               <div v-if="isSearching == true">
                 <div v-if="foundItemsIds != null && foundItemsIds.length > 0">
@@ -113,8 +113,8 @@
 </template>
 
 <script>
-const ProductCard = () => import(/* webpackChunkName: "profile-chunk" */ "./ProductCard");
-const AddItemCard = () => import(/* webpackChunkName: "profile-chunk" */ '@/components/AddItemCard')
+const ProductCard = () => import(/* webpackChunkName: "cards-chunk" */ "./ProductCard");
+const AddItemCard = () => import(/* webpackChunkName: "cards-chunk" */ '@/components/AddItemCard')
 
 import axios from 'axios'
 
@@ -153,7 +153,7 @@ export default {
 
       foundItemsIds: null,
 
-      isSearching: null
+      isSearching: null,
     },
     methods: {
       changeImage(data) {

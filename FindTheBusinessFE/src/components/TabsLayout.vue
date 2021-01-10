@@ -16,7 +16,7 @@
 
 <script>
 const Tab = () => import(/* webpackChunkName: "storefront-chunk" */ '@/components/Tab.vue')
-const AddTabCard = () => import(/* webpackChunkName: "storefront-chunk" */ '@/components/AddTabCard.vue')
+const AddTabCard = () => import(/* webpackChunkName: "cards-chunk" */ '@/components/AddTabCard.vue')
 
 export default {
   name: 'TabsLayout',

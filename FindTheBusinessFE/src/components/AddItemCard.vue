@@ -1,11 +1,12 @@
 <template>
   <vk-card padding="small" class="card" @click="addShop()">
-    <vk-icon icon="plus" ratio="2" class="plusButton"/>
+    <vk-icons-plus :height="'30px'" :width="'30px'" class="plusButton"/>
   </vk-card>
 </template>
 
 <script>
 import axios from 'axios'
+import VkIconsPlus from '@vuikit/icons/lib/plus'
 
 export default {
   name: 'AddItemCard',
@@ -13,6 +14,9 @@ export default {
     return {
       backend: process.env.VUE_APP_BACKEND || 'http://localhost:8080',
     }
+  },
+  components: {
+    VkIconsPlus,
   },
   methods: {
     async checkIfCanAddShop() {

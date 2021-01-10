@@ -140,7 +140,8 @@
 					v-on:refresh_page="refreshPage()" 
 					:shops="user.shops" 
 					:subcategories="subcategories"
-					:categories="categories"/>
+					:categories="categories"
+					:hasAddedShop="shopAdded"/>
 			</div>
 
 			<AddBalanceDialog v-on:change_balance="changeBalance($event)" />
@@ -166,9 +167,9 @@
 <script>
 import axios from 'axios'
 const ShopCardGrid = () => import(/* webpackChunkName: "profile-chunk" */ '@/components/ShopCardGrid.vue');
-const AddBalanceDialog = () => import(/* webpackChunkName: "profile-chunk" */ '@/components/AddBalanceDialog.vue');
-const DeleteUserDialog = () => import(/* webpackChunkName: "profile-chunk" */ '@/components/DeleteUserDialog.vue');
-const UserTokensDialog = () => import(/* webpackChunkName: "profile-chunk" */ '@/components/UserTokensDialog.vue');
+const AddBalanceDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/AddBalanceDialog.vue');
+const DeleteUserDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/DeleteUserDialog.vue');
+const UserTokensDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/UserTokensDialog.vue');
 
 export default {
 	name: "Profile",

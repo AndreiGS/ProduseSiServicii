@@ -255,8 +255,8 @@
 </template>
 
 <script>
-const ContactData = () => import (/* webpackChunkName: "profile-chunk" */ "./ContactData");
-const PromotedInfoDialog = () => import (/* webpackChunkName: "profile-chunk" */ "./PromotedInfoDialog");
+const ContactData = () => import (/* webpackChunkName: "dialogs-chunk" */ "./ContactData");
+const PromotedInfoDialog = () => import (/* webpackChunkName: "dialogs-chunk" */ "./PromotedInfoDialog");
 import CropperDialogComponent from '@/components/CropperDialogComponent.vue'
 import StarRating from 'vue-star-rating'
 import axios from 'axios'

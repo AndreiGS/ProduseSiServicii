@@ -12,9 +12,9 @@
 <script>
 const NewNewNewNavbar = () => import(/* webpackChunkName: "others-chunk" */ '@/components/NewNewNewNavbar.vue')
 const CookiesPopup = () => import(/* webpackChunkName: "others-chunk" */ '@/components/CookiesPopup.vue')
-const UpdateAvailableDialog = () => import(/* webpackChunkName: "others-chunk" */ '@/components/UpdateAvailableDialog.vue')
-const OfflineDialog = () => import(/* webpackChunkName: "others-chunk" */ '@/components/OfflineDialog.vue')
-const InstallDialog = () => import(/* webpackChunkName: "others-chunk" */ '@/components/InstallDialog.vue')
+const UpdateAvailableDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/UpdateAvailableDialog.vue')
+const OfflineDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/OfflineDialog.vue')
+const InstallDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/InstallDialog.vue')
 
 export default {
   name: 'App',

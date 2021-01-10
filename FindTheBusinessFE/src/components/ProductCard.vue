@@ -191,7 +191,7 @@
 
 <script>
 import axios from 'axios'
-const ContactData = () => import(/* webpackChunkName: "profile-chunk" */ "./ContactData");
+const ContactData = () => import(/* webpackChunkName: "modals-chunk" */ "./ContactData");
 import CropperDialogComponent from '@/components/CropperDialogComponent.vue'
 import 'cropperjs/dist/cropper.css';
 

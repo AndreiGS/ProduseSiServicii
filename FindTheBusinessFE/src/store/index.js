@@ -1,15 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import Vuikit from 'vuikit'
-import VuikitIcons from "@vuikit/icons";
-import VueWindowSize from 'vue-window-size'
 
-import '../assets/theme'
- 
 Vue.use(Vuex)
-Vue.use(Vuikit)
-Vue.use(VuikitIcons)
-Vue.use(VueWindowSize)
 
 export default new Vuex.Store({
   state: {

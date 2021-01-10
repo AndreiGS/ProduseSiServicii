@@ -52,7 +52,7 @@
 <script>
 import axios from 'axios'
 
-const StoreFrontCard = () => import(/* webpackChunkName: "home-chunk" */ '@/components/StorefrontCard.vue')
+const StoreFrontCard = () => import(/* webpackChunkName: "cards-chunk" */ '@/components/StorefrontCard.vue')
 const Pagination = () => import(/* webpackChunkName: "home-chunk" */ '@/components/Pagination.vue')
 
 export default {

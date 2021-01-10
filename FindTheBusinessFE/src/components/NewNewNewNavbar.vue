@@ -124,9 +124,9 @@
 </template>
 
 <script>
-const SearchDialog = () => import('@/components/SearchDialog.vue')
-const LoginDialog = () => import('@/components/LoginDialog.vue')
-const RegisterDialog = () => import('@/components/RegisterDialog.vue')
+const SearchDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/SearchDialog.vue')
+const LoginDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/LoginDialog.vue')
+const RegisterDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/RegisterDialog.vue')
 import InstallMixin from '@/mixins/install.js'
 
 export default {

@@ -3,7 +3,7 @@
     <vk-grid v-if="shops.length>0">
       <div class="uk-width-5-5@m">
         <div class="cards">
-          <AddShopCard v-on:add_shop="$emit('add_shop')" style="margin-bottom: 10px"/>
+          <AddShopCard v-if="!hasAddedShop" v-on:add_shop="$emit('add_shop')" style="margin-bottom: 10px"/>
           <ShopCard 
             v-on:new_shop_added="$emit('new_shop_added', $event)" 
             v-on:change_published="$emit('change_published', $event)"
@@ -53,12 +53,12 @@
 </template>
 
 <script>
-const ShopCard = () => import(/* webpackChunkName: "profile-chunk" */ "./ShopCard");
-const RefreshStoreDialog = () => import(/* webpackChunkName: "profile-chunk" */ '@/components/RefreshStoreDialog.vue');
+const ShopCard = () => import(/* webpackChunkName: "cards-chunk" */ "./ShopCard");
+const RefreshStoreDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/RefreshStoreDialog.vue');
 const PromoteStoreDialog = () => import(/* webpackChunkName: "profile-chunk" */ '@/components/PromoteStoreDialog.vue');
-const AddShopCard = () => import(/* webpackChunkName: "profile-chunk" */ '@/components/AddShopCard')
-const DeleteShopDialog = () => import(/* webpackChunkName: "profile-chunk" */ '@/components/DeleteShopDialog')
-const SurePublishDialog = () => import(/* webpackChunkName: "profile-chunk" */ '@/components/SurePublishDialog.vue')
+const AddShopCard = () => import(/* webpackChunkName: "cards-chunk" */ '@/components/AddShopCard')
+const DeleteShopDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/DeleteShopDialog')
+const SurePublishDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/SurePublishDialog.vue')
 
 export default {
     name: "ShopCardGrid",
@@ -77,13 +77,13 @@ export default {
           id: null,
           image: null
         },
-        
       }
     },
     props: {
       shops: null,
       subcategories: null,
       categories: null,
+      hasAddedShop: false,
     },
     methods: {
       showRefresh(id) {

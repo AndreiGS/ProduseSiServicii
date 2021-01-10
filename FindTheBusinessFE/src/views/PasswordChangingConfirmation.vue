@@ -43,7 +43,7 @@
 
 <script>
 import axios from 'axios';
-import Password from 'vue-password-strength-meter'
+const Password = () => import(/* webpackChunkName: "others-chunk" */ 'vue-password-strength-meter') 
 
 export default {
   name: 'PasswordChangingConfirmation',

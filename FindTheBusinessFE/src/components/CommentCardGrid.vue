@@ -21,8 +21,8 @@
 </template>
 
 <script>
-const CommentCard = () => import(/* webpackChunkName: "storefront-chunk" */"@/components/CommentCard");
-const AddCommentCard = () => import(/* webpackChunkName: "storefront-chunk" */ "@/components/AddCommentCard");
+const CommentCard = () => import(/* webpackChunkName: "cards-chunk" */"@/components/CommentCard");
+const AddCommentCard = () => import(/* webpackChunkName: "cards-chunk" */ "@/components/AddCommentCard");
 import axios from 'axios'
 
 export default {
