@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!$store.getters.getHasCompletedTutorial" :class="!isShowingDialog ? 'overlay' : ''" >
+  <div v-if="!$store.getters.getHasCompletedTutorial && ($router.currentRoute.path.includes('/profile') || $router.currentRoute.path.includes('/store'))" :class="!isShowingDialog ? 'overlay' : ''" >
     <div style="background-color: black; padding: 20px 10px; z-index: 1012" :class="`${$store.getters.getTutorialStrings[$store.getters.getTutorialStep].place}-placement`">
       <p style="color: white;">
         {{$store.getters.getTutorialStrings[$store.getters.getTutorialStep].content}}

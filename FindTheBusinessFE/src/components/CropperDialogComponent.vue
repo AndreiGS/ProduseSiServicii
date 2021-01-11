@@ -8,7 +8,7 @@
           Reseteaza
         </span>
       </div>-->
-      <div class="overlay"></div>
+      <div  v-if="!$store.getters.getHasCompletedTutorial" class="overlay"></div>
       <div style="margin-bottom: 20px;" class="uk-flex-row uk-text-center">
         <vk-button @click="closeModal()" class="uk-margin-small-right uk-margin-small-left">Inchide</vk-button>
         <vk-button v-if="loadingImage == false && uploadedImage != null" @click="saveNewImage(getEdittedImage())" :class="!this.$store.getters.getHasCompletedTutorial && (this.$store.getters.getTutorialStep == 6 || this.$store.getters.getTutorialStep == 29) ? 'in-focus' : ''" class="uk-button-primary uk-margin-small-right uk-margin-small-left">Adauga</vk-button>
