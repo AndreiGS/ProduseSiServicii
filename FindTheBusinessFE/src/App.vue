@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <NewNewNewNavbar v-if="this.$store.getters.getHasCompletedTutorial"/>
+    <NewNewNewNavbar v-if="this.$store.getters.getHasCompletedTutorial || this.$store.getters.getLogged == ''"/>
     <CookiesPopup v-if="hasAcceptedCookies == false" @set_has_accepted_cookies_true="setHasAcceptedCookiesTrue" />
     <UpdateAvailableDialog />
     <OfflineDialog />
