@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :id="id" :ref="`shopcard-${id}`">
     <vk-card padding="small" class="card uk-card-hover">
       <vk-grid v-if="loading == false">
         <div class="card-image-custom-width">
@@ -9,7 +9,7 @@
 
             <button @click="openPromotedInfoPanel()" v-if="isPromotedInHome || isPromotedInSearches" uk-tooltip="Informatii promovare" style="cursor: pointer;" class="promote-info-button uk-button-primary uk-card-badge uk-label"><span uk-icon="icon: info; ratio: 0.8"></span></button>
 
-            <div @click="showEditImageModal()" class="uk-inline uk-width-1-1" :style="(this.editingShop==true) ? 'cursor: pointer;' : ''">
+            <div @click="showEditImageModal()" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 4 && this.id.includes('not-set') ? 'in-focus' : ''" class="uk-inline uk-width-1-1" :style="(this.editingShop==true) ? 'cursor: pointer;' : ''">
               
               <img loading="lazy" v-if="(newImage != null && newImage.includes('base64')) || (cannotFindImage == false && (oldImage != null || newImage != null))" :src="(newImage != null) ? newImage : oldImage" class="card-image" :class="(this.editingShop==true) ? 'changing-image' : ''" :alt="title" @error="cannotFindImage = true;" @load="onImgLoad">
           
@@ -29,23 +29,23 @@
             <div class="uk-width-2-3@s uk-width-3-5@m uk-width-2-3@l uk-width-2-3@xl" style="height: 100%; padding-left: 0px;">
               <div class="uk-flex uk-visible@s">
                 <vk-card-title style="margin-bottom: 0px; width: 95%;">
-                  <textarea v-if="editingShop == true" :uk-tooltip="(editingShop == true) ? 'Titlu (maxim 40 caractere)' : null" maxlength="40" :id="'TitleInputDesktop'+id" class="uk-input textarea-title" :class="(editingShop == false) ? 'custom-input-disabled' : 'custom-input-enabled'" type="text" placeholder="Titlu" v-model="title" :disabled="(editingShop == true) ? false : true"></textarea>
+                  <textarea :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 7 && this.id.includes('not-set') ? 'in-focus' : ''" v-if="editingShop == true" :uk-tooltip="(editingShop == true) ? 'Titlu (maxim 40 caractere)' : null" maxlength="40" :id="'TitleInputDesktop'+id" class="uk-input textarea-title custom-input-enabled" type="text" placeholder="Titlu" v-model="title" :disabled="(editingShop == true) ? false : true"></textarea>
                   <h3 v-else style="margin: 0; padding-left: 10px; font-weight: 400;">{{title}}</h3>
                 </vk-card-title>
               </div>
               <div style="justify-content: center" class="uk-flex uk-hidden@s">
                 <vk-card-title style="margin-bottom: 0px; width: 100%;">
-                  <textarea v-if="editingShop == true" :uk-tooltip="(editingShop == true) ? 'Titlu (maxim 40 caractere)' : null" maxlength="40" style="text-align: center;" :id="'TitleInputMobile'+id" class="uk-input textarea-title" :class="(editingShop == false) ? 'custom-input-disabled' : 'custom-input-enabled'" type="text" placeholder="Titlu" v-model="title" :disabled="(editingShop == true) ? false : true"></textarea>
+                  <textarea :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 7 && this.id.includes('not-set') ? 'in-focus' : ''" v-if="editingShop == true" :uk-tooltip="(editingShop == true) ? 'Titlu (maxim 40 caractere)' : null" maxlength="40" style="text-align: center;" :id="'TitleInputMobile'+id" class="uk-input textarea-title custom-input-enabled" type="text" placeholder="Titlu" v-model="title" :disabled="(editingShop == true) ? false : true"></textarea>
                   <h3 class="uk-text-center" v-else style="margin: 0; padding-left: 0; font-weight: 400;">{{title}}</h3>
                 </vk-card-title>
               </div>
 
               <div class="uk-text-center uk-hidden@s">
-                <textarea uk-tooltip="Descriere (maxim 255 caractere)" maxlength="255" style="text-align: center; padding-left: 0px" class="uk-textarea custom-textarea-enabled text-area-props textarea-desc" v-if="editingShop == true" :id="'DescriptionInputMobile'+id" type="text" placeholder="Descriere" v-model="description"></textarea>
+                <textarea :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 8 && this.id.includes('not-set') ? 'in-focus' : ''" uk-tooltip="Descriere (maxim 255 caractere)" maxlength="255" style="text-align: center; padding-left: 0px" class="uk-textarea custom-textarea-enabled text-area-props textarea-desc" v-if="editingShop == true" :id="'DescriptionInputMobile'+id" type="text" placeholder="Descriere" v-model="description"></textarea>
                 <p :id="'ph-desc-mobile'+id" class="description-p-props-mobile" style="text-align: center; white-space: pre-line;" v-else>{{description}}</p>
               </div>
               <div class="uk-visible@s">
-                <textarea uk-tooltip="Descriere (maxim 255 caractere)" maxlength="255" class="uk-textarea custom-textarea-enabled text-area-props textarea-desc" v-if="editingShop == true" :id="'DescriptionInputDesktop'+id" type="text" placeholder="Descriere" v-model="description"></textarea>
+                <textarea :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 8 && this.id.includes('not-set') ? 'in-focus' : ''" uk-tooltip="Descriere (maxim 255 caractere)" maxlength="255" class="uk-textarea custom-textarea-enabled text-area-props textarea-desc" v-if="editingShop == true" :id="'DescriptionInputDesktop'+id" type="text" placeholder="Descriere" v-model="description"></textarea>
                 <p :id="'ph-desc-desktop'+id" class="description-p-props-desktop" style="padding-left: 10px; margin-bottom: 0px; white-space: pre-line;" v-else>{{description}}</p>
               </div>
 
@@ -69,7 +69,7 @@
                   <StarRating v-if="id.includes('not-set') == false" class="rating-mobile" :rating="rating" :show-rating="false" :star-size="20" :increment="0.1" :read-only="true"/>
                 </div>
                 <div style="margin-top: 20px" v-else>
-                  <select uk-tooltip="Schimba marimea fatadei de magazin" style="cursor: pointer; border: rgb(197, 166, 11) 2px solid;" v-model="shopSize" class="uk-select subcategory-custom-select">
+                  <select :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 9 && this.id.includes('not-set') ? 'in-focus' : ''" uk-tooltip="Schimba marimea fatadei de magazin" style="cursor: pointer; border: rgb(197, 166, 11) 2px solid;" v-model="shopSize" class="uk-select subcategory-custom-select">
                     <option value="FREE">Gratis (1 produs)</option>
                     <option value="SMALL">Mic (5 produse)</option>
                     <option value="MEDIUM">Mediu (15 produse)</option>
@@ -77,7 +77,7 @@
                     <option value="UNLIMITED">Extra (100 produse)</option>
                   </select>
 
-                  <button class="uk-button uk-button-primary custom-change-subcategories-button" @click="showChangeSubcategories = true">Modifica categorii</button>
+                  <button :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 10 && this.id.includes('not-set') ? 'in-focus sticky' : ''" class="uk-button uk-button-primary custom-change-subcategories-button" @click="showChangeSubcategories = true; $store.dispatch('changeTutorialStep', $store.getters.getTutorialStep+1); $emit('show_modal')">Modifica categorii</button>
                 </div>
 
                 
@@ -114,12 +114,12 @@
                 </div>
                 <div v-else>
 									<button uk-tooltip="Sterge fatada de magazin" style="cursor: pointer;" @click="$emit('delete_shop_db', id)" v-if="id.includes('not-set') == false" class="custom-action-button uk-button-danger"><span style="margin: 3px" uk-icon="icon: trash; ratio: 0.8"></span></button>
-                  <button uk-tooltip="Salveaza modificarile" style="cursor: pointer;" v-on:click="saveChanges()" class="custom-action-button uk-button-primary"><span style="margin: 3px" uk-icon="icon: check; ratio: 0.8"></span></button>
+                  <button uk-tooltip="Salveaza modificarile" style="cursor: pointer;" :class="!$store.getters.getHasCompletedTutorial && $store.getters.getTutorialStep == 13 && id.includes('not-set') ? 'in-focus' : ''" v-on:click="saveChanges()" class="custom-action-button uk-button-primary"><span style="margin: 3px" uk-icon="icon: check; ratio: 0.8"></span></button>
 									<button uk-tooltip="Anuleaza modificarile" style="cursor: pointer; margin-right: 10px" v-on:click="discardChanges()" class="custom-action-button uk-button-danger"><span style="margin: 3px" uk-icon="icon: ban; ratio: 0.8"></span></button>
                 </div>
               </div>
 
-              <router-link :to="{ name: 'Storefront', params: { id: id }, query: { owner: true }}"><vk-button v-if="id.includes('not-set') == false && editingShop == false" class="uk-hidden@s custom-button" type="primary">VEZI MAGAZIN</vk-button></router-link>
+              <router-link :to="{ name: 'Storefront', params: { id: id }, query: { owner: true }}"><vk-button v-if="id.includes('not-set') == false && editingShop == false" @click="$store.dispatch('changeTutorialStep', $store.getters.getTutorialStep+1)" :class="!$store.getters.getHasCompletedTutorial && $store.getters.getTutorialStep == 18 ? 'in-focus' : ''" class="uk-hidden@s custom-button" type="primary">VEZI MAGAZIN</vk-button></router-link>
             </div>
 
             <!--DESKTOP-->
@@ -132,20 +132,20 @@
                 </div>
                 <div v-else>
                   <button uk-tooltip="Sterge fatada de magazin" style="cursor: pointer; margin-left: 0px" @click="$emit('delete_shop_db', id)" v-if="id.includes('not-set') == false" class="custom-action-button uk-button-danger"><span style="margin: 3px" uk-icon="icon: trash; ratio: 0.8"></span></button>
-                  <button uk-tooltip="Salveaza modificarile" style="cursor: pointer;"  v-on:click="saveChanges()" class="custom-action-button uk-button-primary"><span style="margin: 3px" uk-icon="icon: check; ratio: 0.8"></span></button>
+                  <button uk-tooltip="Salveaza modificarile" style="cursor: pointer;" :class="!$store.getters.getHasCompletedTutorial && $store.getters.getTutorialStep == 13 && id.includes('not-set') ? 'in-focus' : ''" v-on:click="saveChanges()" class="custom-action-button uk-button-primary"><span style="margin: 3px" uk-icon="icon: check; ratio: 0.8"></span></button>
                   <button uk-tooltip="Anuleaza modificarile" style="cursor: pointer;"  v-on:click="discardChanges()" class="custom-action-button uk-button-danger"><span style="margin: 3px" uk-icon="icon: ban; ratio: 0.8"></span></button>
                 </div>
               </div>
 
               <div v-if="editingShop == true">
-                <select uk-tooltip="title: Schimba marimea fatadei de magazin; pos: left" style="cursor: pointer; border: rgb(197, 166, 11) 2px solid;" v-model="shopSize" class="uk-select subcategory-custom-select shop-type-select">
+                <select :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 9 && this.id.includes('not-set') ? 'in-focus' : ''" uk-tooltip="title: Schimba marimea fatadei de magazin; pos: left" style="cursor: pointer; border: rgb(197, 166, 11) 2px solid;" v-model="shopSize" class="uk-select subcategory-custom-select shop-type-select">
                   <option value="FREE">Gratis (1 produs)</option>
                   <option value="SMALL">Mic (5 produse)</option>
                   <option value="MEDIUM">Mediu (15 produse)</option>
                   <option value="LARGE">Mare (40 produse)</option>
                   <option value="UNLIMITED">Extra (100 produse)</option>
                 </select>
-                <button class="uk-button uk-button-primary custom-change-subcategories-button uk-flex uk-flex-middle uk-align-center" @click="showChangeSubcategories = true"><span style="margin: 3px" uk-icon="icon: settings; ratio: 1"></span><p style="margin: 0">Categorii</p></button>
+                <button :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 10 && this.id.includes('not-set') ? 'in-focus' : ''" class="uk-button uk-button-primary custom-change-subcategories-button uk-flex uk-flex-middle uk-align-center" @click="showChangeSubcategories = true; $store.dispatch('changeTutorialStep', $store.getters.getTutorialStep+1); $emit('show_modal');"><span style="margin: 3px" uk-icon="icon: settings; ratio: 1"></span><p style="margin: 0">Categorii</p></button>
               </div>
 
               <div v-if="editingShop == false">
@@ -156,7 +156,7 @@
                   <p>Tip: {{getShopSizeName()}}</p>
                 </div>
                 <StarRating v-if="id.includes('not-set') == false" class="custom-star" :rating="rating" :show-rating="false" :star-size="20" :increment="0.1" :read-only="true"/>
-                <router-link :to="{ name: 'Storefront', params: { id: id }, query: { owner: true }}"><vk-button v-if="id.includes('not-set') == false && editingShop == false" class="uk-visible@s custom-button" type="primary">VEZI MAGAZIN</vk-button></router-link>
+                <router-link :to="{ name: 'Storefront', params: { id: id }, query: { owner: true }}"><vk-button v-if="id.includes('not-set') == false && editingShop == false" @click="$store.dispatch('changeTutorialStep', $store.getters.getTutorialStep+1)" :class="!$store.getters.getHasCompletedTutorial && $store.getters.getTutorialStep == 18 ? 'in-focus' : ''" class="uk-visible@s custom-button" type="primary">VEZI MAGAZIN</vk-button></router-link>
               </div>
 
               <!--<div v-else>
@@ -195,7 +195,7 @@
           @promote_shop="$emit('promote_shop', id)"
         />
 
-        <vk-modal-full :stuck="true" :show.sync="showImageEdit">
+        <vk-modal-full class="uk-margin-remove" :stuck="true" :show.sync="showImageEdit">
           <vk-modal-full-close></vk-modal-full-close>
           <vk-modal-title>Poza fatada de magazin</vk-modal-title>
           <!--<VueCropper style="height: 500px; text-align: center"
@@ -221,12 +221,14 @@
           />
         </vk-modal-full>
 
-        <vk-modal :stuck="true" overflow-auto center :show.sync="showChangeSubcategories">
+        <vk-modal class="uk-margin-remove" :stuck="true" overflow-auto center :show.sync="showChangeSubcategories">
           <vk-modal-title slot="header" style="white-space: pre-line;">Schimba subcategoriile magazinului {{'\n' + title}}</vk-modal-title>
           
+          <div v-if="!this.$store.getters.getHasCompletedTutorial" class="overlay"></div>
+
           <div style="margin-bottom: 20px;">
             <h3>Categorie</h3>
-            <select uk-tooltip="Schimba categoria" style="cursor: pointer;" v-model="shopCategory" class="uk-select subcategory-custom-select">
+            <select :class="!$store.getters.getHasCompletedTutorial && $store.getters.getTutorialStep == 11 && id.includes('not-set') ? 'in-focus' : ''" uk-tooltip="Schimba categoria" style="cursor: pointer;" v-model="shopCategory" class="uk-select subcategory-custom-select">
               <option :value="{id: 'none', name: 'none'}">Neselectat</option>
               <option v-for="(categoryFromAll, index) in categories" :key="index" :value="categoryFromAll">{{categoryFromAll.name}}</option>
             </select>
@@ -234,7 +236,7 @@
 
           <div>
             <h3>Subcategorie</h3>
-            <select uk-tooltip="Schimba subcategoria" style="cursor: pointer;" v-for="(select, index) in getArrayToCompleteOptionsArray()" v-model="subcategoriesToPost[index]" :key="select.id || index" class="uk-select subcategory-custom-select">
+            <select :class="!$store.getters.getHasCompletedTutorial && $store.getters.getTutorialStep == 12 && id.includes('not-set') ? 'in-focus' : ''" uk-tooltip="Schimba subcategoria" style="cursor: pointer;" v-for="(select, index) in getArrayToCompleteOptionsArray()" v-model="subcategoriesToPost[index]" :key="select.id || index" class="uk-select subcategory-custom-select">
               <option value="none">Neselectat</option>
               <option v-for="(subcategoryFromAll, optionIndex) in findSubcategoriesByCategoryId(index)" :key="optionIndex" :value="subcategoryFromAll.name">{{subcategoryFromAll.name}}</option>
             </select>
@@ -242,7 +244,7 @@
 
           <div slot="footer" class="uk-text-right">
             <vk-button :class="windowWidth <= 640 ? 'uk-button-small' : ''" style="margin-right: 2px;" @click="setShopCategoriesModelArray">Reseteaza</vk-button>
-            <vk-button :class="windowWidth <= 640 ? 'uk-button-small' : ''" @click="showChangeSubcategories = false" type="primary">OK</vk-button>
+            <vk-button :class="setOKButtonClass()" @click="showChangeSubcategories = false; $emit('close_modal'); $store.dispatch('changeTutorialStep', $store.getters.getTutorialStep+1)" type="primary">OK</vk-button>
           </div>
         </vk-modal>
         
@@ -327,6 +329,13 @@ export default {
       }
   },
   methods: {
+    setOKButtonClass() {
+      let className = this.windowWidth <= 640 ? 'uk-button-small' : ''
+
+      className += !this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 12 ? ' in-focus' : ''
+
+      return className;
+    },
     shouldShowSubcategory(subcategory, index) {
       if(this.subcategoriesToPost[index] == subcategory.name)
         return true;
@@ -356,11 +365,19 @@ export default {
     },
     hideModal() {
       this.showImageEdit = false
+      this.$emit('close_modal')
     },
     changeImage(data) {
       this.cannotFindImage = false
       this.newImage = data.newImage.image 
       this.hideModal();
+
+      if(!this.$store.getters.getHasCompletedTutorial) {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: 'smooth',
+        })
+      }
     },
     getShopSizeName() {
       if(this.shopSize == 'FREE')
@@ -464,11 +481,14 @@ export default {
             published: true
           }
 
+          this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+
           this.$emit('new_shop_added', shopToSave)
 
           this.editingShop = false;
 
-          UIkit.notification({message: "Nu uita sa adaugi detaliile de contact ale fatadei de magazin pentru a putea fi usor de gasit si de contactat", status: "warning"})
+          if(this.$store.getters.getHasCompletedTutorial)
+            UIkit.notification({message: "Nu uita sa adaugi detaliile de contact ale fatadei de magazin pentru a putea fi usor de gasit si de contactat", status: "warning"})
         })
         .catch((error) => {
           if(error.response.status == 413) {
@@ -514,7 +534,11 @@ export default {
         }) 
     },
     showEditImageModal() {
-      if(this.editingShop == true) this.showImageEdit = true;
+      if(this.editingShop == true) {
+        this.showImageEdit = true;
+        this.$emit('show_modal')
+        this.$store.dispatch('changeTutorialStep', 5)
+      }
     },
     discardChanges() {
       if(this.id.includes('not-set')) {
@@ -629,6 +653,13 @@ export default {
     this.categories.sort((s1, s2) => {
         return s1.name > s2.name ? 1 : s1.name < s2.name ? -1 : 0;
     });
+
+    if(!this.$store.getters.getHasCompletedTutorial) {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth',
+      })
+    }
   },
   watch: {
     $props: {
@@ -654,13 +685,17 @@ export default {
       },
       deep: true,
       immediate: true,
-    }
+    },
   }
   
 }
 </script>
 
 <style lang="scss" scoped>
+.sticky{
+  position: sticky!important;
+}
+
 .textarea-title {
   min-height: 40px;
 }
@@ -803,6 +838,7 @@ export default {
 
 .subcategory-custom-select {
   margin-top: 3px;
+  color: black!important;
 }
 
 .shop-type-mobile {

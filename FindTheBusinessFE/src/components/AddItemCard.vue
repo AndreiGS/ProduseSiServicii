@@ -59,6 +59,14 @@ export default {
 
       this.$emit('add_item')
     }
+  },
+  mounted() {
+    if(!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 26) {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth',
+      })
+    }
   }
 }
 </script>

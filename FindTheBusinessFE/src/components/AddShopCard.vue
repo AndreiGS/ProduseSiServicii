@@ -1,5 +1,5 @@
 <template>
-  <vk-card padding="small" class="card" @click="$emit('add_shop')">
+  <vk-card padding="small" class="card" @click="addShop">
     <vk-icons-plus :height="'30px'" :width="'30px'" class="plusButton"/>
   </vk-card>
 </template>
@@ -11,6 +11,12 @@ export default {
   name: 'AddShopCard',
   components: {
     VkIconsPlus,
+  },
+  methods: {
+    addShop() {
+      this.$emit('add_shop')
+      this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+    }
   }
 }
 </script>

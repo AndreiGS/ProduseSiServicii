@@ -10,7 +10,7 @@ import VueWindowSize from 'vue-window-size'
 import {Button} from 'vuikit/lib/button.js'
 import {Card, CardTitle} from 'vuikit/lib/card.js'
 import {Grid} from 'vuikit/lib/grid.js'
-import {Modal, ModalFull, ModalFullClose, ModalTitle} from 'vuikit/lib/modal.js'
+import {Modal, ModalFull, ModalFullClose, ModalClose, ModalTitle} from 'vuikit/lib/modal.js'
 import {Tabs, TabsItem} from 'vuikit/lib/tabs.js'
 import {Label} from 'vuikit/lib/label.js'
 import './registerServiceWorker'
@@ -25,6 +25,7 @@ Vue.component('VkGrid', Grid)
 Vue.component('VkModal', Modal)
 Vue.component('VkModalFull', ModalFull)
 Vue.component('VkModalFullClose', ModalFullClose)
+Vue.component('VkModalClose', ModalClose)
 Vue.component('VkModalTitle', ModalTitle)
 Vue.component('VkTabs', Tabs)
 Vue.component('VkTabsItem', TabsItem)
