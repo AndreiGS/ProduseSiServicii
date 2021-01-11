@@ -1,7 +1,7 @@
 <template>
   <div id="user-tokens-sections" uk-modal bg-close="false">
     <div class="uk-modal-dialog uk-margin-auto-vertical">
-      <button class="uk-modal-close-default" type="button" uk-close></button>
+      <button @click="$emit('close_dialog'); $store.dispatch('changeTutorialStep', $store.getters.getTutorialStep+1)" class="uk-modal-close-default" type="button" uk-close></button>
       <div class="uk-modal-header">
         <h2 class="uk-modal-title">Credite magazine</h2>
       </div>
@@ -60,7 +60,9 @@ export default {
   },
   methods: {
     hideModal() {
+      this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
       UIkit.modal("#user-tokens-sections").hide();
+      this.$emit('close_dialog')
     },
     async buyCredit(type) {
       var timeoutVar = setTimeout(() => { this.loading = true; }, 1000);

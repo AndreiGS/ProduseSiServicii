@@ -1,6 +1,9 @@
 <template>
 	<div>
 		<div v-if="loading==false">
+
+			<TutorialLayout :isShowingDialog="isShowingDialog"/>
+
 			<div v-if="error">
 				<div :class="windowWidth > 960 ? 'uk-padding-large' : ''">
 					<div class="uk-padding-small" style="background-color: rgba(111,196,43,0.2)">
@@ -43,8 +46,8 @@
 							</div>
 						</div>
 
-						<div class="uk-overlay uk-position-top-left custom-info-desktop custom-padding-edit-buttons" style="padding-top: 16px!important; text-align: left;">
-							<button uk-tooltip="title: Credite pentru fatade de magazin; pos: right" style="cursor: pointer; background: linear-gradient(45deg, #d6e218, #777400);" class="edit-button uk-button-primary" href="#user-tokens-sections" uk-toggle>
+						<div :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 1 ? 'in-focus' : ''" class="uk-overlay uk-position-top-left custom-info-desktop custom-padding-edit-buttons" style="padding-top: 16px!important; text-align: left;">
+							<button @click="isShowingDialog = true; $store.dispatch('changeTutorialStep', $store.getters.getTutorialStep+1)" uk-tooltip="title: Credite pentru fatade de magazin; pos: right" style="cursor: pointer; background: linear-gradient(45deg, #d6e218, #777400);" class="edit-button uk-button-primary" href="#user-tokens-sections" uk-toggle>
 								<span uk-icon="icon: lifesaver; ratio: 1"></span>
 							</button>
 						</div>
@@ -86,8 +89,8 @@
 							<textarea id="NameInputMobile" class="uk-input" :class="editing == false ? 'custom-input-disabled' : 'custom-input-enabled'" type="text" placeholder="Nume" v-model="editedName" :disabled="editing == false ? true : false"></textarea>
 						</div>
 
-						<div style="color: white" class="uk-overlay uk-position-bottom-right custom-info-desktop custom-padding-edit-buttons">
-							<button style="cursor: pointer; background: linear-gradient(45deg, #d6e218, #777400);" class="edit-button uk-button-primary" href="#user-tokens-sections" uk-toggle>
+						<div :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 1 ? 'in-focus' : ''" style="color: white; z-index: 10;" class="uk-overlay uk-position-bottom-right custom-info-desktop custom-padding-edit-buttons">
+							<button @click="isShowingDialog = true; $store.dispatch('changeTutorialStep', $store.getters.getTutorialStep+1)" style="cursor: pointer; background: linear-gradient(45deg, #d6e218, #777400);" class="edit-button uk-button-primary" href="#user-tokens-sections" uk-toggle>
 								<span uk-icon="icon: lifesaver; ratio: 1"></span>
 							</button>
 						</div>
@@ -138,6 +141,10 @@
 					v-on:discard_new_shop="discardNewShop()" 
 					v-on:add_shop="addShop()" 
 					v-on:refresh_page="refreshPage()" 
+					v-on:show_modal="showDialog()" 
+					v-on:close_modal="closeDialog()" 
+					@change_balance="changeBalance($event)"
+					@close_modal="closeDialog()"
 					:shops="user.shops" 
 					:subcategories="subcategories"
 					:categories="categories"
@@ -148,6 +155,7 @@
 			<DeleteUserDialog />
 			<UserTokensDialog 
 				v-on:add_shop_token="addShopToken($event)"
+				@close_dialog="closeDialog()"
 				:smallTokens="user.smallTokens"	
 				:mediumTokens="user.mediumTokens"	
 				:largeTokens="user.largeTokens"	
@@ -170,11 +178,13 @@ const ShopCardGrid = () => import(/* webpackChunkName: "profile-chunk" */ '@/com
 const AddBalanceDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/AddBalanceDialog.vue');
 const DeleteUserDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/DeleteUserDialog.vue');
 const UserTokensDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/UserTokensDialog.vue');
+const TutorialLayout = () => import(/* webpackChunkName: "others-chunk" */ '@/components/TutorialLayout.vue');
 
 export default {
 	name: "Profile",
 	data() {
 		return {
+			isShowingDialog: false,
 			error: false,
 			loading: false,
 			user: {
@@ -202,6 +212,7 @@ export default {
 		DeleteUserDialog,
 		AddBalanceDialog,
 		UserTokensDialog,
+	  TutorialLayout,
 	},
 	metaInfo() {
     return { 
@@ -216,6 +227,12 @@ export default {
     }
   },
 	methods: {
+		closeDialog() {
+			this.isShowingDialog = false;
+		},
+		showDialog() {
+			this.isShowingDialog = true;
+		},
 		addShopToken(data) {
 			this.user.balance -= data.balanceSubtracted
 
@@ -267,8 +284,11 @@ export default {
 
 					this.editedEmail = this.user.email;
 					this.editedName = this.user.name;
-					
 
+					if(this.user.shops.length > 0) {
+						this.$store.dispatch('changeHasCompletedTutorial', true);
+					}
+					
           this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
           this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
 				})

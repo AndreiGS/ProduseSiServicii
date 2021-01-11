@@ -12,11 +12,11 @@
       <div class="uk-modal-footer uk-text-right">
         <div class="uk-hidden@s">
 					<button @click="hideModal()" class="uk-button uk-button-default custom-dialog-button uk-button-small" type="button">Inchide</button>
-					<button @click="refreshStore()" class="uk-button uk-button-primary custom-dialog-button uk-button-small" type="button">Continua</button>
+					<button @click="refreshStore()" class="uk-button uk-button-primary custom-dialog-button uk-button-small" type="button">Reincarca</button>
 				</div>
 				<div class="uk-visible@s">
 					<button class="uk-button uk-button-default custom-dialog-button" type="button" @click="hideModal()">Inchide</button>
-					<button @click="refreshStore()" class="uk-button uk-button-primary custom-dialog-button" type="button">Continua</button>
+					<button @click="refreshStore()" class="uk-button uk-button-primary custom-dialog-button" type="button">Reincarca</button>
 				</div>
       </div>
     </div>
@@ -42,6 +42,13 @@ export default {
   methods: {
     hideModal() {
       UIkit.modal('#refresh-shop-sections').hide()
+      this.changeTutorialStep();
+
+      if(!this.$store.getters.getHasCompletedTutorial)
+        this.$emit('close_modal')
+    },
+    changeTutorialStep() {
+      this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
     },
     async refreshStore() {
       var timeoutVar = setTimeout(() => { this.loading = true; }, 1000);
@@ -63,7 +70,8 @@ export default {
 
           this.hideModal()
 
-          this.$emit("refresh_page");
+          if(this.$store.getters.getHasCompletedTutorial)
+            this.$emit("refresh_page");
         }) 
         .catch((error) => {
           if(error.response.status == 400)

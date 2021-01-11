@@ -25,11 +25,11 @@
       </div>
       <div class="uk-modal-footer uk-text-right">
         <div class="uk-hidden@s">
-					<button @click="hideModal()" class="uk-button uk-button-default custom-dialog-button uk-button-small" type="button">Inchide</button>
+					<button @click="hideModal()" :class="!this.$store.getters.getHasCompletedTutorial ? 'uk-hidden' : ''" class="uk-button uk-button-default custom-dialog-button uk-button-small" type="button">Inchide</button>
 					<button @click="saveChanges()" class="uk-button uk-button-primary custom-dialog-button uk-button-small" type="button">Salveaza</button>
 				</div>
 				<div class="uk-visible@s">
-					<button class="uk-button uk-button-default custom-dialog-button" type="button" @click="hideModal()">Inchide</button>
+					<button :class="!this.$store.getters.getHasCompletedTutorial ? 'uk-hidden' : ''" class="uk-button uk-button-default custom-dialog-button" type="button" @click="hideModal()">Inchide</button>
 					<button @click="saveChanges()" class="uk-button uk-button-primary custom-dialog-button" type="button">Salveaza</button>
 				</div>
       </div>
@@ -83,7 +83,8 @@ export default {
     async saveChanges() {
       this.changeContactDetailsToNullIfNecessary()
       await this.saveContactToDb();
-      
+      this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+      this.$emit('hide_modal', true)
     },
     async saveContactToDb() {
       var timeoutVar = setTimeout(() => { this.loading = true; }, 1000);
@@ -110,8 +111,8 @@ export default {
 
           this.$emit('contacts_changed', this.contacts)
           this.hideModal()
-
-          UIkit.notification({message: 'Datele de contact au fost actualizate', status: 'success'})
+          if(this.$store.getters.getHasCompletedTutorial)
+            UIkit.notification({message: 'Datele de contact au fost actualizate', status: 'success'})
         })
         .catch((error) => {
           UIkit.notification({message: 'Datele de contact nu au putut fi actualizate. Va rugam reincercati', status: 'danger'})

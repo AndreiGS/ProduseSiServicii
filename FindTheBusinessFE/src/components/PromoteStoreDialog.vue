@@ -6,7 +6,7 @@
         <h2 class="uk-modal-title">Promovare magazin</h2>
       </div>
       <div class="uk-modal-body">
-        <p>Daca alegeti aceasta optiune, 60 RON vor fi retrasi din contul dumneavoastra pentru ca magazinul sa ajunga pe paginile de inceput ale site-ului si sa apara cat mai sus in cautarile utilizatorilor</p>
+        <p>Daca alegeti oricare dintre optiuni, 60 RON vor fi retrasi din contul dumneavoastra pentru ca magazinul sa ajunga pe paginile de inceput ale site-ului si sa apara cat mai sus in cautarile utilizatorilor</p>
         <hr>
 
         <vk-grid divided class="uk-child-width-expand@s">
@@ -46,13 +46,20 @@ export default {
   data() {
     return {
       loading: false,
-
+      purchased: 0,
       backend: process.env.VUE_APP_BACKEND || 'http://localhost:8080'
     }
   },
   methods: {
     hideModal() {
       UIkit.modal('#promote-shop-sections').hide()
+      this.$emit('close_modal')
+      this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+      if(this.$store.getters.getHasCompletedTutorial) {
+        this.$emit("refresh_page");
+      } else {
+        this.$emit('change_balance', this.purchased);
+      }
     },
     async promoteStore(type) {
       var timeoutVar = setTimeout(() => { this.loading = true; }, 1000);
@@ -66,14 +73,12 @@ export default {
         }
       })
         .then((response) => {
-          UIkit.notification({message: 'Ati promovat magazinul cu succes!', status: 'success'})
+          let where = type == 'SEARCHES' ? 'in cautari' : 'in pagina "Acasa"' 
+          UIkit.notification({message: `Ati promovat magazinul ${where} cu succes!`, status: 'success'})
 
           this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
           this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
-
-          UIkit.modal("#promote-shop-sections").hide();
-
-          this.$emit("refresh_page");
+          this.purchased -= 60;
         }) 
         .catch((error) => {
           if(error.response.status == 400)

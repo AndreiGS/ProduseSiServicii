@@ -11,6 +11,14 @@ export default {
   name: 'AddTabCard',
   components: {
     VkIconsPlus,
+  },
+  mounted() {
+    if(!this.$store.getters.getHasCompletedTutorial) {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth',
+      })
+    }
   }
 }
 </script>
