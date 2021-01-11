@@ -15,7 +15,6 @@ export default {
   methods: {
     addShop() {
       this.$emit('add_shop')
-      this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
     }
   }
 }

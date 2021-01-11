@@ -17,12 +17,12 @@
       </div>
       <div class="uk-modal-footer uk-text-right">
         <div class="uk-hidden@s">
-          <button class="uk-button uk-button-default custom-dialog-button uk-button-small" type="button" @click="hideModal()">Inchide</button>
+          <button v-if="this.$store.getters.getHasCompletedTutorial" class="uk-button uk-button-default custom-dialog-button uk-button-small" type="button" @click="hideModal()">Inchide</button>
           <button class="uk-button uk-button-primary custom-dialog-button uk-button-small" type="button" @click="openPromotePanel()">Promoveaza</button>
         </div>
         <div class="uk-visible@s">
-          <button class="uk-button uk-button-default custom-dialog-button" type="button" @click="hideModal()">Inchide</button>
-          <button class="uk-button uk-button-primary custom-dialog-button" type="button" @click="openPromotePanel()">Promoveaza</button>
+          <button v-if="this.$store.getters.getHasCompletedTutorial" class="uk-button uk-button-default custom-dialog-button" type="button" @click="hideModal()">Inchide</button>
+          <button v class="uk-button uk-button-primary custom-dialog-button" type="button" @click="openPromotePanel()">Promoveaza</button>
         </div>
       </div>
     </div>
@@ -58,6 +58,7 @@ export default {
     openPromotePanel() {
       this.hideModal();
       this.$emit('promote_shop', this.id);
+      this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
     },
     hideModal() {
       UIkit.modal("#promote-info-sections").hide();

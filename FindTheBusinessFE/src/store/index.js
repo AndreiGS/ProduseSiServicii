@@ -86,12 +86,12 @@ export default new Vuex.Store({
         id: 13,
       },
       {
-        content: 'Apasati butonul cu un creion "Modifica fatada de magazin"',
+        content: 'Apasati butonul informativ de pe imagine pentru a afla detalii despre promovare',
         place: 'top',
         id: 14,
       },
       {
-        content: 'Apasati butonul informativ de pe imagine pentru a afla detalii despre promovare',
+        content: 'Apasati "Promoveaza"',
         place: 'top',
         id: 15,
       },
@@ -101,7 +101,7 @@ export default new Vuex.Store({
         id: 16,
       },
       {
-        content: 'Apasati butonul rosu pentru a inchide editarea fara a salva modificari legate de fatada de magazin (nume, descriere, subcategorii, credit)',
+        content: 'Apasati pe buton pentru a deschide fereastra de "Reincare magazin". Apoi, daca doriti, apasati "Reincarcare" sau, in caz contrar, "Inchide"',
         place: 'top',
         id: 17,
       },

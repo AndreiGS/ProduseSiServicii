@@ -7,7 +7,7 @@
             <!--<div v-if="isPromotedInHome" class="uk-card-badge uk-label" style="right: 10px; top: 10px;">PROMOVAT{{promotedDaysInHomeRemaining != null ? ` ${promotedDaysInHomeRemaining} zile "ACASA"` : null}}</div>
             <div v-if="isPromotedInSearches" class="uk-card-badge uk-label" style="right: 10px; top: 10px;">PROMOVAT{{promotedDaysInSearchesRemaining != null ? ` ${promotedDaysInSearchesRemaining} zile "CAUTARI"` : null}}</div>-->
 
-            <button @click="openPromotedInfoPanel()" v-if="isPromotedInHome || isPromotedInSearches" uk-tooltip="Informatii promovare" style="cursor: pointer;" class="promote-info-button uk-button-primary uk-card-badge uk-label"><span uk-icon="icon: info; ratio: 0.8"></span></button>
+            <button @click="openPromotedInfoPanel()" uk-tooltip="Informatii promovare" style="cursor: pointer;" :class="!$store.getters.getHasCompletedTutorial && $store.getters.getTutorialStep == 14 ? 'in-focus' : ''" class="promote-info-button uk-button-primary uk-card-badge uk-label"><span uk-icon="icon: info; ratio: 0.8"></span></button>
 
             <div @click="showEditImageModal()" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 4 && this.id.includes('not-set') ? 'in-focus' : ''" class="uk-inline uk-width-1-1" :style="(this.editingShop==true) ? 'cursor: pointer;' : ''">
               
@@ -77,7 +77,7 @@
                     <option value="UNLIMITED">Extra (100 produse)</option>
                   </select>
 
-                  <button :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 10 && this.id.includes('not-set') ? 'in-focus sticky' : ''" class="uk-button uk-button-primary custom-change-subcategories-button" @click="showChangeSubcategories = true; $store.dispatch('changeTutorialStep', $store.getters.getTutorialStep+1); $emit('show_modal')">Modifica categorii</button>
+                  <button :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 10 && this.id.includes('not-set') ? 'in-focus sticky' : ''" class="uk-button uk-button-primary custom-change-subcategories-button" @click="showChangeSubcategories = true; changeTutorialStep(); $emit('show_modal')">Modifica categorii</button>
                 </div>
 
                 
@@ -108,7 +108,7 @@
 
               <div class="edit-buttons-container uk-hidden@s" style="margin-bottom: 15px">
                 <div v-if="editingShop == false">
-                  <button uk-tooltip="Reincarca fatada de magazin" style="cursor: pointer; background: linear-gradient(45deg, #d6e218, #777400);" @click="$emit('refresh_shop', id)" class="edit-button-shop-card uk-button-primary"><span uk-icon="icon: refresh; ratio: 0.8" class="edit-button-icon"></span></button>
+                  <button uk-tooltip="Reincarca fatada de magazin" style="cursor: pointer; background: linear-gradient(45deg, #d6e218, #777400);" @click="refreshButtonAction()" :class="!$store.getters.getHasCompletedTutorial && $store.getters.getTutorialStep == 17 && !hasPressedRefreshButton ? 'in-focus' : ''" class="edit-button-shop-card uk-button-primary"><span uk-icon="icon: refresh; ratio: 0.8" class="edit-button-icon"></span></button>
                   <button uk-tooltip="Promoveaza fatada de magazin" style="cursor: pointer; background: linear-gradient(45deg, #d6e218, #777400);" @click="$emit('promote_shop', id)" class="edit-button-shop-card uk-button-primary"><span uk-icon="icon: bolt; ratio: 1" class="edit-button-icon"></span></button>
                   <button uk-tooltip="Editeaza fatada de magazin" style="cursor: pointer; margin-right: 10px;" class="edit-button-shop-card uk-button-primary" v-on:click="editShop()"><span uk-icon="icon: pencil; ratio: 0.8" class="edit-button-icon"></span></button>
                 </div>
@@ -119,14 +119,14 @@
                 </div>
               </div>
 
-              <router-link :to="{ name: 'Storefront', params: { id: id }, query: { owner: true }}"><vk-button v-if="id.includes('not-set') == false && editingShop == false" @click="$store.dispatch('changeTutorialStep', $store.getters.getTutorialStep+1)" :class="!$store.getters.getHasCompletedTutorial && $store.getters.getTutorialStep == 18 ? 'in-focus' : ''" class="uk-hidden@s custom-button" type="primary">VEZI MAGAZIN</vk-button></router-link>
+              <router-link :to="{ name: 'Storefront', params: { id: id }, query: { owner: true }}"><vk-button v-if="id.includes('not-set') == false && editingShop == false" @click="changeTutorialStep()" :class="!$store.getters.getHasCompletedTutorial && $store.getters.getTutorialStep == 18 ? 'in-focus' : ''" class="uk-hidden@s custom-button" type="primary">VEZI MAGAZIN</vk-button></router-link>
             </div>
 
             <!--DESKTOP-->
             <div class="uk-width-1-3@s uk-width-2-5@m uk-width-1-3@l uk-width-1-5@xl uk-visible@s" style="padding: 0">
               <div class="edit-buttons-container">
                 <div v-if="editingShop == false">
-                  <button uk-tooltip="Reincarca fatada de magazin" style="cursor: pointer; margin-left: 0px; background: linear-gradient(45deg, #d6e218, #777400);" @click="$emit('refresh_shop', id)" class="edit-button-shop-card uk-button-primary"><span uk-icon="icon: refresh; ratio: 0.8" class="edit-button-icon"></span></button>
+                  <button uk-tooltip="Reincarca fatada de magazin" style="cursor: pointer; margin-left: 0px; background: linear-gradient(45deg, #d6e218, #777400);" @click="refreshButtonAction()" :class="!$store.getters.getHasCompletedTutorial && $store.getters.getTutorialStep == 17 && !hasPressedRefreshButton ? 'in-focus' : ''" class="edit-button-shop-card uk-button-primary"><span uk-icon="icon: refresh; ratio: 0.8" class="edit-button-icon"></span></button>
                   <button uk-tooltip="Promoveaza fatada de magazin" style="cursor: pointer; background: linear-gradient(45deg, #d6e218, #777400);" @click="$emit('promote_shop', id)" class="edit-button-shop-card uk-button-primary"><span uk-icon="icon: bolt; ratio: 1" class="edit-button-icon"></span></button>
                   <button uk-tooltip="Editeaza fatada de magazin" style="cursor: pointer;" class="edit-button-shop-card uk-button-primary" v-on:click="editShop()"><span uk-icon="icon: pencil; ratio: 0.8" class="edit-button-icon"></span></button>
                 </div>
@@ -145,7 +145,7 @@
                   <option value="LARGE">Mare (40 produse)</option>
                   <option value="UNLIMITED">Extra (100 produse)</option>
                 </select>
-                <button :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 10 && this.id.includes('not-set') ? 'in-focus' : ''" class="uk-button uk-button-primary custom-change-subcategories-button uk-flex uk-flex-middle uk-align-center" @click="showChangeSubcategories = true; $store.dispatch('changeTutorialStep', $store.getters.getTutorialStep+1); $emit('show_modal');"><span style="margin: 3px" uk-icon="icon: settings; ratio: 1"></span><p style="margin: 0">Categorii</p></button>
+                <button :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 10 && this.id.includes('not-set') ? 'in-focus' : ''" class="uk-button uk-button-primary custom-change-subcategories-button uk-flex uk-flex-middle uk-align-center" @click="showChangeSubcategories = true; changeTutorialStep(); $emit('show_modal');"><span style="margin: 3px" uk-icon="icon: settings; ratio: 1"></span><p style="margin: 0">Categorii</p></button>
               </div>
 
               <div v-if="editingShop == false">
@@ -156,7 +156,7 @@
                   <p>Tip: {{getShopSizeName()}}</p>
                 </div>
                 <StarRating v-if="id.includes('not-set') == false" class="custom-star" :rating="rating" :show-rating="false" :star-size="20" :increment="0.1" :read-only="true"/>
-                <router-link :to="{ name: 'Storefront', params: { id: id }, query: { owner: true }}"><vk-button v-if="id.includes('not-set') == false && editingShop == false" @click="$store.dispatch('changeTutorialStep', $store.getters.getTutorialStep+1)" :class="!$store.getters.getHasCompletedTutorial && $store.getters.getTutorialStep == 18 ? 'in-focus' : ''" class="uk-visible@s custom-button" type="primary">VEZI MAGAZIN</vk-button></router-link>
+                <router-link :to="{ name: 'Storefront', params: { id: id }, query: { owner: true }}"><vk-button v-if="id.includes('not-set') == false && editingShop == false" @click="changeTutorialStep()" :class="!$store.getters.getHasCompletedTutorial && $store.getters.getTutorialStep == 18 ? 'in-focus' : ''" class="uk-visible@s custom-button" type="primary">VEZI MAGAZIN</vk-button></router-link>
               </div>
 
               <!--<div v-else>
@@ -193,6 +193,7 @@
           :promotedDaysInSearchesRemaining="promotedDaysInSearchesRemaining"
 
           @promote_shop="$emit('promote_shop', id)"
+          @close_modal="$emit('close_modal')"
         />
 
         <vk-modal-full class="uk-margin-remove" :stuck="true" :show.sync="showImageEdit">
@@ -244,7 +245,7 @@
 
           <div slot="footer" class="uk-text-right">
             <vk-button :class="windowWidth <= 640 ? 'uk-button-small' : ''" style="margin-right: 2px;" @click="setShopCategoriesModelArray">Reseteaza</vk-button>
-            <vk-button :class="setOKButtonClass()" @click="showChangeSubcategories = false; $emit('close_modal'); $store.dispatch('changeTutorialStep', $store.getters.getTutorialStep+1)" type="primary">OK</vk-button>
+            <vk-button :class="setOKButtonClass()" @click="showChangeSubcategories = false; $emit('close_modal'); changeTutorialStep()" type="primary">OK</vk-button>
           </div>
         </vk-modal>
         
@@ -311,6 +312,7 @@ export default {
         loading: false,
         subcategoriesToPost: [],
         shopCategory: this.oldShopCategories,
+        hasPressedRefreshButton: false,
 
         displayedDescription: null,
 
@@ -329,6 +331,11 @@ export default {
       }
   },
   methods: {
+    refreshButtonAction() {
+      this.$emit('show_modal'); 
+      this.$emit('refresh_shop', this.id);
+      this.hasPressedRefreshButton = true
+    },
     setOKButtonClass() {
       let className = this.windowWidth <= 640 ? 'uk-button-small' : ''
 
@@ -358,7 +365,9 @@ export default {
 			return subcategoriesToReturn*/
 		},
     openPromotedInfoPanel() {
+      this.$emit('show_modal')
       UIkit.modal("#promote-info-sections").show();
+      this.changeTutorialStep();
     },
     onImgLoad() {
       this.hasImageLoaded = true;
@@ -481,7 +490,7 @@ export default {
             published: true
           }
 
-          this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+          this.changeTutorialStep()
 
           this.$emit('new_shop_added', shopToSave)
 
@@ -537,7 +546,7 @@ export default {
       if(this.editingShop == true) {
         this.showImageEdit = true;
         this.$emit('show_modal')
-        this.$store.dispatch('changeTutorialStep', 5)
+        this.changeTutorialStep()
       }
     },
     discardChanges() {
@@ -558,6 +567,9 @@ export default {
     },
     editShop() {
       this.editingShop = !this.editingShop;
+    },
+    changeTutorialStep() {
+      this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
     },
     resetDescription() {
       this.displayedDescription = this.description;

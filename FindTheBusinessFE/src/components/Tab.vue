@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     setTabClass() {
-      let className = !this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 20 ? 'in-focus ' : ''
+      let className = !this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 24 ? 'in-focus ' : ''
     
       className += (this.editingTab == true) ? 'custom-input-enabled' : 'custom-input-disabled';
 

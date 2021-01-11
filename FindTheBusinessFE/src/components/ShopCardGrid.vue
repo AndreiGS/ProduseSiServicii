@@ -52,8 +52,8 @@
       <div class="not-found">Nu ai niciun magazin adaugat in cont!</div>
     </div>
 
-    <RefreshStoreDialog v-on:refresh_page="$emit('refresh_page')" :shopIdToModify="shopId"/>
-    <PromoteStoreDialog v-on:refresh_page="$emit('refresh_page')" :shopIdToModify="shopId"/>
+    <RefreshStoreDialog v-on:refresh_page="$emit('refresh_page')" @close_modal="$emit('close_modal')" :shopIdToModify="shopId"/>
+    <PromoteStoreDialog v-on:refresh_page="$emit('refresh_page')" @change_balance="$emit('change_balance', $event)" @close_modal="$emit('close_modal')" :shopIdToModify="shopId"/>
     <DeleteShopDialog v-on:delete_shop="$emit('delete_shop', $event)" :shopIdToModify="shopId"/>
     <SurePublishDialog v-on:change_published="$emit('change_published', $event)" :shopIdToModify="shopId"/> 
   </div>
@@ -110,7 +110,7 @@ export default {
         UIkit.modal("#sure-publish-sections").show();
       },
       addShop() {
-        this.$store.dispatch('changeTutorialStep', 2)
+        this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
         this.$emit('add_shop')
         window.scrollTo({
           top: document.body.scrollHeight,

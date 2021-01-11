@@ -143,6 +143,8 @@
 					v-on:refresh_page="refreshPage()" 
 					v-on:show_modal="showDialog()" 
 					v-on:close_modal="closeDialog()" 
+					@change_balance="changeBalance($event)"
+					@close_modal="closeDialog()"
 					:shops="user.shops" 
 					:subcategories="subcategories"
 					:categories="categories"

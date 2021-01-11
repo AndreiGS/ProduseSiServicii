@@ -7,7 +7,7 @@
       <vk-grid>
         <div class="uk-width-5-5@m">
           <div class="cards">
-            <AddItemCard v-if="tab == 'all' && isOwner == true && !itemAdded && (this.$store.getters.getTutorialStep == 26 || this.$store.getters.getHasCompletedTutorial)" style="margin-bottom: 15px" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 22 ? 'in-focus' : ''" v-on:add_item="addItem()"/>
+            <AddItemCard v-if="tab == 'all' && isOwner == true && !itemAdded && (this.$store.getters.getTutorialStep == 26 || this.$store.getters.getHasCompletedTutorial)" style="margin-bottom: 15px" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 26 ? 'in-focus' : ''" v-on:add_item="addItem()"/>
             <div v-if="products != null && products.length > 0">
               <div v-if="isSearching == true">
                 <div v-if="foundItemsIds != null && foundItemsIds.length > 0">
@@ -281,7 +281,7 @@ export default {
       await this.getItems();
     },
     mounted() {
-      if(!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 22) {
+      if(!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 26) {
         console.log("yes")
         window.scrollTo({
           top: document.body.scrollHeight,

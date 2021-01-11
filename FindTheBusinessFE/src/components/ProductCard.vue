@@ -25,13 +25,13 @@
             <div class="uk-width-2-3@s uk-width-3-5@m uk-width-2-3@l uk-width-3-4@xl" style="height: 100%; padding-left: 0px;">
               <div class="uk-flex uk-visible@s" style="word-wrap: break-word;">
                 <vk-card-title style="margin-bottom: 0px; word-wrap: break-word; width: 100%;">
-                  <textarea v-if="editingItem == true" :uk-tooltip="(editingItem == true) ? 'Titlu (maxim 40 caractere)' : null" maxlength="40" :id="'TitleInputDesktop'+item.id" class="uk-textarea textarea-title custom-input-enabled" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 26 ? 'in-focus ' : ''" type="text" placeholder="Titlu" v-model="item.title" :disabled="(editingItem == true) ? false : true"></textarea>
+                  <textarea v-if="editingItem == true" :uk-tooltip="(editingItem == true) ? 'Titlu (maxim 40 caractere)' : null" maxlength="40" :id="'TitleInputDesktop'+item.id" class="uk-textarea textarea-title custom-input-enabled" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 30 ? 'in-focus ' : ''" type="text" placeholder="Titlu" v-model="item.title" :disabled="(editingItem == true) ? false : true"></textarea>
                   <h3 v-else style="margin: 0; padding-left: 10px; font-weight: 400;">{{item.title}}</h3>
                 </vk-card-title>
               </div>
               <div class="uk-flex uk-hidden@s" style="word-wrap: break-word; justify-content: center;">
                 <vk-card-title style="margin-bottom: 0px; word-wrap: break-word; width: 100%;">
-                  <textarea v-if="editingItem == true" :uk-tooltip="(editingItem == true) ? 'Titlu (maxim 40 caractere)' : null" maxlength="40" style="text-align: center; padding: 0" :id="'TitleInputMobile'+item.id" class="uk-textarea textarea-title custom-input-enabled" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 26 ? 'in-focus ' : ''" type="text" placeholder="Titlu" v-model="item.title" :disabled="(editingItem == true) ? false : true"></textarea>
+                  <textarea v-if="editingItem == true" :uk-tooltip="(editingItem == true) ? 'Titlu (maxim 40 caractere)' : null" maxlength="40" style="text-align: center; padding: 0" :id="'TitleInputMobile'+item.id" class="uk-textarea textarea-title custom-input-enabled" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 30 ? 'in-focus ' : ''" type="text" placeholder="Titlu" v-model="item.title" :disabled="(editingItem == true) ? false : true"></textarea>
                   <h3 class="uk-text-center" v-else style="margin: 0; padding-left: 0; font-weight: 400;">{{item.title}}</h3>
                 </vk-card-title>
               </div>
@@ -116,7 +116,7 @@
                       Fila
                     </div>
                     <div>
-                      <select uk-tooltip="Schimba fila" style="cursor: pointer; height: 32px" v-if="allTabs.length > 0" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 28 ? 'in-focus ' : ''" class="uk-select custom-category-select" v-model="item.tabName">
+                      <select uk-tooltip="Schimba fila" style="cursor: pointer; height: 32px" v-if="allTabs.length > 0" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 32 ? 'in-focus ' : ''" class="uk-select custom-category-select" v-model="item.tabName">
                         <option value="none">Neselectat</option>
                         <option v-for="(tab, index) in allTabs" :key="index" :value="tab.name">{{tab.name}}</option>
                       </select>
@@ -488,7 +488,7 @@ export default {
         });
       })
 
-      if(!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 23) {
+      if(!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 27) {
         window.scrollTo({
           top: document.body.scrollHeight,
           behavior: 'smooth',
