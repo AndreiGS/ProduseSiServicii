@@ -25,7 +25,7 @@
 </template>
 
 <script>
-const StarRating = () => import('vue-star-rating');
+const StarRating = () => import(/* webpackChunkName: "others-chunk" */ 'vue-star-rating');
 
 export default {
     name: "CommentCard",

@@ -3,11 +3,18 @@
     <vk-grid v-if="shops.length>0">
       <div class="uk-width-5-5@m">
         <div class="cards">
-          <AddShopCard v-on:add_shop="$emit('add_shop')" style="margin-bottom: 10px"/>
+          <AddShopCard 
+            v-if="!hasAddedShop" 
+            v-on:add_shop="addShop" 
+            :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 3 ? 'in-focus' : ''" 
+            style="margin-bottom: 10px"
+          />
           <ShopCard 
             v-on:new_shop_added="$emit('new_shop_added', $event)" 
             v-on:change_published="$emit('change_published', $event)"
             v-on:discard_new_shop="$emit('discard_new_shop')" 
+            v-on:show_modal="$emit('show_modal')" 
+            v-on:close_modal="$emit('close_modal')" 
             v-on:refresh_shop="showRefresh($event)" 
             v-on:promote_shop="showPromote($event)" 
             v-on:delete_shop_db="showDelete($event)" 
@@ -41,24 +48,24 @@
       </vk-card>-->
     </vk-grid>
     <div v-else>
-      <AddShopCard v-on:add_shop="$emit('add_shop')" style="margin-bottom: 10px"/>
+      <AddShopCard v-on:add_shop="addShop" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 3 ? 'in-focus' : ''"  style="margin-bottom: 10px"/>
       <div class="not-found">Nu ai niciun magazin adaugat in cont!</div>
     </div>
 
-    <RefreshStoreDialog v-on:refresh_page="$emit('refresh_page')" :shopIdToModify="shopId"/>
-    <PromoteStoreDialog v-on:refresh_page="$emit('refresh_page')" :shopIdToModify="shopId"/>
+    <RefreshStoreDialog v-on:refresh_page="$emit('refresh_page')" @close_modal="$emit('close_modal')" :shopIdToModify="shopId"/>
+    <PromoteStoreDialog v-on:refresh_page="$emit('refresh_page')" @change_balance="$emit('change_balance', $event)" @close_modal="$emit('close_modal')" :shopIdToModify="shopId"/>
     <DeleteShopDialog v-on:delete_shop="$emit('delete_shop', $event)" :shopIdToModify="shopId"/>
     <SurePublishDialog v-on:change_published="$emit('change_published', $event)" :shopIdToModify="shopId"/> 
   </div>
 </template>
 
 <script>
-const ShopCard = () => import(/* webpackChunkName: "profile-chunk" */ "./ShopCard");
-const RefreshStoreDialog = () => import(/* webpackChunkName: "profile-chunk" */ '@/components/RefreshStoreDialog.vue');
+const ShopCard = () => import(/* webpackChunkName: "cards-chunk" */ "./ShopCard");
+const RefreshStoreDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/RefreshStoreDialog.vue');
 const PromoteStoreDialog = () => import(/* webpackChunkName: "profile-chunk" */ '@/components/PromoteStoreDialog.vue');
-const AddShopCard = () => import(/* webpackChunkName: "profile-chunk" */ '@/components/AddShopCard')
-const DeleteShopDialog = () => import(/* webpackChunkName: "profile-chunk" */ '@/components/DeleteShopDialog')
-const SurePublishDialog = () => import(/* webpackChunkName: "profile-chunk" */ '@/components/SurePublishDialog.vue')
+const AddShopCard = () => import(/* webpackChunkName: "cards-chunk" */ '@/components/AddShopCard')
+const DeleteShopDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/DeleteShopDialog')
+const SurePublishDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/SurePublishDialog.vue')
 
 export default {
     name: "ShopCardGrid",
@@ -77,13 +84,13 @@ export default {
           id: null,
           image: null
         },
-        
       }
     },
     props: {
       shops: null,
       subcategories: null,
       categories: null,
+      hasAddedShop: false,
     },
     methods: {
       showRefresh(id) {
@@ -101,8 +108,16 @@ export default {
       surePublish(id) {
         this.shopId = id;
         UIkit.modal("#sure-publish-sections").show();
+      },
+      addShop() {
+        this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+        this.$emit('add_shop')
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: 'smooth'
+        })
       }
-    }
+    },
 }
 </script>
 

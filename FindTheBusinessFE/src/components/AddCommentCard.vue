@@ -1,6 +1,6 @@
 <template>
   <vk-card padding="small" class="card">
-    <vk-icon icon="plus" ratio="2" class="plusButton" :class="{'plusButtonTransition' : showForm}" @click="toggleForm"/>
+    <vk-icons-plus :height="'30px'" :width="'30px'" class="plusButton" :class="{'plusButtonTransition' : showForm}" @click="toggleForm"/>
     <div v-show="showForm" style="text-align: left; margin-top: 15px;">
       <vk-card-title class="uk-text-center">Adauga o recenzie</vk-card-title>
 
@@ -94,12 +94,14 @@
 
 <script>
 import axios from 'axios'
-const StarRating = () => import('vue-star-rating');
+const StarRating = () => import(/* webpackChunkName: "others-chunk" */ 'vue-star-rating');
+import VkIconsPlus from '@vuikit/icons/lib/plus'
 
 export default {
     name: "AddCommentCard",
     components: {
-        StarRating
+        StarRating,
+        VkIconsPlus,
     },
     data () {
         return {

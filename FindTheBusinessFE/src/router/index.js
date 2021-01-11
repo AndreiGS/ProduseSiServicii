@@ -12,12 +12,12 @@ const routes = [
   {
     path: '/terms',
     name: 'TermsAndConditions',
-    component: () => import(/* webpackChunkName: "others-chunk" */ '../views/TermsAndConditions.vue'),
+    component: () => import(/* webpackChunkName: "statics-chunk" */ '../views/TermsAndConditions.vue'),
   },
   {
     path: '/tutorial',
     name: 'Tutorial',
-    component: () => import(/* webpackChunkName: "others-chunk" */ '../views/Tutorial.vue'),
+    component: () => import(/* webpackChunkName: "statics-chunk" */ '../views/Tutorial.vue'),
   },
   {
     path: '/search',

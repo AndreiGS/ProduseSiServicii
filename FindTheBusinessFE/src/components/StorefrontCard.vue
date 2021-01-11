@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import StarRating from 'vue-star-rating'
+const StarRating = () => import(/* webpackChunkName: "others-chunk" */ 'vue-star-rating')
 
 export default {
     name: "StorefrontCard",

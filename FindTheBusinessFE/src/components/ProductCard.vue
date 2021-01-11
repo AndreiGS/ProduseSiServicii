@@ -14,7 +14,7 @@
               <p v-if="editingItem == false" class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine gasita</p>
             </div>
 
-            <div v-if="this.editingItem == true" class="uk-position-center change-image-overlay">
+            <div v-if="this.editingItem == true" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 27 ? 'in-focus ' : ''" class="uk-position-center change-image-overlay">
               <span uk-icon="camera" ratio="2"></span>
               <p>Schimba imaginea</p>
             </div>
@@ -25,23 +25,23 @@
             <div class="uk-width-2-3@s uk-width-3-5@m uk-width-2-3@l uk-width-3-4@xl" style="height: 100%; padding-left: 0px;">
               <div class="uk-flex uk-visible@s" style="word-wrap: break-word;">
                 <vk-card-title style="margin-bottom: 0px; word-wrap: break-word; width: 100%;">
-                  <textarea v-if="editingItem == true" :uk-tooltip="(editingItem == true) ? 'Titlu (maxim 40 caractere)' : null" maxlength="40" :id="'TitleInputDesktop'+item.id" class="uk-textarea textarea-title" :class="(editingItem == false) ? 'custom-input-disabled' : 'custom-input-enabled'" type="text" placeholder="Titlu" v-model="item.title" :disabled="(editingItem == true) ? false : true"></textarea>
+                  <textarea v-if="editingItem == true" :uk-tooltip="(editingItem == true) ? 'Titlu (maxim 40 caractere)' : null" maxlength="40" :id="'TitleInputDesktop'+item.id" class="uk-textarea textarea-title custom-input-enabled" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 30 ? 'in-focus ' : ''" type="text" placeholder="Titlu" v-model="item.title" :disabled="(editingItem == true) ? false : true"></textarea>
                   <h3 v-else style="margin: 0; padding-left: 10px; font-weight: 400;">{{item.title}}</h3>
                 </vk-card-title>
               </div>
               <div class="uk-flex uk-hidden@s" style="word-wrap: break-word; justify-content: center;">
                 <vk-card-title style="margin-bottom: 0px; word-wrap: break-word; width: 100%;">
-                  <textarea v-if="editingItem == true" :uk-tooltip="(editingItem == true) ? 'Titlu (maxim 40 caractere)' : null" maxlength="40" style="text-align: center; padding: 0" :id="'TitleInputMobile'+item.id" class="uk-textarea textarea-title" :class="(editingItem == false) ? 'custom-input-disabled' : 'custom-input-enabled'" type="text" placeholder="Titlu" v-model="item.title" :disabled="(editingItem == true) ? false : true"></textarea>
+                  <textarea v-if="editingItem == true" :uk-tooltip="(editingItem == true) ? 'Titlu (maxim 40 caractere)' : null" maxlength="40" style="text-align: center; padding: 0" :id="'TitleInputMobile'+item.id" class="uk-textarea textarea-title custom-input-enabled" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 30 ? 'in-focus ' : ''" type="text" placeholder="Titlu" v-model="item.title" :disabled="(editingItem == true) ? false : true"></textarea>
                   <h3 class="uk-text-center" v-else style="margin: 0; padding-left: 0; font-weight: 400;">{{item.title}}</h3>
                 </vk-card-title>
               </div>
 
               <div class="uk-text-center uk-hidden@s">
-                <textarea uk-tooltip="Descriere (maxim 255 caractere)" maxlength="255" style="text-align: center;" class="uk-textarea custom-textarea-enabled text-area-props" v-if="editingItem == true" :id="'DescriptionInputMobile'+item.id" type="text" placeholder="Descriere" v-model="item.description"></textarea>
+                <textarea uk-tooltip="Descriere (maxim 255 caractere)" maxlength="255" style="text-align: center;" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 31 ? 'in-focus ' : ''" class="uk-textarea custom-textarea-enabled text-area-props" v-if="editingItem == true" :id="'DescriptionInputMobile'+item.id" type="text" placeholder="Descriere" v-model="item.description"></textarea>
                 <p :id="'ph-desc-mobile'+item.id" class="description-p-props-mobile" style="text-align: center; white-space: pre-line;" v-else>{{item.description}}</p>
               </div>
               <div class="uk-visible@s">
-                <textarea uk-tooltip="Descriere (maxim 255 caractere)" maxlength="255" class="uk-textarea custom-textarea-enabled text-area-props" v-if="editingItem == true" :id="'DescriptionInputDesktop'+item.id" type="text" placeholder="Descriere" v-model="item.description"></textarea>
+                <textarea uk-tooltip="Descriere (maxim 255 caractere)" maxlength="255" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 31 ? 'in-focus ' : ''" class="uk-textarea custom-textarea-enabled text-area-props" v-if="editingItem == true" :id="'DescriptionInputDesktop'+item.id" type="text" placeholder="Descriere" v-model="item.description"></textarea>
                 <p :id="'ph-desc-desktop'+item.id" class="description-p-props-desktop" style="padding-left: 10px; margin-bottom: 0px; white-space: pre-line;" v-else>{{item.description}}</p>
               </div>
 
@@ -61,7 +61,7 @@
                   </div>
                   <div v-else>
                     <button uk-tooltip="Sterge articol" @click="deleteItem()" style="cursor: pointer;margin-left: 0px" v-if="item.id.includes('not-set') == false" class="edit-button-item-card uk-button-danger"><span style="margin: 3px" uk-icon="icon: trash; ratio: 0.8"></span></button>
-                    <button uk-tooltip="Salveaza modificarile" style="cursor: pointer;"  @click="saveItem()" class="edit-button-item-card uk-button-primary"><span style="margin: 3px" uk-icon="icon: check; ratio: 0.8"></span></button>
+                    <button uk-tooltip="Salveaza modificarile" style="cursor: pointer;"  @click="saveItem()" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 32 ? 'in-focus ' : ''" class="edit-button-item-card uk-button-primary"><span style="margin: 3px" uk-icon="icon: check; ratio: 0.8"></span></button>
                     <button uk-tooltip="Anuleaza modificarile" style="cursor: pointer;" @click="discardItem()" class="edit-button-item-card uk-button-danger"><span style="margin: 3px" uk-icon="icon: ban; ratio: 0.8"></span></button>
                   </div>
                 </div>
@@ -71,7 +71,7 @@
                       Fila
                     </div>
                     <div>
-                      <select uk-tooltip="Schimba fila" style="cursor: pointer;"  v-if="allTabs.length > 0" class="uk-select" v-model="item.tabName">
+                      <select uk-tooltip="Schimba fila" style="cursor: pointer;"  v-if="allTabs.length > 0" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 32 ? 'in-focus ' : ''" class="uk-select custom-category-select" v-model="item.tabName">
                         <option value="none">Neselectat</option>
                         <option v-for="(tab, index) in allTabs" :key="index" :value="tab.name">{{tab.name}}</option>
                       </select>
@@ -80,7 +80,7 @@
                       </div>
                     </div>
                     <div class="uk-text-center" style="margin-top: 10px">
-                      Pret <input uk-tooltip="(Optional)Pret aproximativ si cantitate/perioada (maxim 15 caractere)" maxlength="15" :id="'PriceInputMobile'+item.id" class="uk-input custom-input-enabled" type="text" placeholder="(Optional)-Pret/Cantitate(Perioada)" v-model="item.price">
+                      Pret <input uk-tooltip="(Optional)Pret aproximativ si cantitate/perioada (maxim 15 caractere)" maxlength="15" :id="'PriceInputMobile'+item.id" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 32 ? 'in-focus ' : ''" class="uk-input custom-input-enabled" type="text" placeholder="(Optional)-Pret/Cantitate(Perioada)" v-model="item.price">
                     </div>
                   </div>
                   <div v-else-if="editingItem == false && allLowercase(tab) == 'all'">
@@ -102,7 +102,7 @@
                 </div>
                 <div v-else>
                   <button uk-tooltip="Sterge articol" @click="deleteItem()" style="cursor: pointer; margin-left: 0px" v-if="item.id.includes('not-set') == false" class="edit-button-item-card uk-button-danger"><span style="margin: 3px" uk-icon="icon: trash; ratio: 0.8"></span></button>
-                  <button uk-tooltip="Salveaza modificarile" style="cursor: pointer;" @click="saveItem()" class="edit-button-item-card uk-button-primary"><span style="margin: 3px" uk-icon="icon: check; ratio: 0.8"></span></button>
+                  <button uk-tooltip="Salveaza modificarile" style="cursor: pointer;" @click="saveItem()" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 32 ? 'in-focus ' : ''" class="edit-button-item-card uk-button-primary"><span style="margin: 3px" uk-icon="icon: check; ratio: 0.8"></span></button>
                   <button uk-tooltip="Anuleaza modificarile" style="cursor: pointer;" @click="discardItem()" class="edit-button-item-card uk-button-danger"><span style="margin: 3px" uk-icon="icon: ban; ratio: 0.8"></span></button>
                 </div>
               </div>
@@ -110,13 +110,13 @@
                 <div>
                   <div v-if="editingItem == true">
                     <div class="uk-text-right">
-                      Pret <input uk-tooltip="(Optional)Pret aproximativ si cantitate/perioada (maxim 15 caractere)" maxlength="15" :id="'PriceInputDesktop'+item.id" class="uk-input custom-input-enabled" type="text" placeholder="(Optional)-Pret/Cantitate(Perioada)" v-model="item.price">
+                      Pret <input uk-tooltip="(Optional)Pret aproximativ si cantitate/perioada (maxim 15 caractere)" maxlength="15" :id="'PriceInputDesktop'+item.id" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 32 ? 'in-focus ' : ''" class="uk-input custom-input-enabled" type="text" placeholder="(Optional)-Pret/Cantitate(Perioada)" v-model="item.price">
                     </div>
                     <div class="uk-text-right">
                       Fila
                     </div>
                     <div>
-                      <select uk-tooltip="Schimba fila" style="cursor: pointer; height: 32px" v-if="allTabs.length > 0" class="uk-select" v-model="item.tabName">
+                      <select uk-tooltip="Schimba fila" style="cursor: pointer; height: 32px" v-if="allTabs.length > 0" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 32 ? 'in-focus ' : ''" class="uk-select custom-category-select" v-model="item.tabName">
                         <option value="none">Neselectat</option>
                         <option v-for="(tab, index) in allTabs" :key="index" :value="tab.name">{{tab.name}}</option>
                       </select>
@@ -191,7 +191,7 @@
 
 <script>
 import axios from 'axios'
-const ContactData = () => import(/* webpackChunkName: "profile-chunk" */ "./ContactData");
+const ContactData = () => import(/* webpackChunkName: "modals-chunk" */ "./ContactData");
 import CropperDialogComponent from '@/components/CropperDialogComponent.vue'
 import 'cropperjs/dist/cropper.css';
 
@@ -256,11 +256,19 @@ export default {
       //Edit image methods
       hideModal() {
         this.showImageEdit = false
+        this.$emit('hide_modal')
       },
       changeImage(data) {
         this.newImage = data.newImage.image 
         this.cannotFindImage = false
         this.hideModal();
+
+        if(!this.$store.getters.getHasCompletedTutorial) {
+          window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth',
+          })
+        }
       },
       //---------------------------------
 
@@ -344,6 +352,7 @@ export default {
 
             this.$emit('save_item', itemToSave)
             this.editItem();
+            this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
           })
           .catch((error) => {
             if(error.response == null) {
@@ -391,7 +400,11 @@ export default {
         return tab.toLowerCase()
       },
       showEditImageModal() {
-        if(this.editingItem == true) this.showImageEdit = true;
+        if(this.editingItem == true) {
+          this.showImageEdit = true;
+          this.$emit('show_modal')
+          this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+        }
       },
       doesTextContainLineBreak(text) {
         return /\r|\n/.exec(text)
@@ -474,6 +487,13 @@ export default {
           if(this.isStringTooLong()) this.cutDescription();
         });
       })
+
+      if(!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 27) {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: 'smooth',
+        })
+      }
       
       this.editingItem = (this.item.id == 'not-set') ? true : false
     },
@@ -495,6 +515,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+input[id^='PriceInputMobile']::placeholder, input[id^='PriceInputDesktop']::placeholder {
+  color: #bfbfbf;
+}
+
+input[id^='PriceInputMobile']:-ms-input-placeholder, input[id^='PriceInputDesktop']:-ms-input-placeholder {
+  color: red;
+}
+
+input[id^='PriceInputMobile']::-ms-input-placeholder, input[id^='PriceInputDesktop']::-ms-input-placeholder {
+  color: red;
+}
+
+.custom-category-select {
+  color: black!important;
+}
+
 .textarea-title {
   min-height: 40px;
   height: 40px;

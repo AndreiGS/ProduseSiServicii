@@ -6,12 +6,34 @@ import VueCookie from 'vue-cookie'
 import axios from 'axios'
 import vueCountryRegionSelect from 'vue-country-region-select'
 import VueMeta from 'vue-meta'
+import VueWindowSize from 'vue-window-size'
+import {Button} from 'vuikit/lib/button.js'
+import {Card, CardTitle} from 'vuikit/lib/card.js'
+import {Grid} from 'vuikit/lib/grid.js'
+import {Modal, ModalFull, ModalFullClose, ModalClose, ModalTitle} from 'vuikit/lib/modal.js'
+import {Tabs, TabsItem} from 'vuikit/lib/tabs.js'
+import {Label} from 'vuikit/lib/label.js'
 import './registerServiceWorker'
+import './assets/theme'
 
 Vue.config.productionTip = false
 
+Vue.component('VkCard', Card)
+Vue.component('VkCardTitle', CardTitle)
+Vue.component('VkButton', Button)
+Vue.component('VkGrid', Grid)
+Vue.component('VkModal', Modal)
+Vue.component('VkModalFull', ModalFull)
+Vue.component('VkModalFullClose', ModalFullClose)
+Vue.component('VkModalClose', ModalClose)
+Vue.component('VkModalTitle', ModalTitle)
+Vue.component('VkTabs', Tabs)
+Vue.component('VkTabsItem', TabsItem)
+Vue.component('VkLabel', Label)
+
 Vue.use(vueCountryRegionSelect)
 Vue.use(VueCookie);
+Vue.use(VueWindowSize)
 
 new Vue({
   async beforeCreate() { 

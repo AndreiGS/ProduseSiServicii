@@ -12,49 +12,51 @@
         </div>
       </div>
       <div v-else>
+        <TutorialLayout :isShowingDialog="isShowingDialog" />
+
         <div v-if="windowWidth < 640 || store.largePhoto != null || isOwner" class="uk-inline" style="width: 100%; margin-bottom: 15px;">
           <img loading="lazy" v-if="(newImage != null && newImage.includes('base64')) || (cannotFindImage == false && ((windowWidth >= 640 && store.largePhoto != null) || (windowWidth < 640 && store.smallPhoto != null)))" :src="(newImage == null) ? ((windowWidth >= 640) ? store.largePhoto : store.smallPhoto) : newImage" class="cover-image" :class="(editingShop == true) ? 'filter-image' : ''" :alt="store.name" @error="cannotFindImage = true">
           
           <div v-else-if="isOwner" class="cover-image no-image-div">
-            <p :style="cannotFindImage == true || ((windowWidth >= 640) ? store.largePhoto == null : store.smallPhoto == null) ? 'visibility: visible' : 'visibility: hidden'" v-if="editingShop == false" class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine mare gasita</p>
+            <p :style="cannotFindImage == true || ((windowWidth >= 640) ? store.largePhoto == null : store.smallPhoto == null) ? 'visibility: visible' : 'visibility: hidden'" v-if="editingShop == false" class="uk-overlay uk-position-center overlay-storefront" style="color: white;">Nicio imagine mare gasita</p>
           </div>
           
-          <div class="uk-overlay uk-position-bottom-left overlay uk-flex uk-flex-column">
+          <div class="uk-overlay uk-position-bottom-left overlay-storefront uk-flex uk-flex-column">
             <vk-label v-if="editingShop == true" class="uk-hidden@s" style="background: #E82901!important; margin-bottom: 5px;">In editare</vk-label>
             <vk-label v-if="store.promotedInHome || store.promotedInSearches">PROMOVAT</vk-label>
           </div>
 
-          <div v-if="editingShop == false" class="uk-overlay uk-position-top-right overlay">
+          <div v-if="editingShop == false" class="uk-overlay uk-position-top-right overlay-storefront">
             <button style="cursor: pointer;" v-on:click="copyShareLink()" class="copy-link-button uk-button-primary uk-flex uk-flex-middle uk-align-center">
               <span style="margin-right: 5px" uk-icon="icon: social; ratio: 0.8"></span>
               <p style="margin: 0">Link distribuire</p>
             </button>
           </div>
-          <div v-if="isOwner == true" class="uk-overlay uk-position-bottom-right overlay">
-            <button uk-tooltip="Editeaza fatada de magazinul" style="cursor: pointer;" v-if="editingShop == false" @click="changeEditState()" class="edit-button uk-button-primary"><span uk-icon="icon: pencil; ratio: 0.8"></span></button>
+          <div v-if="isOwner == true" class="uk-overlay uk-position-bottom-right overlay-storefront">
+            <button uk-tooltip="Editeaza fatada de magazinul" style="cursor: pointer;" v-if="editingShop == false" @click="changeEditState()" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 19 ? 'in-focus' : ''" class="edit-button uk-button-primary"><span uk-icon="icon: pencil; ratio: 0.8"></span></button>
             <div v-else class="edit-shop-button-container">
               <button uk-tooltip="Renunta la editarea fatadei de magazin" style="cursor: pointer;" @click="discardEdit()" class="edit-button uk-button-danger"><span uk-icon="icon: ban; ratio: 0.8"></span></button>
               <button uk-tooltip="Finalizeaza editarea fatadei de magazin" style="cursor: pointer;" @click="saveEdit()" class="edit-button uk-button-primary"><span uk-icon="icon: check; ratio: 0.8"></span></button>
             </div>
           </div>
-          <div @click="showImageEdit = true" v-if="isOwner == true && editingShop == true" :style="(this.editingShop==true) ? 'cursor: pointer;' : ''" style="color: white;" class="uk-overlay uk-position-center overlay change-image-div">
+          <div @click="showImageEdit = true" v-if="isOwner == true && editingShop == true" :style="(this.editingShop==true) ? 'cursor: pointer;' : ''" style="color: white;" class="uk-overlay uk-position-center overlay-storefront change-image-div">
             <span uk-icon="camera" ratio="2"></span>
             <p>Schimba imaginea {{windowWidth >= 768 ? 'mare' : 'mica'}}</p>
           </div>
 
           <!--DESKTOP-->
-          <div v-if="editingShop == true" class="uk-overlay uk-position-top-center overlay uk-visible@s">
+          <div v-if="editingShop == true" class="uk-overlay uk-position-top-center overlay-storefront uk-visible@s">
             <vk-label style="background: #E82901!important">In editare</vk-label>
           </div>
 
           <div v-if="isOwner == true && editingShop == true" class="uk-visible@s change-contact-button-div">
-            <div class="uk-overlay uk-position-top-left overlay">
-              <button style="cursor: pointer; padding: 5px" class="change-contact-button uk-button-primary uk-flex uk-flex-middle uk-align-center" href="#change-contact-sections" uk-toggle>
+            <div class="uk-overlay uk-position-top-left overlay-storefront">
+              <button @click="changeTutorialStep(true)" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 20 ? 'in-focus' : ''" style="cursor: pointer; padding: 5px" class="change-contact-button uk-button-primary uk-flex uk-flex-middle uk-align-center" href="#change-contact-sections" uk-toggle>
                 <span style="margin-right: 5px" uk-icon="icon: refresh; ratio: 0.8"></span>
                 <p style="margin: 0">Schimba detalii contact</p>
               </button>
             </div>
-            <div class="uk-overlay uk-position-top-right overlay uk-flex uk-flex-row uk-flex-middle">
+            <div class="uk-overlay uk-position-top-right overlay-storefront uk-flex uk-flex-row uk-flex-middle">
               <p style="margin: 0; margin-right: 10px">Reinnoire automata</p>
               <label style="cursor: pointer;" class="switch">
                 <input type="checkbox" @click="wantsAutomaticTokenRefreshChanged()" v-model="store.hasAutomaticTokenRefresh">
@@ -64,8 +66,8 @@
           </div>
 
           <!--MOBILE-->
-          <div v-if="isOwner == true && editingShop == true" class="uk-overlay uk-position-top-left overlay change-contact-button-div uk-hidden@s">
-            <button class="change-contact-button uk-button-primary uk-flex uk-flex-middle" href="#change-contact-sections" uk-toggle style="padding: 5px">
+          <div v-if="isOwner == true && editingShop == true" class="uk-overlay uk-position-top-left overlay-storefront change-contact-button-div uk-hidden@s">
+            <button @click="changeTutorialStep(true)" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 20 ? 'in-focus' : ''" class="change-contact-button uk-button-primary uk-flex uk-flex-middle" href="#change-contact-sections" uk-toggle style="padding: 5px">
               <span style="margin-right: 5px" uk-icon="icon: refresh; ratio: 0.8"></span>
               <p style="margin: 0">Schimba detalii contact</p>
             </button>
@@ -87,17 +89,17 @@
                   <img v-if="cannotFindSmallImage == false" loading="lazy" :src="newSmallImage || store.smallPhoto" class="cover-image cover-small-image" :class="(editingShop == true) ? 'filter-image' : ''" :alt="store.name" @error="cannotFindSmallImage = true">
                   
                   <div v-else class="cover-image no-image-div">
-                    <p class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine mici gasita</p>
+                    <p class="uk-overlay uk-position-center overlay-storefront" style="color: white;">Nicio imagine mici gasita</p>
                   </div>
                   
-                  <div v-if="store.largePhoto == null && !isOwner" class="uk-overlay uk-position-top-left overlay">
+                  <div v-if="store.largePhoto == null && !isOwner" class="uk-overlay uk-position-top-left overlay-storefront">
                     <button style="cursor: pointer;" v-on:click="copyShareLink()" class="copy-link-button uk-button-primary uk-flex uk-flex-middle">
                       <span style="margin-right: 5px" uk-icon="icon: social; ratio: 0.8"></span>
                       <p style="margin: 0">Link distribuire</p>
                     </button>
                   </div>
 
-                  <div @click="showSmallImageEdit = true" v-if="isOwner == true && editingShop == true" :style="(this.editingShop==true) ? 'cursor: pointer;' : ''" style="color: white;" class="uk-overlay uk-position-center overlay change-image-div">
+                  <div @click="showSmallImageEdit = true" v-if="isOwner == true && editingShop == true" :style="(this.editingShop==true) ? 'cursor: pointer;' : ''" style="color: white;" class="uk-overlay uk-position-center overlay-storefront change-image-div">
                     <span uk-icon="camera" ratio="2"></span>
                     <p>Schimba imaginea mica</p>
                   </div>
@@ -156,9 +158,11 @@
         </vk-grid>
 
         <div class="uk-margin-medium-top">
-          <vk-tabs align="center" :active-tab.sync="activeTab">
-            <vk-tabs-item title="Toate">
+          <vk-tabs align="center" :active-tab.sync="activeTab" @update:activeTab="activeTabChanged">
+            <vk-tabs-item title="Toate" :disabled="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep < 25 ? true : false">
               <ProductCardGrid
+                @hide_modal="closeDialog"
+                @show_modal="showDialog"
                 :isOwner="isOwner"
                 :allTabs="store.tabs"
                 :tab="'all'"
@@ -187,15 +191,17 @@
                 :isSearching="isSearchingData"
               />
             </vk-tabs-item>
-            <vk-tabs-item v-if="isOwner" title="File">
+            <vk-tabs-item v-if="isOwner" title="File" :disabled="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep != 22 ? true : false">
               <TabsLayout
                 v-on:add_new_tab="addNewTab()"
                 v-on:delete_tab="deleteTab($event)"
                 v-on:new_tab_saved="saveNewTab($event)"
+                @show_modal="showDialog"
                 :tabs="store.tabs"
+                :newTabAdded="newTabAdded"
               /> 
             </vk-tabs-item>
-            <vk-tabs-item title="Comentarii">
+            <vk-tabs-item title="Comentarii" :disabled="!this.$store.getters.getHasCompletedTutorial ? true : false">
               <CommentCardGrid :isOwner="isOwner" v-on:reload_rating="reloadRating()" :code="this.code"/>
             </vk-tabs-item>
             
@@ -204,6 +210,7 @@
         </div>
         <ChangeContactDetailsDialog 
           v-on:contacts_changed="changeContacts($event)" 
+          @hide_modal="closeDialog($event)"
 
           :oldPhone="store.phone" 
           :oldEmail="store.email" 
@@ -254,8 +261,9 @@ const StarRating = () => import('vue-star-rating')
 const ProductCardGrid = () => import(/* webpackChunkName: "storefront-chunk" */ "../components/ProductCardGrid");
 const CommentCardGrid = () => import(/* webpackChunkName: "storefront-chunk" */ "../components/CommentCardGrid");
 const TabsLayout = () => import(/* webpackChunkName: "storefront-chunk" */ "../components/TabsLayout");
-const ChangeContactDetailsDialog = () => import(/* webpackChunkName: "storefront-chunk" */ "@/components/ChangeContactDetailsDialog");
+const ChangeContactDetailsDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ "@/components/ChangeContactDetailsDialog");
 const Schedule = () => import(/* webpackChunkName: "storefront-chunk" */ "@/components/Schedule.vue")
+const TutorialLayout = () => import(/* webpackChunkName: "others-chunk" */ '@/components/TutorialLayout.vue');
 import CropperDialogComponent from '@/components/CropperDialogComponent.vue'
 import axios from 'axios';
 
@@ -269,6 +277,7 @@ export default {
         ChangeContactDetailsDialog,
         CropperDialogComponent,
         Schedule,
+        TutorialLayout
     },
     props: {
       code: null,
@@ -317,6 +326,7 @@ export default {
             showSmallImageEdit: false,
             cannotFindImage: false,
             cannotFindSmallImage: false,
+            isShowingDialog: false,
         }
     },
     metaInfo() {
@@ -332,6 +342,36 @@ export default {
       }
     },
     methods: {
+        scroll() {
+          window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth',
+          })
+        },
+        activeTabChanged() {
+          console.log("ha")
+          if(this.$store.getters.getHasCompletedTutorial) {
+            return
+          }
+          this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+          this.scroll()
+          this.isShowingDialog = false;
+        },
+        closeDialog(isComingFromChangeContactDialog) {
+          if(isComingFromChangeContactDialog && !this.$store.getters.getHasCompletedTutorial) {
+            this.scroll()
+            this.editingShop = false
+            return
+          }
+          this.isShowingDialog = false
+        },
+        showDialog() {
+          this.isShowingDialog = true
+        },
+        changeTutorialStep(isShowingDialog) {
+          this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+          this.isShowingDialog = isShowingDialog
+        },
         changeSchedule(newSchedule) {
           this.store.schedule = newSchedule
         },
@@ -458,6 +498,7 @@ export default {
         },
         changeEditState() {
           this.editingShop=!this.editingShop
+          this.changeTutorialStep(false)
         },
         getPriceType() {
             if (this.store.price >= 1 && this.store.price < 1.5) {
@@ -681,7 +722,7 @@ export default {
         },
         warnThatContactsAreNotSet() {
           if(this.isOwner == true) {
-            if(this.store.address == null && this.store.websiteLink == null && this.store.email == null && this.store.phone == null) {
+            if(this.store.address == null && this.store.websiteLink == null && this.store.email == null && this.store.phone == null && this.$store.getters.getHasCompletedTutorial) {
               UIkit.notification({message: 'Nu uitati sa adaugati cel putin un contact al fatadei de magazin', status: 'danger'})
             }
           }
@@ -772,7 +813,7 @@ export default {
 .header {
   padding-left: 0 !important;
 }
-.overlay {
+.overlay-storefront {
   padding: 10px 10px !important;
 }
 .dollar-green {

@@ -1,7 +1,33 @@
 <template>
-  <div>
-    <div style="margin-bottom: 20px;">
-      <Cropper style="boarder: 5px red solid"
+  <div :style="!$store.getters.getHasCompletedTutorial ? 'margin-top: 100px;' : ''">
+    <h3 v-if="loadingImage == true">Se incarca</h3>
+    <h3 v-if="errorImage == true">Nu am putut incarca imaginea. Va rugam reincercati</h3>
+    <div class="uk-flex@s uk-flex-row uk-flex-center uk-flex-middle">
+      <!--<div v-if="loading == false" class="button-wrapper">
+        <span class="button uk-button uk-button-primary" @click="resetImage">
+          Reseteaza
+        </span>
+      </div>-->
+      <div class="overlay"></div>
+      <div style="margin-bottom: 20px;" class="uk-flex-row uk-text-center">
+        <vk-button @click="closeModal()" class="uk-margin-small-right uk-margin-small-left">Inchide</vk-button>
+        <vk-button v-if="loadingImage == false && uploadedImage != null" @click="saveNewImage(getEdittedImage())" :class="!this.$store.getters.getHasCompletedTutorial && (this.$store.getters.getTutorialStep == 6 || this.$store.getters.getTutorialStep == 29) ? 'in-focus' : ''" class="uk-button-primary uk-margin-small-right uk-margin-small-left">Adauga</vk-button>
+      </div>
+
+      <div v-if="loadingImage == false" :class="!this.$store.getters.getHasCompletedTutorial && (this.$store.getters.getTutorialStep == 5 || this.$store.getters.getTutorialStep == 28) ? 'in-focus' : ''" class="button-wrapper" style="margin-bottom: 20px;">
+        <span class="button uk-button uk-button-primary" @click="$refs.file.click()">
+          <input type="file" ref="file" @change="uploadImage($event)" accept="image/*">
+          Incarca {{uploadedImage != null ? 'alta imagine' : 'imagine'}}
+        </span>
+      </div>
+      <div v-if="loadingImage == false" :class="!this.$store.getters.getHasCompletedTutorial && (this.$store.getters.getTutorialStep == 6 || this.$store.getters.getTutorialStep == 29) ? 'in-focus' : ''" class="button-wrapper" style="padding-bottom: 20px;">
+        <span class="button uk-button uk-button-primary" @click="rotateImage">
+          Roteste
+        </span>
+      </div>
+    </div>
+    <div :class="!this.$store.getters.getHasCompletedTutorial && (this.$store.getters.getTutorialStep == 6 || this.$store.getters.getTutorialStep == 29) ? 'in-focus' : ''" style="margin-bottom: 20px;">
+      <Cropper
         classname="cropper"
         ref="cropper"
         :src="(uploadedImage != null) ? uploadedImage : null"
@@ -21,31 +47,6 @@
         @ready="setLoadingAndError(false, false)"
         @error="setLoadingAndError(false, true)"
       />
-    </div>
-    <h3 v-if="loadingImage == true">Se incarca</h3>
-    <h3 v-if="errorImage == true">Nu am putut incarca imaginea. Va rugam reincercati</h3>
-    <div class="uk-flex@s uk-flex-row uk-flex-center uk-flex-middle">
-      <!--<div v-if="loading == false" class="button-wrapper">
-        <span class="button uk-button uk-button-primary" @click="resetImage">
-          Reseteaza
-        </span>
-      </div>-->
-      <div style="margin-bottom: 20px;" class="uk-flex-row uk-text-center">
-        <vk-button @click="closeModal()" class="uk-margin-small-right uk-margin-small-left">Inchide</vk-button>
-        <vk-button v-if="loadingImage == false && uploadedImage != null" @click="saveNewImage(getEdittedImage())" class="uk-button-primary uk-margin-small-right uk-margin-small-left">Adauga</vk-button>
-      </div>
-
-      <div v-if="loadingImage == false" class="button-wrapper" style="margin-bottom: 20px;">
-        <span class="button uk-button uk-button-primary" @click="$refs.file.click()">
-          <input type="file" ref="file" @change="uploadImage($event)" accept="image/*">
-          Incarca {{uploadedImage != null ? 'alta imagine' : 'imagine'}}
-        </span>
-      </div>
-      <div v-if="loadingImage == false" class="button-wrapper" style="padding-bottom: 20px;">
-        <span class="button uk-button uk-button-primary" @click="rotateImage">
-          Roteste
-        </span>
-      </div>
     </div>
   </div>
 </template>
@@ -95,6 +96,8 @@ export default {
         newImage: data,
         from: this.from,
       }
+      console.log(this.$store.getters.getTutorialStep)
+      this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
 
       this.$emit('change_image', object)
     },
@@ -113,7 +116,7 @@ export default {
           //image: this.$refs.cropper.getCroppedCanvas().toDataURL()
           image: canvas.toDataURL('image/jpeg', quality)
         }
-        if(!this.from.includes('storefront'))
+        if(!this.from.includes('storefront') && this.$store.getters.getHasCompletedTutorial)
           UIkit.notification({message: 'Poza dumneavoastra a fost modificata', status: 'success'})
         return data;
       } catch(error) {
@@ -136,9 +139,11 @@ export default {
           this.uploadedImage = e.target.result
 
           var image = new Image();
+          var vm = this;
           image.src = this.uploadedImage;
 
           image.onload = function () {
+            vm.$store.dispatch('changeTutorialStep', vm.$store.getters.getTutorialStep+1)
             var height = this.height;
             var width = this.width;
             if (height < this.minHeight || width < this.minWidth) {
@@ -191,6 +196,4 @@ export default {
     border-width: 5px;
   }
 }
-
-
 </style>

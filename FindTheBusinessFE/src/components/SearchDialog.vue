@@ -84,7 +84,7 @@
 import axios from 'axios'
 
 const SearchDropdownInput = () => import(/* webpackChunkName: "home-chunk" */ "@/components/SearchDropdownInput.vue")
-const StarRating = () => import('vue-star-rating')
+const StarRating = () => import(/* webpackChunkName: "others-chunk" */ 'vue-star-rating')
 
 export default {
 	name: "SearchDialog",

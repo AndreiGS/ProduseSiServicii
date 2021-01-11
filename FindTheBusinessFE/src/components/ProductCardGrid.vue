@@ -7,7 +7,7 @@
       <vk-grid>
         <div class="uk-width-5-5@m">
           <div class="cards">
-            <AddItemCard v-if="tab == 'all' && isOwner == true" style="margin-bottom: 15px" v-on:add_item="addItem()"/>
+            <AddItemCard v-if="tab == 'all' && isOwner == true && !itemAdded && (this.$store.getters.getTutorialStep == 26 || this.$store.getters.getHasCompletedTutorial)" style="margin-bottom: 15px" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 26 ? 'in-focus' : ''" v-on:add_item="addItem()"/>
             <div v-if="products != null && products.length > 0">
               <div v-if="isSearching == true">
                 <div v-if="foundItemsIds != null && foundItemsIds.length > 0">
@@ -78,6 +78,8 @@
                   v-on:delete_item="deleteItem($event)"
                   v-on:change_image="changeImage($event)"
                   v-on:delete_new_image="deleteNewImage($event)"
+                  @hide_modal="$emit('hide_modal')"
+                  @show_modal="$emit('show_modal')"
 
                   v-for="product in products"
                     :key="product.id"
@@ -113,8 +115,8 @@
 </template>
 
 <script>
-const ProductCard = () => import(/* webpackChunkName: "profile-chunk" */ "./ProductCard");
-const AddItemCard = () => import(/* webpackChunkName: "profile-chunk" */ '@/components/AddItemCard')
+const ProductCard = () => import(/* webpackChunkName: "cards-chunk" */ "./ProductCard");
+const AddItemCard = () => import(/* webpackChunkName: "cards-chunk" */ '@/components/AddItemCard')
 
 import axios from 'axios'
 
@@ -153,7 +155,7 @@ export default {
 
       foundItemsIds: null,
 
-      isSearching: null
+      isSearching: null,
     },
     methods: {
       changeImage(data) {
@@ -182,6 +184,8 @@ export default {
 
           return
         }
+
+        this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
 
         if(this.products == null)
           this.products = []
@@ -275,7 +279,16 @@ export default {
     },
     async created() {
       await this.getItems();
-    }
+    },
+    mounted() {
+      if(!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 26) {
+        console.log("yes")
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: 'smooth',
+        })
+      }
+    },
 }
 </script>
 

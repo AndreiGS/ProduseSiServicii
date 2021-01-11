@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <NewNewNewNavbar />
+    <NewNewNewNavbar v-if="this.$store.getters.getHasCompletedTutorial"/>
     <CookiesPopup v-if="hasAcceptedCookies == false" @set_has_accepted_cookies_true="setHasAcceptedCookiesTrue" />
     <UpdateAvailableDialog />
     <OfflineDialog />
@@ -12,9 +12,9 @@
 <script>
 const NewNewNewNavbar = () => import(/* webpackChunkName: "others-chunk" */ '@/components/NewNewNewNavbar.vue')
 const CookiesPopup = () => import(/* webpackChunkName: "others-chunk" */ '@/components/CookiesPopup.vue')
-const UpdateAvailableDialog = () => import(/* webpackChunkName: "others-chunk" */ '@/components/UpdateAvailableDialog.vue')
-const OfflineDialog = () => import(/* webpackChunkName: "others-chunk" */ '@/components/OfflineDialog.vue')
-const InstallDialog = () => import(/* webpackChunkName: "others-chunk" */ '@/components/InstallDialog.vue')
+const UpdateAvailableDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/UpdateAvailableDialog.vue')
+const OfflineDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/OfflineDialog.vue')
+const InstallDialog = () => import(/* webpackChunkName: "dialogs-chunk" */ '@/components/InstallDialog.vue')
 
 export default {
   name: 'App',
@@ -57,5 +57,37 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+.in-focus {
+  z-index: 1011!important;
+  position: relative;
+  color: white!important;
+}
+
+.top-placement {
+	position: fixed;
+	top: 0;
+  min-height: 20px;
+	width: 98.5%;
+  left: 0;
+}
+
+.bottom-placement {
+	position: fixed;
+	bottom: 0;
+	min-height: 30px;
+	width: 98.5%;
+  left: 0;
+}
+
+.overlay {
+	top: 0;
+  left: 0;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 1011;
+  background: #0000006e;
 }
 </style>

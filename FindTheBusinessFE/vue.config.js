@@ -1,3 +1,5 @@
+//const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 module.exports = {
   pwa: {
     name: "ProduseSiServicii.ro",
@@ -25,6 +27,7 @@ module.exports = {
         minSize: 10000,
         maxSize: 250000,
       }
-    }
+    },
+    //plugins: [new BundleAnalyzerPlugin()]
   }
 };
