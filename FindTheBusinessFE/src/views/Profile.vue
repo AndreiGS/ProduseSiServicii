@@ -24,7 +24,7 @@
 							</div>
 						</div>
 
-						<div v-if="editing == true" class="uk-overlay uk-position-top-center overlay">
+						<div v-if="editing == true" class="uk-overlay uk-position-top-center profile-overlay">
 							<vk-label style="background: #E82901!important">In editare</vk-label>
 						</div>
 
@@ -81,7 +81,7 @@
 							</div>
 						</div>
 
-						<div v-if="editing == true" class="uk-overlay uk-position-left-center overlay">
+						<div v-if="editing == true" class="uk-overlay uk-position-left-center profile-overlay">
 							
 						</div>
 
