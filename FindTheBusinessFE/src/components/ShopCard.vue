@@ -668,7 +668,7 @@ export default {
 
     if(!this.$store.getters.getHasCompletedTutorial) {
       window.scrollTo({
-        top: document.body.scrollHeight,
+        top: document.body.scrollHeight + 100,
         behavior: 'smooth',
       })
     }

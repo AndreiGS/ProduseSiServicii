@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    <NewNewNewNavbar/>
+  <div id="app" :style="($store.getters.getHasCompletedTutorial || $store.getters.getTutorialStep == 0) ? 'margin-bottom: 60px;' : ''">
+    <NewNewNewNavbar v-if="$store.getters.getHasCompletedTutorial || $store.getters.getTutorialStep == 0" />
     <CookiesPopup v-if="hasAcceptedCookies == false" @set_has_accepted_cookies_true="setHasAcceptedCookiesTrue" />
     <UpdateAvailableDialog />
     <OfflineDialog />

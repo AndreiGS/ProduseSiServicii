@@ -96,7 +96,6 @@ export default {
         newImage: data,
         from: this.from,
       }
-      console.log(this.$store.getters.getTutorialStep)
       this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
 
       this.$emit('change_image', object)

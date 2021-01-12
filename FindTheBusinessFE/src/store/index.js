@@ -23,7 +23,7 @@ export default new Vuex.Store({
       },
       {
         content: 'De aici butonul puteti adauga credite pentru magazin folosind butonul "+" din dreptul creditului pe care il doriti. Acum puteti folosi butonul de inchide pentru a trece la urmatorul pas',
-        place: 'bottom',
+        place: 'top',
         id: 2,
       },
       {
@@ -122,7 +122,7 @@ export default new Vuex.Store({
       },
       {
         content: 'Adaugati toate datele de contact si judetul disponibile pentru firma dumneavoastra apoi apasati "Salveaza"',
-        place: 'bottom',
+        place: 'top',
         id: 21,
       },
       {
