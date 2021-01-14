@@ -48,7 +48,8 @@ export default {
         this.$emit('close_modal')
     },
     changeTutorialStep() {
-      this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+      if(this.$store.getters.getIsWithinTutorial)
+        this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
     },
     async refreshStore() {
       var timeoutVar = setTimeout(() => { this.loading = true; }, 1000);

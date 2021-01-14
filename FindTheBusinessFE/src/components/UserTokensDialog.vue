@@ -1,7 +1,7 @@
 <template>
   <div id="user-tokens-sections" uk-modal bg-close="false">
     <div class="uk-modal-dialog uk-margin-auto-vertical">
-      <button @click="$emit('close_dialog'); $store.dispatch('changeTutorialStep', $store.getters.getTutorialStep+1)" class="uk-modal-close-default" type="button" uk-close></button>
+      <button @click="closeButton()" class="uk-modal-close-default" type="button" uk-close></button>
       <div class="uk-modal-header">
         <h2 class="uk-modal-title">Credite magazine</h2>
       </div>
@@ -59,10 +59,16 @@ export default {
     unlimitedTokens: null
   },
   methods: {
+    closeButton() {
+      this.$emit('close_dialog'); 
+      if(this.$store.getters.getIsWithinTutorial)
+        this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+    },
     hideModal() {
-      this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
       UIkit.modal("#user-tokens-sections").hide();
       this.$emit('close_dialog')
+      if(this.$store.getters.getIsWithinTutorial)
+        this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
     },
     async buyCredit(type) {
       var timeoutVar = setTimeout(() => { this.loading = true; }, 1000);

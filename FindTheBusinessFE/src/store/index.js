@@ -8,6 +8,7 @@ export default new Vuex.Store({
     logged: false,
     hasCompletedTutorial: false,
     tutorialStep: 0,
+    isWithinTutorial: false,
     tutorialStrings: [
       {
         content: 'Doriti sa treceti prin modul de utilizare? In cazul in care un buton nu este vizibil pe ecranul dumneavostra, glisati degetul pe ecran in sus',
@@ -202,10 +203,14 @@ export default new Vuex.Store({
     changeTutorialStep(state, step) {
       state.tutorialStep = step;
     },
+    changeIsWithinTutorial(state, val) {
+      state.isWithinTutorial = val
+    },
     initialiseStore(state) {
       state.logged = (localStorage.getItem("logged") != null) ? localStorage.getItem("logged") : false
       state.hasCompletedTutorial = (localStorage.getItem("hasCompletedTutorial") != null) ? localStorage.getItem("hasCompletedTutorial") : false
       state.tutorialStep = 0
+      state.isWithinTutorial = false
     },
   },
   actions: {
@@ -217,6 +222,9 @@ export default new Vuex.Store({
     },
     changeHasCompletedTutorial(context, hasCompletedTutorial) {
       context.commit('changeHasCompletedTutorial', hasCompletedTutorial);
+    },
+    changeIsWithinTutorial(context, isWithinTutorial) {
+      context.commit('changeIsWithinTutorial', isWithinTutorial);
     },
   },
   modules: {
@@ -233,6 +241,9 @@ export default new Vuex.Store({
     },
     getTutorialStrings(state) {
       return state.tutorialStrings;
+    },
+    getIsWithinTutorial(state) {
+      return state.isWithinTutorial;
     },
   }
 })

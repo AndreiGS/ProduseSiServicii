@@ -185,7 +185,8 @@ export default {
           return
         }
 
-        this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+        if(this.$store.getters.getIsWithinTutorial)
+          this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
 
         if(this.products == null)
           this.products = []
@@ -282,7 +283,6 @@ export default {
     },
     mounted() {
       if(!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 26) {
-        console.log("yes")
         window.scrollTo({
           top: document.body.scrollHeight,
           behavior: 'smooth',

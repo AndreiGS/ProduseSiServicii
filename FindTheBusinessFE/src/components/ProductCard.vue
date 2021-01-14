@@ -352,7 +352,8 @@ export default {
 
             this.$emit('save_item', itemToSave)
             this.editItem();
-            this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+            if(this.$store.getters.getIsWithinTutorial)
+              this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
           })
           .catch((error) => {
             if(error.response == null) {
@@ -403,7 +404,8 @@ export default {
         if(this.editingItem == true) {
           this.showImageEdit = true;
           this.$emit('show_modal')
-          this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+          if(this.$store.getters.getIsWithinTutorial)
+            this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
         }
       },
       doesTextContainLineBreak(text) {

@@ -569,7 +569,8 @@ export default {
       this.editingShop = !this.editingShop;
     },
     changeTutorialStep() {
-      this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+      if(this.$store.getters.getIsWithinTutorial)
+        this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
     },
     resetDescription() {
       this.displayedDescription = this.description;

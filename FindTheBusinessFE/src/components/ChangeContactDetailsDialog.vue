@@ -83,8 +83,9 @@ export default {
     async saveChanges() {
       this.changeContactDetailsToNullIfNecessary()
       await this.saveContactToDb();
-      this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
       this.$emit('hide_modal', true)
+      if(this.$store.getters.getIsWithinTutorial)
+        this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
     },
     async saveContactToDb() {
       var timeoutVar = setTimeout(() => { this.loading = true; }, 1000);

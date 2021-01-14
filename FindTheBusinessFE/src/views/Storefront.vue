@@ -159,7 +159,7 @@
 
         <div class="uk-margin-medium-top">
           <vk-tabs align="center" :active-tab.sync="activeTab" @update:activeTab="activeTabChanged">
-            <vk-tabs-item title="Toate" :disabled="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep < 25 ? true : false">
+            <vk-tabs-item title="Toate" :disabled="this.$store.getters.getTutorialStep == 22">
               <ProductCardGrid
                 @hide_modal="closeDialog"
                 @show_modal="showDialog"
@@ -176,7 +176,7 @@
                 :isSearching="isSearchingData"
               />
             </vk-tabs-item>
-            <vk-tabs-item v-for="(tab, index) in store.tabs" :key="index+1" :title="tab.name">
+            <vk-tabs-item v-for="(tab, index) in store.tabs" :key="index+1" :title="tab.name" :disabled="$store.getters.getTutorialStep == 25">
               <ProductCardGrid
                 :isOwner="isOwner"
                 :allTabs="store.tabs"
@@ -191,7 +191,7 @@
                 :isSearching="isSearchingData"
               />
             </vk-tabs-item>
-            <vk-tabs-item v-if="isOwner" title="File" :disabled="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep != 22 ? true : false">
+            <vk-tabs-item v-if="isOwner" title="File" :disabled="this.$store.getters.getTutorialStep == 25">
               <TabsLayout
                 v-on:add_new_tab="addNewTab()"
                 v-on:delete_tab="deleteTab($event)"
@@ -201,7 +201,7 @@
                 :newTabAdded="newTabAdded"
               /> 
             </vk-tabs-item>
-            <vk-tabs-item title="Comentarii" :disabled="!this.$store.getters.getHasCompletedTutorial ? true : false">
+            <vk-tabs-item title="Comentarii" :disabled="this.$store.getters.getTutorialStep == 22 || this.$store.getters.getTutorialStep == 25">
               <CommentCardGrid :isOwner="isOwner" v-on:reload_rating="reloadRating()" :code="this.code"/>
             </vk-tabs-item>
             
@@ -349,11 +349,11 @@ export default {
           })
         },
         activeTabChanged() {
-          console.log("ha")
           if(this.$store.getters.getHasCompletedTutorial) {
             return
           }
-          this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+          if(this.$store.getters.getIsWithinTutorial)
+            this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
           this.scroll()
           this.isShowingDialog = false;
         },
@@ -369,7 +369,8 @@ export default {
           this.isShowingDialog = true
         },
         changeTutorialStep(isShowingDialog) {
-          this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+          if(this.$store.getters.getIsWithinTutorial)
+            this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
           this.isShowingDialog = isShowingDialog
         },
         changeSchedule(newSchedule) {

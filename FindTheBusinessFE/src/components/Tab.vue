@@ -142,7 +142,8 @@ export default {
           this.tabData.id = response.data.tabResponseDto.id
 
           this.changeEdit();
-          this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+          if(this.$store.getters.getIsWithinTutorial)
+            this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
           this.$emit('show_modal')
           
           if(this.$store.getters.getHasCompletedTutorial)

@@ -58,7 +58,8 @@ export default {
     openPromotePanel() {
       this.hideModal();
       this.$emit('promote_shop', this.id);
-      this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+      if(this.$store.getters.getIsWithinTutorial)
+        this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
     },
     hideModal() {
       UIkit.modal("#promote-info-sections").hide();

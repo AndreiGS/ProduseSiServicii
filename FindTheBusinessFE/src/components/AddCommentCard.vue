@@ -14,8 +14,9 @@
                     Conecteaza-te cu:
                   </p>
                   <!--<vk-icon v-on:click="loginWithGoogle()" icon="google" ratio="1.5" style="color: #DB4437; cursor: pointer" />-->
-                  <vk-icon v-on:click="loginWithFacebook()" icon="facebook" ratio="1.5" class="login-button" />
-      
+                  <div class="login-button">
+                    <vk-icons-facebook v-on:click="loginWithFacebook()" :height="'30px'" :width="'30px'" />
+                  </div>
               </div>
               <div v-if="error == true" class="uk-text-center" style="margin-bottom: 0; margin-top: 20px">
                 <p style="font-size: 20px; display: inline; padding: 0; margin: 0; padding-right: 5px;">
@@ -96,12 +97,14 @@
 import axios from 'axios'
 const StarRating = () => import(/* webpackChunkName: "others-chunk" */ 'vue-star-rating');
 import VkIconsPlus from '@vuikit/icons/lib/plus'
+import VkIconsFacebook from '@vuikit/icons/lib/facebook'
 
 export default {
     name: "AddCommentCard",
     components: {
         StarRating,
         VkIconsPlus,
+        VkIconsFacebook,
     },
     data () {
         return {
@@ -258,7 +261,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .plusButton {
   transition: transform 0.2s ease-in-out;
 }
@@ -271,5 +274,9 @@ export default {
   border-radius: 50px; 
   padding: 5px;
   background-color: #e8e8e8a6;
+
+  &:hover {
+    background-color: #d6d6d6a6;
+  }
 }
 </style>

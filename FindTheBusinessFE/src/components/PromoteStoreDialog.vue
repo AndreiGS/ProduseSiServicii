@@ -54,7 +54,8 @@ export default {
     hideModal() {
       UIkit.modal('#promote-shop-sections').hide()
       this.$emit('close_modal')
-      this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+      if(this.$store.getters.getIsWithinTutorial)
+        this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
       if(this.$store.getters.getHasCompletedTutorial) {
         this.$emit("refresh_page");
       } else {

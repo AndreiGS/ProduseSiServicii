@@ -37,7 +37,8 @@ export default {
   methods: {
     addNewTab() {
       this.$emit('add_new_tab')
-      this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+      if(this.$store.getters.getIsWithinTutorial)
+        this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
     },
     deleteTab(tab) {
       this.$emit('delete_tab', tab)

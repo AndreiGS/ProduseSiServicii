@@ -47,7 +47,7 @@
 						</div>
 
 						<div :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 1 ? 'in-focus' : ''" class="uk-overlay uk-position-top-left custom-info-desktop custom-padding-edit-buttons" style="padding-top: 16px!important; text-align: left;">
-							<button @click="isShowingDialog = true; $store.dispatch('changeTutorialStep', $store.getters.getTutorialStep+1)" uk-tooltip="title: Credite pentru fatade de magazin; pos: right" style="cursor: pointer; background: linear-gradient(45deg, #d6e218, #777400);" class="edit-button uk-button-primary" href="#user-tokens-sections" uk-toggle>
+							<button @click="tokensButton()" uk-tooltip="title: Credite pentru fatade de magazin; pos: right" style="cursor: pointer; background: linear-gradient(45deg, #d6e218, #777400);" class="edit-button uk-button-primary" href="#user-tokens-sections" uk-toggle>
 								<span uk-icon="icon: lifesaver; ratio: 1"></span>
 							</button>
 						</div>
@@ -90,7 +90,7 @@
 						</div>
 
 						<div :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 1 ? 'in-focus' : ''" style="color: white; z-index: 10;" class="uk-overlay uk-position-bottom-right custom-info-desktop custom-padding-edit-buttons">
-							<button @click="isShowingDialog = true; $store.dispatch('changeTutorialStep', $store.getters.getTutorialStep+1)" style="cursor: pointer; background: linear-gradient(45deg, #d6e218, #777400);" class="edit-button uk-button-primary" href="#user-tokens-sections" uk-toggle>
+							<button @click="tokensButton()" style="cursor: pointer; background: linear-gradient(45deg, #d6e218, #777400);" class="edit-button uk-button-primary" href="#user-tokens-sections" uk-toggle>
 								<span uk-icon="icon: lifesaver; ratio: 1"></span>
 							</button>
 						</div>
@@ -227,6 +227,11 @@ export default {
     }
   },
 	methods: {
+		tokensButton() {
+			this.isShowingDialog = true
+			if(this.$store.getters.getIsWithinTutorial)
+        this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+		},
 		closeDialog() {
 			this.isShowingDialog = false;
 		},

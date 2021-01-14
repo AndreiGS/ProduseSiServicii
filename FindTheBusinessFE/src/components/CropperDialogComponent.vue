@@ -96,9 +96,9 @@ export default {
         newImage: data,
         from: this.from,
       }
-      this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
-
       this.$emit('change_image', object)
+      if(this.$store.getters.getIsWithinTutorial)
+        this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
     },
     getEdittedImage() {
       const { coordinates, canvas, } = this.$refs.cropper.getResult();
@@ -142,7 +142,8 @@ export default {
           image.src = this.uploadedImage;
 
           image.onload = function () {
-            vm.$store.dispatch('changeTutorialStep', vm.$store.getters.getTutorialStep+1)
+            if(vm.$store.getters.getIsWithinTutorial)
+              vm.$store.dispatch('changeTutorialStep', vm.$store.getters.getTutorialStep+1)
             var height = this.height;
             var width = this.width;
             if (height < this.minHeight || width < this.minWidth) {

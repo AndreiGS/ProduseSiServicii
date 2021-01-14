@@ -110,12 +110,14 @@ export default {
         UIkit.modal("#sure-publish-sections").show();
       },
       addShop() {
-        this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+        if(this.$store.getters.getIsWithinTutorial){
+          this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
+          window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth'
+          })
+        }
         this.$emit('add_shop')
-        window.scrollTo({
-          top: document.body.scrollHeight,
-          behavior: 'smooth'
-        })
       }
     },
 }
