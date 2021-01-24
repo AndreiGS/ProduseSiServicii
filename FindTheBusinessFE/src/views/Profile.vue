@@ -218,7 +218,7 @@ export default {
     return { 
       title: "Profil - ProduseSiServicii.ro",
       meta: [
-          { name: 'description', content:  'Aceasta platforma are scopul de a ajuta comerciantii in a-si gasi clienti, iar clientii in a gasi produse direct de la producator sau diferite servicii.'},
+          { name: 'description', content:  'Aceasta platforma are scopul de a ajuta comerciantii in a-si gasi clienti, iar clientii in a gasi produse si servicii direct de la producator.'},
           { property: 'og:title', content: "ProduseSiServicii.ro - Gaseste-ti clientii si comerciantii"},
           { property: 'og:site_name', content: 'ProduseSiServicii.ro'},
           { property: 'og:type', content: 'website'},    
@@ -250,10 +250,10 @@ export default {
 				return
 			}
 			if(data.type == 'large') {
-				this.data.user.largeTokens++;
+				this.user.largeTokens++;
 				return
 			}
-			this.data.user.unlimitedTokens++;
+			this.user.unlimitedTokens++;
 			return
 		},
 		changePublished(data) {

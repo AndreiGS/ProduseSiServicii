@@ -11,7 +11,7 @@
 
             <div @click="showEditImageModal()" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 4 && this.id.includes('not-set') ? 'in-focus' : ''" class="uk-inline uk-width-1-1" :style="(this.editingShop==true) ? 'cursor: pointer;' : ''">
               
-              <img loading="lazy" v-if="(newImage != null && newImage.includes('base64')) || (cannotFindImage == false && (oldImage != null || newImage != null))" :src="(newImage != null) ? newImage : oldImage" class="card-image" :class="(this.editingShop==true) ? 'changing-image' : ''" :alt="title" @error="cannotFindImage = true;" @load="onImgLoad">
+              <img loading="lazy" v-if="(newImage != null && newImage.includes('base64')) || (cannotFindImage == false && (oldImage != null || newImage != null))" :src="(newImage != null) ? newImage : oldImage" class="card-image" :class="(this.editingShop==true) ? 'changing-image' : ''" :alt="`produse si servicii ${title}`" @error="cannotFindImage = true;" @load="onImgLoad">
           
               <div v-else class="no-image-div">
                 <p v-if="editingShop == false" class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine gasita</p>

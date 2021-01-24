@@ -4,6 +4,7 @@ import com.findthebusiness.backend.dto.shops.ShopCardDto;
 import com.findthebusiness.backend.dto.users.*;
 import com.findthebusiness.backend.exception.CannotAddItemException;
 import com.findthebusiness.backend.exception.NotEnoughCreditException;
+import com.findthebusiness.backend.exception.TooManyShopTokensException;
 import com.findthebusiness.backend.service.service_implementation.UserServiceImpl;
 import com.findthebusiness.backend.service.service_repository.UserService;
 import com.sun.mail.iap.Response;
@@ -138,6 +139,8 @@ public class UserController {
             return ResponseEntity.ok(addShopTokenResponseDtoWithAccessToken.getAddShopTokenResponseDto());
         } catch (NotEnoughCreditException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (TooManyShopTokensException e) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
         }
         catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

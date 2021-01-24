@@ -60,7 +60,7 @@ public interface ShopService {
     Shops saveShop(Shops shop);
     void saveAllShops(List<Shops> shops);
     void subtractPromotedShopToPages();
-    void addPromotedShopToPages();
+    void addPromotedShopToPages(int toAdd);
     Pages findPages();
     void savePages(Pages pages);
     List<Shops> findAllByIsPromotedInHome(Boolean isPromoted, Pageable pageable);

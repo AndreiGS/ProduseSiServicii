@@ -817,6 +817,7 @@ public class ShopServiceImpl implements ShopService {
     public void setShopsNotPromotedInHomeAfterExpiring() {
         List<Shops> shops = findAllPromotedInHomeShops();
         Calendar calendar = Calendar.getInstance();
+        int unpromotedShops = 0;
         for(Shops shop : shops) {
             calendar.setTime(shop.getPromotedDateInHome());
             calendar.add(Calendar.DAY_OF_MONTH, shop.getPromotedDaysInHome());
@@ -826,9 +827,11 @@ public class ShopServiceImpl implements ShopService {
                 shop.setPromotedDateInHome(null);
                 shop.setPromotedInHome(false);
                 shop.setPromotedDaysInHome(null);
+                unpromotedShops++;
             }
         }
         saveAllShops(shops);
+        addPromotedShopToPages(-unpromotedShops);
     }
 
     @Override
@@ -879,7 +882,7 @@ public class ShopServiceImpl implements ShopService {
 
         if(shop.getPromotedDaysInHome() == null) {
             shop.setPromotedDaysInHome(0);
-            addPromotedShopToPages();
+            addPromotedShopToPages(1);
         }
 
         shop.setPromotedDaysInHome(shop.getPromotedDaysInHome()+30);
@@ -1002,9 +1005,9 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public void addPromotedShopToPages() {
+    public void addPromotedShopToPages(int toAdd) {
         Pages pages = findPages();
-        pages.setPromotedShopsNo(pages.getPromotedShopsNo() + 1);
+        pages.setPromotedShopsNo(pages.getPromotedShopsNo() + toAdd);
         savePages(pages);
     }
 

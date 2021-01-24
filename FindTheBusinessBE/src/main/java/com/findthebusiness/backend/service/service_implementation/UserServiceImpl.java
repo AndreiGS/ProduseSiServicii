@@ -387,6 +387,8 @@ public class UserServiceImpl implements UserService {
             case "small":
                 if (userBalance < ShopSizesEnum.SMALL.price)
                     throw new NotEnoughCreditException();
+                if(user.getSmallTokens() + 1 > 100)
+                    throw new TooManyShopTokensException();
                 balanceSubtracted = ShopSizesEnum.SMALL.price;
                 user.setSmallTokens(user.getSmallTokens() + 1);
                 user.setBalance(userBalance - ShopSizesEnum.SMALL.price);
@@ -394,6 +396,8 @@ public class UserServiceImpl implements UserService {
             case "medium":
                 if (userBalance < ShopSizesEnum.MEDIUM.price)
                     throw new NotEnoughCreditException();
+                if(user.getMediumTokens() + 1 > 100)
+                    throw new TooManyShopTokensException();
                 balanceSubtracted = ShopSizesEnum.MEDIUM.price;
                 user.setMediumTokens(user.getMediumTokens() + 1);
                 user.setBalance(userBalance - ShopSizesEnum.MEDIUM.price);
@@ -401,6 +405,8 @@ public class UserServiceImpl implements UserService {
             case "large":
                 if (userBalance < ShopSizesEnum.LARGE.price)
                     throw new NotEnoughCreditException();
+                if(user.getLargeTokens() + 1 > 100)
+                    throw new TooManyShopTokensException();
                 balanceSubtracted = ShopSizesEnum.LARGE.price;
                 user.setLargeTokens(user.getLargeTokens() + 1);
                 user.setBalance(userBalance - ShopSizesEnum.LARGE.price);
@@ -408,6 +414,8 @@ public class UserServiceImpl implements UserService {
             case "unlimited":
                 if (userBalance < ShopSizesEnum.UNLIMITED.price)
                     throw new NotEnoughCreditException();
+                if(user.getUnlimitedTokens() + 1 > 100)
+                    throw new TooManyShopTokensException();
                 balanceSubtracted = ShopSizesEnum.UNLIMITED.price;
                 user.setUnlimitedTokens(user.getUnlimitedTokens() + 1);
                 user.setBalance(userBalance - ShopSizesEnum.UNLIMITED.price);

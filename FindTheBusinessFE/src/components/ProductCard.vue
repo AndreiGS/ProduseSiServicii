@@ -8,7 +8,7 @@
         <div class="card-image-custom-width">
           <div @click="showEditImageModal()" class="uk-inline uk-width-1-1" :style="(this.editingItem==true) ? 'cursor: pointer;' : ''">
 
-            <img loading="lazy" v-if="(newImage != null && newImage.includes('base64')) || (cannotFindImage == false && (oldImage != null || newImage != null))" :src="(newImage != null) ? newImage : oldImage" class="card-image" :class="(this.editingItem==true) ? 'changing-image' : ''" :alt="item.title" @error="cannotFindImage=true" @load="onImgLoad">
+            <img loading="lazy" v-if="(newImage != null && newImage.includes('base64')) || (cannotFindImage == false && (oldImage != null || newImage != null))" :src="(newImage != null) ? newImage : oldImage" class="card-image" :class="(this.editingItem==true) ? 'changing-image' : ''" :alt="`produse si servicii ${item.title}`" @error="cannotFindImage=true" @load="onImgLoad">
             
             <div v-else class="no-image-div">
               <p v-if="editingItem == false" class="uk-overlay uk-position-center overlay" style="color: white;">Nicio imagine gasita</p>

@@ -132,4 +132,9 @@ public class UserExceptionController {
     public ResponseEntity<Object> exception (PasswordTooWeakException exception) {
         return new ResponseEntity<>("Password is too weak", HttpStatus.UPGRADE_REQUIRED);
     }
+
+    @ExceptionHandler(value = TooManyShopTokensException.class)
+    public ResponseEntity<Object> exception (TooManyShopTokensException exception) {
+        return new ResponseEntity<>("Too many shop tokens", HttpStatus.NOT_ACCEPTABLE);
+    }
 }

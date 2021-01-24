@@ -334,6 +334,8 @@ export default {
         title: `${(this.store.name != null) ? this.store.name + ' - ProduseSiServicii.ro' : 'ProduseSiServicii.ro'}`,
         meta: [
             { name: 'description', content:  (this.store.description != null) ? this.store.description.substring(0, Math.min(this.store.description.length, 200)) : 'Descriere'},
+            { name: 'author', content: 'ProduseSiServicii.ro'},
+            { name: 'keywords', content: 'produse, Produse, PRODUSE, servicii, Servicii, SERVICII, produse si servicii, produse sau servicii, produsesiservicii.ro, pfa, srl, instalator, horeca, mancare, reparator, masaj, mecanic'},
             { property: 'og:title', content: this.store.name + " - ProduseSiServicii.ro"},
             { property: 'og:site_name', content: 'ProduseSiServicii.ro'},
             { property: 'og:type', content: 'website'},    

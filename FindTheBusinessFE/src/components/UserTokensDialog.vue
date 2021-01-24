@@ -112,6 +112,20 @@ export default {
             UIkit.notification({message: 'Nu aveti destul credit in contul dumneavoastra', status: 'danger'})
             return
           }
+          if(error.response.status == 406) {
+            let showedType;
+            if(type == 'small')
+              showedType = 'mici'
+            else if(type == 'medium')
+              showedType = 'medii'
+            else if(type == 'large')
+              showedType = 'mari'
+            else if(type == 'unlimited')
+              showedType = 'hyper'
+
+            UIkit.notification({message: `Ati ajuns la limita de 100 de credite ${showedType}`, status: 'danger'})
+            return
+          }
           UIkit.notification({message: 'Nu am putut adauga creditul in contul dumneavoastra', status: 'danger'})
         })
         .finally(() => {

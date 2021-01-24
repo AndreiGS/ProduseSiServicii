@@ -126,6 +126,18 @@
 			<version>21.0</version>
 		</dependency>
 
+		<!--SITEMAP GENERATOR-->
+		<dependency>
+			<groupId>com.google.code</groupId>
+			<artifactId>sitemapgen4j</artifactId>
+			<version>1.0.1</version>
+		</dependency>
+
+		<!--JACKSON-->
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+		</dependency>
 
 		<!--JUNIT TEST
 		<dependency>
@@ -150,6 +162,21 @@
 			</plugin>
 		</plugins>
 		<finalName>find-the-business-backend</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>**/sitemap_index.xml</exclude>
+					<exclude>**/sitemap_DAILY.xml.gz</exclude>
+					<exclude>**/sitemap_WEEKLY.xml.gz</exclude>
+					<exclude>**/sitemap_MONTHLY.xml.gz</exclude>
+					<exclude>**/sitemap_YEARLY.xml.gz</exclude>
+					<exclude>**/sitemap_TERMINATED.xml.gz</exclude>
+					<exclude>**/sitemap_UNKNOWN.xml.gz</exclude>
+				</excludes>
+			</resource>
+		</resources>
 	</build>
 
 </project>

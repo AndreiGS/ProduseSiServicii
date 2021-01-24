@@ -101,7 +101,8 @@ export default {
     return { 
       title: "Parola - ProduseSiServicii.ro",
       meta: [
-          { name: 'description', content:  'Aceasta platforma are scopul de a ajuta comerciantii in a-si gasi clienti, iar clientii in a gasi produse direct de la producator sau diferite servicii.'},
+          { name: 'robots', content: 'noindex' },
+          { name: 'description', content:  'Aceasta platforma are scopul de a ajuta comerciantii in a-si gasi clienti, iar clientii in a gasi produse si servicii direct de la producator.'},
           { property: 'og:title', content: "ProduseSiServicii.ro - Gaseste-ti clientii si comerciantii"},
           { property: 'og:site_name', content: 'ProduseSiServicii.ro'},
           { property: 'og:type', content: 'website'},    
