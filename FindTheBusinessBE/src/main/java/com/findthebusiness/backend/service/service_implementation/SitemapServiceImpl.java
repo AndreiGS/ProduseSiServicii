@@ -63,7 +63,7 @@ public class SitemapServiceImpl implements SitemapService {
 		for (File file : files) {
 			boolean isNotSitemapIndexFile = !file.getName().startsWith("sitemap_index");
 			if (isNotSitemapIndexFile) {
-				SitemapIndexUrl sitemapIndexUrl = new SitemapIndexUrl("https://produsesiservicii.ro/" + file.getName(), new Date(file.lastModified()));
+				SitemapIndexUrl sitemapIndexUrl = new SitemapIndexUrl("https://produsesiservicii.ro/api/sitemap/" + file.getName(), new Date(file.lastModified()));
 				sig.addUrl(sitemapIndexUrl);
 			}
 

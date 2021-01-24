@@ -1,4 +1,5 @@
+Sitemap: https://produsesiservicii.ro/api/sitemap/sitemap.xml
+
 User-agent: *
 Disallow:
 
-Sitemap: https://produsesiservicii.ro/sitemap.xml

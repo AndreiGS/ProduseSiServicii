@@ -8,10 +8,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
 import java.io.File;
@@ -42,6 +39,13 @@ public class SitemapController {
     @ResponseBody
     private FileSystemResource getSitemapIndex() {
         File file = new File(sitemapDirectory.toAbsolutePath().toString() + "\\sitemap_index.xml");
+        return new FileSystemResource(file);
+    }
+
+    @GetMapping(path="/{sitemap}", produces = MediaType.APPLICATION_XML_VALUE)
+    @ResponseBody
+    private FileSystemResource getSitemapIndex(@PathVariable String sitemap) {
+        File file = new File(sitemapDirectory.toAbsolutePath().toString() + "\\" + sitemap);
         return new FileSystemResource(file);
     }
 
