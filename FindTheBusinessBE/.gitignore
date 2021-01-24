@@ -4,7 +4,8 @@ target/
 !**/src/main/**
 !**/src/test/**
 **/src/main/resources/application-dev.properties
-**/sitemaps/**
+**/sitemaps/sitemap_index.xml
+**/sitemaps/sitemap_index.xml/sitemap_DAILY.xml.gz
 
 ### STS ###
 .apt_generated
