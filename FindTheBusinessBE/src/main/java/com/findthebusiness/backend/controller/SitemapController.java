@@ -38,7 +38,7 @@ public class SitemapController {
     @GetMapping(path="/sitemap.xml", produces = MediaType.APPLICATION_XML_VALUE)
     @ResponseBody
     private FileSystemResource getSitemapIndex() {
-        File file = new File(sitemapDirectory.toAbsolutePath().toString() + "/sitemap_index.xml");
+        File file = new File(sitemapDirectory.toAbsolutePath().toString() + "\\sitemap_index.xml");
         return new FileSystemResource(file);
     }
 
