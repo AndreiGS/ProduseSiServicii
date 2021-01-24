@@ -38,14 +38,14 @@ public class SitemapController {
     @GetMapping(path="/sitemap.xml", produces = MediaType.APPLICATION_XML_VALUE)
     @ResponseBody
     private FileSystemResource getSitemapIndex() {
-        File file = new File(sitemapDirectory.toAbsolutePath().toString() + "\\sitemap_index.xml");
+        File file = new File(sitemapDirectory.toAbsolutePath().toString() + "/sitemap_index.xml");
         return new FileSystemResource(file);
     }
 
     @GetMapping(path="/{sitemap}", produces = MediaType.APPLICATION_XML_VALUE)
     @ResponseBody
     private FileSystemResource getSitemapIndex(@PathVariable String sitemap) {
-        File file = new File(sitemapDirectory.toAbsolutePath().toString() + "\\" + sitemap);
+        File file = new File(sitemapDirectory.toAbsolutePath().toString() + "/" + sitemap);
         return new FileSystemResource(file);
     }
 
