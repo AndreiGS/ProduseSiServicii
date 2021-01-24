@@ -15,30 +15,33 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 @RestController
 @RequestMapping("api/sitemap")
 public class SitemapController {
 
     private final SitemapServiceImpl sitemapService;
-    private String sitemapsDirectoryPath;
+    private final Path sitemapDirectory;
 
-    public SitemapController(SitemapServiceImpl sitemapService) {
+    public SitemapController(SitemapServiceImpl sitemapService) throws IOException {
         this.sitemapService = sitemapService;
-        sitemapsDirectoryPath = new FileSystemResource("").getFile().getAbsolutePath() + "\\sitemaps";
+        sitemapDirectory = Files.createTempDirectory("sitemaps");
     }
 
     @Scheduled(fixedDelay = ScheduleDelayTimes.GENERATE_SITEMAPS)
     private void generateSitemaps() throws MalformedURLException {
-        sitemapService.createSitemapForShopsWithFrequency(UpdateFrequencyType.DAILY, sitemapsDirectoryPath);
-        sitemapService.createSitemapIndexFile(sitemapsDirectoryPath);
+        sitemapService.createSitemapForShopsWithFrequency(UpdateFrequencyType.DAILY, sitemapDirectory.toAbsolutePath().toString());
+        sitemapService.createSitemapIndexFile(sitemapDirectory.toAbsolutePath().toString());
     }
 
     @GetMapping(path="/sitemap.xml", produces = MediaType.APPLICATION_XML_VALUE)
     @ResponseBody
     private FileSystemResource getSitemapIndex() {
-        File file = new File(sitemapsDirectoryPath+ "\\sitemap_index.xml");
+        File file = new File(sitemapDirectory.toAbsolutePath().toString() + "\\sitemap_index.xml");
         return new FileSystemResource(file);
     }
 
