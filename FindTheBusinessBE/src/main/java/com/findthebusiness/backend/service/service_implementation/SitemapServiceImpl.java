@@ -27,12 +27,12 @@ public class SitemapServiceImpl implements SitemapService {
 		File targetDirectory = new File(sitemapsDirectoryPath);		 
 		WebSitemapGenerator wsg = WebSitemapGenerator.builder("https://produsesiservicii.ro", targetDirectory)
 									.fileNamePrefix("sitemap_" + updateFrequency.toString())
-									.gzip(true)
+									.gzip(false)
 									.build();
 
 		List<Shops> shops = findAllPublishedShops();
 		for(Shops shop : shops) {
-			String url = "https://produsesiservicii.ro/store" + shop.getId();
+			String url = "https://produsesiservicii.ro/store/" + shop.getId();
 
 			WebSitemapUrl wsmUrl = new WebSitemapUrl.Options(url)
 					.lastMod(shop.getBoughtAt())
