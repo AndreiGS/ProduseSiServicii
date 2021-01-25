@@ -151,6 +151,11 @@
               :editingShop="editingShop"
               :schedule="store.schedule"
               :isOnline="store.county == 'Online' ? true : false"
+              :address="store.address"
+              :email="store.email"
+              :county="store.county"
+              :websiteLink="store.websiteLink"
+              :phone="store.phone"
 
               @change_schedule="changeSchedule($event)"
             />

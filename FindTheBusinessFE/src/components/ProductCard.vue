@@ -83,8 +83,8 @@
                       Pret <input uk-tooltip="(Optional)Pret aproximativ si cantitate/perioada (maxim 15 caractere)" maxlength="15" :id="'PriceInputMobile'+item.id" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 32 ? 'in-focus ' : ''" class="uk-input custom-input-enabled" type="text" placeholder="(Optional)-Pret/Cantitate(Perioada)" v-model="item.price">
                     </div>
                   </div>
-                  <div v-else-if="editingItem == false && allLowercase(tab) == 'all'">
-                    <div class="uk-text-center">
+                  <div v-else-if="editingItem == false">
+                    <div v-if="allLowercase(tab) == 'all'" class="uk-text-center">
                       Fila: {{(item.tabName == null || item.tabName == 'none') ? '-' : item.tabName}}
                     </div>
                     <div class="uk-text-right price">
@@ -125,11 +125,11 @@
                       </div>
                     </div>
                   </div>
-                  <div v-else-if="editingItem == false && allLowercase(tab) == 'all'">
+                  <div v-else-if="editingItem == false">
                     <div class="uk-text-right price">
                       Pret: {{item.price !== null ? item.price : 'Neprecizat'}}
                     </div>
-                    <div class="uk-text-right tab">
+                    <div v-if="allLowercase(tab) == 'all'" class="uk-text-right tab">
                       Fila: {{(item.tabName == null || item.tabName == 'none') ? '-' : item.tabName}}
                     </div>
                   </div>

@@ -11,6 +11,7 @@ export default new Vuex.Store({
     isWithinTutorial: false,
     tutorialStrings: [
       {
+        title: 'Tutorial:',
         content: 'Doriti sa treceti prin modul de utilizare? In cazul in care un buton nu este vizibil pe ecranul dumneavostra, glisati degetul pe ecran in sus',
         place: 'top',
         hasYesButton: true,

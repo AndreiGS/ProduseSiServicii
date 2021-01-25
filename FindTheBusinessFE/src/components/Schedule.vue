@@ -1,4 +1,6 @@
 <script>
+const ContactData = () => import(/* webpackChunkName: "modals-chunk" */ "@/components/ContactData");
+
 export default {
   name: 'Schedule',
   props: {
@@ -15,10 +17,34 @@ export default {
       type: Boolean,
       default: false,
     },
+    phone: {
+      type: String,
+      default: '',
+    },
+    address: {
+      type: String,
+      default: '',
+    },
+    email: {
+      type: String,
+      default: '',
+    },
+    websiteLink: {
+      type: String,
+      default: '',
+    },
+    county: {
+      type: String,
+      default: '',
+    },
+  },
+  components: {
+    ContactData
   },
   data() {
     return {
-      scheduleCopy: ''
+      scheduleCopy: '',
+      showContact: false,
     }
   },
   mounted() {
@@ -38,23 +64,41 @@ export default {
 </script>
 
 <template>
-  <article class="uk-article" style="margin: 0;">
-    <vk-card padding="small" class="uk-height-1-1 uk-flex schedule-card-container">
-      <div>
-        <div class="header">
-          <h2>Program de lucru</h2>
-          <h5 v-if="isOnline">* Magazinul este online, orarul fiind destinat suportului</h5>
+  <div>
+    <article class="uk-article" style="margin: 0;">
+      <vk-card padding="small" class="uk-height-1-1 uk-flex schedule-card-container">
+        <div class="uk-flex uk-flex-column">
+          <div class="header">
+            <h2>Program de lucru</h2>
+            <h5 v-if="isOnline">* Magazinul este online, orarul fiind destinat suportului</h5>
+          </div>
+          <textarea v-if="editingShop"
+            v-model="scheduleCopy"
+            maxlength="255" 
+            class="uk-textarea custom-textarea-enabled" 
+          />
+          <p v-else-if="scheduleCopy == null" class="custom-schedule-paragraph no-schedule">Magazinul nu a adaugat un program de lucru</p>
+          <p v-else class="custom-schedule-paragraph">{{scheduleCopy}}</p>
+          <vk-button class="uk-margin" @click="showContact = true" type="primary">Contacteaza-ne</vk-button>
         </div>
-        <textarea v-if="editingShop"
-          v-model="scheduleCopy"
-          maxlength="255" 
-          class="uk-textarea custom-textarea-enabled" 
+      </vk-card>
+    </article>
+    
+      <vk-modal :stuck="true" center :show.sync="showContact">
+        <vk-modal-close></vk-modal-close>
+        <vk-modal-title>DATE DE CONTACT</vk-modal-title>
+        <ContactData
+          :phone="phone"
+          :address="address"
+          :email="email"
+          :websiteLink="websiteLink"
+          :county="county"
         />
-        <p v-else-if="scheduleCopy == null" class="custom-schedule-paragraph no-schedule">Magazinul nu a adaugat un program de lucru</p>
-        <p v-else class="custom-schedule-paragraph">{{scheduleCopy}}</p>
-      </div>
-    </vk-card>
-  </article>
+        <p class="uk-text-right">
+          <vk-button @click="showContact = false" class="uk-margin-small-right">Inchide</vk-button>
+        </p>
+      </vk-modal>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -65,7 +109,8 @@ export default {
 	border-bottom: 2px solid #6FC42B;
 	text-align: center;
   white-space: pre-line;
-  min-width: 100%;
+  max-width: 350px;
+  min-width: 350px;
 }
 
 .custom-schedule-paragraph {
@@ -98,5 +143,12 @@ export default {
 .schedule-card-container {
   place-content: center;
   align-items: center;
+}
+
+@media(max-width: 640px) {
+  .custom-textarea-enabled {
+    max-width: 200px;
+    min-width: 200px;
+  }
 }
 </style>

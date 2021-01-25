@@ -108,6 +108,11 @@ export default {
 		}
 	},
 	methods: {
+		sortCategories() {
+			this.categories = this.categories.sort((s1, s2) => {
+        return s1.name > s2.name ? 1 : s1.name < s2.name ? -1 : 0;
+      });
+		},
 		categoryChanged(category) {
 			this.selectedCategory = category; 
 			this.selectedSubcategory = 'none';
@@ -138,14 +143,9 @@ export default {
 			if(this.subcategories == null)
 				return
 
-			let subcategoriesToReturn = [];
-
-			this.subcategories.forEach(subcategory => {
-				if(subcategory.categoryId == this.selectedCategory)
-					subcategoriesToReturn.push(subcategory)
-			});
-
-			return subcategoriesToReturn
+			return this.subcategories.filter(subcategory => this.selectedCategory == subcategory.categoryId).sort((s1, s2) => {
+        return s1.name > s2.name ? 1 : s1.name < s2.name ? -1 : 0;
+      });
 		},
 		search() {
 			let frontend = process.env.VUE_APP_FRONTEND
@@ -200,6 +200,7 @@ export default {
 	},
 	async mounted() {
 		await this.getCategoriesAndSubcategories();
+		this.sortCategories();
 		this.findSubcategoriesByCategoryId();
 		this.addOnlineOption();
 	}

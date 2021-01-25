@@ -11,7 +11,11 @@
         <input v-model="contacts.email" class="uk-input custom-input" type="text" placeholder="Email">
         <input v-model="contacts.websiteLink" class="uk-input custom-input" type="text" placeholder="Link website">
         
-        <region-select id="RegionSelectContact" className="uk-select custom-input" :regionName="true" v-model="contacts.county" country="RO" :placeholder="(contacts.county == null) ? 'Judet' : contacts.county" />
+        <div class="uk-flex uk-flex-row">
+          <region-select id="RegionSelectContact" className="uk-select custom-input" :regionName="true" v-model="contacts.county" country="RO" :placeholder="(contacts.county == null) ? 'Judet' : contacts.county" />
+          <button style="cursor: pointer;" @click="contacts.county = null" class="reset-button uk-button-danger"><span uk-icon="icon: ban; ratio: 0.8"></span></button>
+        </div>
+        
 
         <!--<div class="uk-text-center">
           <h3>Detalii actuale</h3>
@@ -157,5 +161,15 @@ export default {
 
 .custom-input {
   margin: 5px;
+}
+
+.reset-button {
+	outline: 0;
+  border: none;
+	border-radius: 10px;
+  width: 45px;
+	height: 30px;
+	align-self: center;
+	margin: 0 10px;
 }
 </style>
