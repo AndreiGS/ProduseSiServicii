@@ -20,8 +20,8 @@
       Este recomandat sa treceti prin tutorial pentru a intelege modul de utilizare al site-ului. Doriti sa parcurgeti tutorialul?
 
       <div slot="footer" class="uk-text-right">
-        <vk-button :class="windowWidth <= 640 ? 'uk-button-small' : ''" style="margin-right: 2px;" @click="closeSureDialog(false)">NU</vk-button>
-        <vk-button :class="windowWidth <= 640 ? 'uk-button-small' : ''" @click="closeSureDialog(true)" type="primary">DA</vk-button>
+        <vk-button :class="windowWidth <= 640 ? 'uk-button-small' : ''" style="margin-right: 2px;" @click="closeSureDialog(false)">DA</vk-button>
+        <vk-button :class="windowWidth <= 640 ? 'uk-button-small' : ''" @click="closeSureDialog(true)" type="primary">DU-MA LA TUTORIAL</vk-button>
       </div>
     </vk-modal>
   </div>

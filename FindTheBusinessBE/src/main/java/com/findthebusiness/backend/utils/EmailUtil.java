@@ -44,7 +44,7 @@ public class EmailUtil {
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress("produsesiservicii.ro@gmail.com", false));
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
-        msg.setSubject("Produse&Servicii.ro: Email de confirmare");
+        msg.setSubject("ProduseSiServicii.ro: Email de confirmare");
 
         msg.setText("<a href=\""+ url +"\"><button>Apasati aici</button></a> pentru a confirma " + action);
         //msg.setContent("Press on: localhost:8080/api/authentication/confirmation_email_register?code=" + token + " to confirm your account", "text/html");
@@ -85,7 +85,7 @@ public class EmailUtil {
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress("produsesiservicii.ro@gmail.com", false));
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
-        msg.setSubject("Produse&Servicii.ro: Email de confirmare");
+        msg.setSubject("ProduseSiServicii.ro: Email de confirmare");
 
         msg.setText(content);
         //msg.setContent("Press on: localhost:8080/api/authentication/confirmation_email_register?code=" + token + " to confirm your account", "text/html");
