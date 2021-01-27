@@ -47,7 +47,7 @@ workbox.routing.registerRoute(
 
 workbox.routing.registerRoute(
   new RegExp("https://produsesiservicii-media.s3.amazonaws.com/(.*)"),
-  workbox.strategies.networkFirst({
+  workbox.strategies.cacheFirst({
     cacheName: "produsesiserviciiapis-media",
     plugins: [
       new workbox.expiration.Plugin({

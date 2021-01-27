@@ -44,7 +44,7 @@
               <span uk-icon="camera" ratio="2"></span>
               <p>Schimba imaginea {{windowWidth >= 640 ? 'mare' : 'mica'}}</p>
             </div>
-            <button v-if="windowWidth >= 640" style="cursor: pointer;" v-on:click="deleteLargeImage()" class="copy-link-button uk-button-primary uk-flex uk-flex-middle uk-align-center">
+            <button v-if="windowWidth >= 640 && (store.largePhoto != null || newImage != null)" style="cursor: pointer;" v-on:click="deleteLargeImage()" class="copy-link-button uk-button-primary uk-flex uk-flex-middle uk-align-center">
               <span style="margin-right: 5px" uk-icon="icon: trash; ratio: 0.8"></span>
               <p style="margin: 0">Sterge imaginea mare</p>
             </button>
@@ -694,7 +694,7 @@ export default {
               'X-REFRESH-TOKEN': this.$cookie.get('REFRESH-TOKEN')
             },
             data: {
-              hasDeletedLargeImage: this.store.largePhoto == null,
+              hasDeletedLargeImage: this.store.largePhoto == null && this.newImage == null,
               newImage: this.newImage,
               newSmallImage: this.newSmallImage,
               name: this.store.name,
