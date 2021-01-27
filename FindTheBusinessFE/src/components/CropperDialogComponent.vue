@@ -104,11 +104,9 @@ export default {
       const { coordinates, canvas, } = this.$refs.cropper.getResult();
       this.coordinates = coordinates;
       try {
-        let quality = 0.2;
-        if(this.from.includes('storefront'))
+        let quality = 0.5;
+        if(this.from.includes('productcard'))
           quality = 0.3
-        else if(this.from == 'productcard')
-          quality = 0.1
 
         let data = {
           //id: this.item.id,

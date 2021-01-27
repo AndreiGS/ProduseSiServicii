@@ -46,21 +46,20 @@ export default {
   data() {
     return {
       loading: false,
-      purchased: 0,
       backend: process.env.VUE_APP_BACKEND || 'http://localhost:8080'
     }
   },
   methods: {
     hideModal() {
-      UIkit.modal('#promote-shop-sections').hide()
+      UIkit.modal("#promote-shop-sections").hide();
       this.$emit('close_modal')
       if(this.$store.getters.getIsWithinTutorial)
         this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
-      if(this.$store.getters.getHasCompletedTutorial) {
+      /*if(this.$store.getters.getHasCompletedTutorial) {
         this.$emit("refresh_page");
       } else {
         this.$emit('change_balance', this.purchased);
-      }
+      }*/
     },
     async promoteStore(type) {
       var timeoutVar = setTimeout(() => { this.loading = true; }, 1000);
@@ -79,7 +78,8 @@ export default {
 
           this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
           this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
-          this.purchased -= 60;
+
+          this.$emit('change_balance', -60);
         }) 
         .catch((error) => {
           if(error.response.status == 400)

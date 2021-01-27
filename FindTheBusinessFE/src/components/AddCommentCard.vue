@@ -264,6 +264,7 @@ export default {
 <style lang="scss" scoped>
 .plusButton {
   transition: transform 0.2s ease-in-out;
+  cursor: pointer;
 }
 .plusButtonTransition {
   transform: rotate(45deg);

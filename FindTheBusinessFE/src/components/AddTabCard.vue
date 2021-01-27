@@ -1,5 +1,5 @@
 <template>
-  <vk-card padding="small" class="card" @click="$emit('add_new_tab')">
+  <vk-card padding="small" class="card pointer" @click="$emit('add_new_tab')">
     <vk-icons-plus :height="'30px'" :width="'30px'" class="plusButton"/>
   </vk-card>
 </template>
@@ -24,5 +24,7 @@ export default {
 </script>
 
 <style scoped>
-
+.pointer {
+  cursor: pointer;
+}
 </style>

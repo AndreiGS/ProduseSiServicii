@@ -559,6 +559,16 @@ public class ShopServiceImpl implements ShopService {
         return new CheckIfShopOwnerReponseDtoWithAccessToken(auth.getAccessToken(), new CheckIfShopOwnerResponseDto(auth.getRefreshToken(), auth.getCsrfToken()));
     }
 
+    private void deleteImage(String image) {
+        String[] oldPhotoName;
+        try {
+            oldPhotoName = image.split("/");
+            deleteFile(oldPhotoName[oldPhotoName.length-1]);
+        } catch (Exception e) {
+
+        }
+    }
+
     @Override
     public ChangeStorefrontImageResponseDtoWithAccessToken changeStorefrontImage(String shopId, String imageType, ChangeStorefrontImageRequestDto changeStorefrontImageRequestDto, HttpServletRequest request) throws IOException, NoSuchAlgorithmException {
         String accessToken = getAccessTokenFromRequest(request);
@@ -568,49 +578,19 @@ public class ShopServiceImpl implements ShopService {
         String largePhoto = shop.getLargePhoto();
         String smallPhoto = shop.getSmallPhoto();
 
-        String imageUrl = null, newSmallImageUrl = null;
+        if(changeStorefrontImageRequestDto.getNewSmallImage() != null) {
+            shop.setSmallPhoto(savePhoto(changeStorefrontImageRequestDto.getNewSmallImage(), SMALL_SHOP_IMAGE));
+            deleteImage(smallPhoto);
+        }
+
         if(changeStorefrontImageRequestDto.getNewImage() != null) {
-            if(imageType.equals("LARGE")) {
-                imageUrl = savePhoto(changeStorefrontImageRequestDto.getNewImage(), LARGE_SHOP_IMAGE);
-                shop.setLargePhoto(imageUrl);
-            } else {
-                imageUrl = savePhoto(changeStorefrontImageRequestDto.getNewImage(), SMALL_SHOP_IMAGE);
-                shop.setSmallPhoto(imageUrl);
-            }
+            shop.setLargePhoto(savePhoto(changeStorefrontImageRequestDto.getNewImage(), LARGE_SHOP_IMAGE));
+            deleteImage(largePhoto);
         }
 
-        if(changeStorefrontImageRequestDto.getNewSmallImage() != null && imageType.equals("LARGE")) {
-            newSmallImageUrl = savePhoto(changeStorefrontImageRequestDto.getNewSmallImage(), SMALL_SHOP_IMAGE);
-            shop.setSmallPhoto(newSmallImageUrl);
-        }
-
-        String[] oldPhotoName;
-
-        if(imageType.equals("LARGE")) {
-            try {
-                oldPhotoName = largePhoto.split("/");
-                deleteFile(oldPhotoName[oldPhotoName.length-1]);
-            } catch (Exception e) {
-
-            }
-
-            if(newSmallImageUrl != null) {
-                try {
-                    oldPhotoName = smallPhoto.split("/");
-                    deleteFile(oldPhotoName[oldPhotoName.length-1]);
-                } catch (Exception e) {
-
-                }
-            }
-        }
-
-        if(imageType.equals("SMALL")) {
-            try {
-                oldPhotoName = smallPhoto.split("/");
-                deleteFile(oldPhotoName[oldPhotoName.length-1]);
-            } catch (Exception e) {
-
-            }
+        if(changeStorefrontImageRequestDto.getHasDeletedLargeImage()) {
+            shop.setLargePhoto(null);
+            deleteImage(largePhoto);
         }
 
         shop.setName(changeStorefrontImageRequestDto.getName());
@@ -619,7 +599,7 @@ public class ShopServiceImpl implements ShopService {
         saveShop(shop);
 
         AuthenticationCredentialsDto auth = authenticationUtil.createCredentials(user, accessToken);
-        return new ChangeStorefrontImageResponseDtoWithAccessToken(auth.getAccessToken(), new ChangeStorefrontImageResponseDto(auth.getRefreshToken(), auth.getCsrfToken(), imageUrl, newSmallImageUrl));
+        return new ChangeStorefrontImageResponseDtoWithAccessToken(auth.getAccessToken(), new ChangeStorefrontImageResponseDto(auth.getRefreshToken(), auth.getCsrfToken(), shop.getLargePhoto(), shop.getSmallPhoto()));
     }
 
     @Override

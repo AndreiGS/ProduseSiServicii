@@ -19,6 +19,7 @@ public class ProfileInfoDto {
     private Integer mediumTokens;
     private Integer largeTokens;
     private Integer unlimitedTokens;
+    private Integer noOfShopsAllowed;
 
     private String refreshToken;
     private String csrfToken;
@@ -26,7 +27,7 @@ public class ProfileInfoDto {
     public ProfileInfoDto() {
     }
 
-    public ProfileInfoDto(String email, String name, Long balance, List<ShopCardDto> shops, List<SubcategoriesDto> subcategories, List<CategoriesDto> categories, Integer smallTokens, Integer mediumTokens, Integer largeTokens, Integer unlimitedTokens, String refreshToken, String csrfToken) {
+    public ProfileInfoDto(String email, String name, Long balance, List<ShopCardDto> shops, List<SubcategoriesDto> subcategories, List<CategoriesDto> categories, Integer smallTokens, Integer mediumTokens, Integer largeTokens, Integer unlimitedTokens, Integer noOfShopsAllowed, String refreshToken, String csrfToken) {
         this.email = email;
         this.name = name;
         this.balance = balance;
@@ -37,6 +38,7 @@ public class ProfileInfoDto {
         this.mediumTokens = mediumTokens;
         this.largeTokens = largeTokens;
         this.unlimitedTokens = unlimitedTokens;
+        this.noOfShopsAllowed = noOfShopsAllowed;
         this.refreshToken = refreshToken;
         this.csrfToken = csrfToken;
     }
@@ -146,6 +148,15 @@ public class ProfileInfoDto {
 
     public ProfileInfoDto setUnlimitedTokens(Integer unlimited) {
         this.unlimitedTokens = unlimited;
+        return this;
+    }
+
+    public Integer getNoOfShopsAllowed() {
+        return noOfShopsAllowed;
+    }
+
+    public ProfileInfoDto setNoOfShopsAllowed(Integer noOfShopsAllowed) {
+        this.noOfShopsAllowed = noOfShopsAllowed;
         return this;
     }
 }

@@ -144,7 +144,6 @@
 					v-on:show_modal="showDialog()" 
 					v-on:close_modal="closeDialog()" 
 					@change_balance="changeBalance($event)"
-					@close_modal="closeDialog()"
 					:shops="user.shops" 
 					:subcategories="subcategories"
 					:categories="categories"
@@ -196,7 +195,8 @@ export default {
 				smallTokens: null,
 				mediumTokens: null,
 				largeTokens: null,
-				unlimitedTokens: null
+				unlimitedTokens: null,
+				noOfShopsAllowed: 5,
 			},
 			subcategories: [],
 			categories: [],
@@ -281,6 +281,7 @@ export default {
 					this.user.name = response.data.name;
 					this.user.balance = response.data.balance;
 					this.user.shops = response.data.shops;
+					this.user.noOfShopsAllowed = response.data.noOfShopsAllowed
 					this.subcategories = response.data.subcategories;
 					this.categories = response.data.categories;
 					this.user.smallTokens = response.data.smallTokens;
@@ -482,6 +483,11 @@ export default {
 			if(this.shopAdded == true) {
 				UIkit.notification({message: "Ati adaugat deja o fatada de magazin. Dupa ce o salvati puteti adauga una noua!", status: 'warning'})
 				return;
+			}
+			console.log(this.user.noOfShopsAllowed, this.user.shops.length)
+			if(this.user.noOfShopsAllowed < this.user.shops.length+1) {
+				UIkit.notification({message: 'Nu puteti sa adaugati fatadei de magazin deoarece ati atins numarul maxim de fatade de magazin. Daca doriti sa mai adaugati magazin va rugam sa ne scrieti un email!', status: 'danger'})
+        return
 			}
 			this.shopAdded = true;
 			this.user.shops.unshift(

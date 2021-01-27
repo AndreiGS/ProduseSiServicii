@@ -7,7 +7,7 @@
             <!--<div v-if="isPromotedInHome" class="uk-card-badge uk-label" style="right: 10px; top: 10px;">PROMOVAT{{promotedDaysInHomeRemaining != null ? ` ${promotedDaysInHomeRemaining} zile "ACASA"` : null}}</div>
             <div v-if="isPromotedInSearches" class="uk-card-badge uk-label" style="right: 10px; top: 10px;">PROMOVAT{{promotedDaysInSearchesRemaining != null ? ` ${promotedDaysInSearchesRemaining} zile "CAUTARI"` : null}}</div>-->
 
-            <button @click="openPromotedInfoPanel()" uk-tooltip="Informatii promovare" style="cursor: pointer;" :class="!$store.getters.getHasCompletedTutorial && $store.getters.getTutorialStep == 14 ? 'in-focus' : ''" class="promote-info-button uk-button-primary uk-card-badge uk-label"><span uk-icon="icon: info; ratio: 0.8"></span></button>
+            <button v-if="!this.id.includes('not-set')" @click="openPromotedInfoPanel()" uk-tooltip="Informatii promovare" style="cursor: pointer;" :class="!$store.getters.getHasCompletedTutorial && $store.getters.getTutorialStep == 14 ? 'in-focus' : ''" class="promote-info-button uk-button-primary uk-card-badge uk-label"><span uk-icon="icon: info; ratio: 0.8"></span></button>
 
             <div @click="showEditImageModal()" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 4 && this.id.includes('not-set') ? 'in-focus' : ''" class="uk-inline uk-width-1-1" :style="(this.editingShop==true) ? 'cursor: pointer;' : ''">
               

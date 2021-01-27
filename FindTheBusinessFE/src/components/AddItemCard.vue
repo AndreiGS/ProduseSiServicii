@@ -1,5 +1,5 @@
 <template>
-  <vk-card padding="small" class="card" @click="addShop()">
+  <vk-card padding="small" class="card pointer" @click="addShop()">
     <vk-icons-plus :height="'30px'" :width="'30px'" class="plusButton"/>
   </vk-card>
 </template>
@@ -72,7 +72,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.plusButton {
-  transition: transform 0.2s ease-in-out;
+.pointer {
+  cursor: pointer;
 }
 </style>

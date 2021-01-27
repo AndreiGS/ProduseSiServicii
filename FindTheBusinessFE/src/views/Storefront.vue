@@ -15,7 +15,7 @@
         <TutorialLayout :isShowingDialog="isShowingDialog" />
 
         <div v-if="windowWidth < 640 || store.largePhoto != null || isOwner" class="uk-inline" style="width: 100%; margin-bottom: 15px;">
-          <img loading="lazy" v-if="(newImage != null && newImage.includes('base64')) || (cannotFindImage == false && ((windowWidth >= 640 && store.largePhoto != null) || (windowWidth < 640 && store.smallPhoto != null)))" :src="(newImage == null) ? ((windowWidth >= 640) ? store.largePhoto : store.smallPhoto) : newImage" class="cover-image" :class="(editingShop == true) ? 'filter-image' : ''" :alt="store.name" @error="cannotFindImage = true">
+          <img loading="lazy" v-if="(newImage != null && newImage.includes('base64')) || (cannotFindImage == false && ((windowWidth >= 640 && store.largePhoto != null) || (windowWidth < 640 && store.smallPhoto != null)))" :src="((windowWidth >= 640 && newImage == null) || (windowWidth < 640 && newSmallImage == null)) ? ((windowWidth >= 640) ? store.largePhoto : store.smallPhoto) : ((windowWidth >= 640) ? newImage : newSmallImage)" class="cover-image" :class="(editingShop == true) ? 'filter-image' : ''" :alt="store.name" @error="cannotFindImage = true">
           
           <div v-else-if="isOwner" class="cover-image no-image-div">
             <p :style="cannotFindImage == true || ((windowWidth >= 640) ? store.largePhoto == null : store.smallPhoto == null) ? 'visibility: visible' : 'visibility: hidden'" v-if="editingShop == false" class="uk-overlay uk-position-center overlay-storefront" style="color: white;">Nicio imagine mare gasita</p>
@@ -39,9 +39,15 @@
               <button uk-tooltip="Finalizeaza editarea fatadei de magazin" style="cursor: pointer;" @click="saveEdit()" class="edit-button uk-button-primary"><span uk-icon="icon: check; ratio: 0.8"></span></button>
             </div>
           </div>
-          <div @click="showImageEdit = true" v-if="isOwner == true && editingShop == true" :style="(this.editingShop==true) ? 'cursor: pointer;' : ''" style="color: white;" class="uk-overlay uk-position-center overlay-storefront change-image-div">
-            <span uk-icon="camera" ratio="2"></span>
-            <p>Schimba imaginea {{windowWidth >= 768 ? 'mare' : 'mica'}}</p>
+          <div v-if="isOwner == true && editingShop == true" :style="(this.editingShop==true) ? 'cursor: pointer;' : ''" style="color: white;" class="uk-overlay uk-position-center overlay-storefront change-image-div">
+            <div @click="windowWidth >= 640 ? showImageEdit = true : showSmallImageEdit = true">
+              <span uk-icon="camera" ratio="2"></span>
+              <p>Schimba imaginea {{windowWidth >= 640 ? 'mare' : 'mica'}}</p>
+            </div>
+            <button v-if="windowWidth >= 640" style="cursor: pointer;" v-on:click="deleteLargeImage()" class="copy-link-button uk-button-primary uk-flex uk-flex-middle uk-align-center">
+              <span style="margin-right: 5px" uk-icon="icon: trash; ratio: 0.8"></span>
+              <p style="margin: 0">Sterge imaginea mare</p>
+            </button>
           </div>
 
           <!--DESKTOP-->
@@ -233,10 +239,10 @@
             v-on:change_image="changeImage($event)"
 
             :oldImage="store.photo" 
-            :aspectRatio="(windowWidth >= 768) ? 32/9 : 4/3"
+            :aspectRatio="32/9"
             :minHeight="1000"
             :minWidth="1000*3.55"
-            :from="'storefront_both'"
+            :from="'storefront_large'"
           />
         </vk-modal-full>
 
@@ -251,7 +257,7 @@
             :oldImage="store.photo" 
             :aspectRatio="4/3"
             :minHeight="1000"
-            :minWidth="1000*3.55"
+            :minWidth="1000*1.33"
             :from="'storefront_small'"
           />
         </vk-modal-full>
@@ -309,6 +315,7 @@ export default {
             scheduleCopy: null,
             nameCopy: null,
             descriptionCopy: null,
+            largePhotoCopy: null,
             newImage: null,
             newSmallImage: null,
             priceText: null,
@@ -349,6 +356,16 @@ export default {
       }
     },
     methods: {
+        deleteLargeImage() {
+          if(this.windowWidth < 640) {
+            return
+          }
+          if(this.newImage != null) {
+            this.newImage = null
+            return;
+          }
+          this.store.largePhoto = null
+        },
         scroll() {
           window.scrollTo({
             top: document.body.scrollHeight,
@@ -418,9 +435,9 @@ export default {
           this.showImageEdit = false;
           this.showSmallImageEdit = false;
         },
-        async changeImage(data) {
+        changeImage(data) {
           this.cannotFindImage = false
-          if(data.from == 'storefront_both')
+          if(data.from == 'storefront_large')
             this.newImage = data.newImage.image
           else
             this.newSmallImage = data.newImage.image
@@ -620,6 +637,7 @@ export default {
               this.nameCopy=this.store.name;
               this.scheduleCopy=this.store.schedule
               this.descriptionCopy=this.store.description;
+              this.largePhotoCopy=this.store.largePhoto;
 
               this.cutDescription();
               this.getPriceType();
@@ -645,6 +663,7 @@ export default {
           this.store.schedule=this.scheduleCopy
           this.store.name=this.nameCopy;
           this.store.description=this.descriptionCopy;
+          this.store.largePhoto=this.largePhotoCopy;
           this.newImage=null;
           this.newSmallImage=null;
           this.changeEditState();
@@ -653,13 +672,13 @@ export default {
           if(this.store.schedule == this.scheduleCopy &&
              this.store.name ==  this.nameCopy && 
              this.store.description == this.descriptionCopy && 
-             this.newImage == null && this.newSmallImage == null) {
+             this.newImage == null && this.newSmallImage == null && this.store.largePhoto != null) {
                this.discardEdit()
                return;
              }
              
 
-          if(this.windowWidth >= 768)
+          if(this.windowWidth >= 640)
             await this.saveEditToDb('LARGE');
           else
             await this.saveEditToDb('SMALL');
@@ -675,6 +694,7 @@ export default {
               'X-REFRESH-TOKEN': this.$cookie.get('REFRESH-TOKEN')
             },
             data: {
+              hasDeletedLargeImage: this.store.largePhoto == null,
               newImage: this.newImage,
               newSmallImage: this.newSmallImage,
               name: this.store.name,
@@ -687,17 +707,8 @@ export default {
               this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
               this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
 
-              if(imageType == 'LARGE') {
-                if(response.data.newImageURL != null) {
-                  this.store.largePhoto = response.data.newImageURL
-                }
-                if(response.data.newSmallImageURL != null) {
-                  this.store.smallPhoto = response.data.newSmallImageURL
-                }
-              }
-              else if(imageType == 'SMALL' && response.data.newImageURL != null)
-                this.store.smallPhoto = response.data.newImageURL
-
+              this.store.largePhoto = response.data.newImageURL
+              this.store.smallPhoto = response.data.newSmallImageURL
               this.nameCopy=this.store.name;
               this.scheduleCopy=this.store.schedule
               this.descriptionCopy=this.store.description;
@@ -709,24 +720,25 @@ export default {
 
               UIkit.notification({message: 'Modificarile au fost salvate', status: 'success'})
             })  
-            .catch((error) => {
-              console.log(error)
-              if(error.response.status == 400) {
-                UIkit.notification({message: 'Modificarile nu au putut fi salvate', status: 'danger'})
-                return
-              }
-              if(error.response.status == 403) {
-                this.$store.dispatch('changeLogged', '')
-                this.$cookie.delete('REFRESH-TOKEN')
-                this.$cookie.delete('CSRF-TOKEN')
-                return
-              }
-              UIkit.notification({message: 'Modificarile nu au putut fi salvate', status: 'danger'})
-            })
+            .catch(async (error) => await this.saveEditCatch(error))
             .finally(() => {
               this.loading = false;
               clearTimeout(timeoutVar);
             })
+        },
+        async saveEditCatch(error) {
+          if(error.response.status == 400) {
+            UIkit.notification({message: 'Modificarile nu au putut fi salvate', status: 'danger'})
+            await this.getShopDetails();
+            return
+          }
+          if(error.response.status == 403) {
+            this.$store.dispatch('changeLogged', '')
+            this.$cookie.delete('REFRESH-TOKEN')
+            this.$cookie.delete('CSRF-TOKEN')
+            return
+          }
+          UIkit.notification({message: 'Modificarile nu au putut fi salvate', status: 'danger'})
         },
         warnThatContactsAreNotSet() {
           if(this.isOwner == true) {
@@ -896,7 +908,6 @@ export default {
 }
 
 .edit-info-container {
-  padding-right: 10px;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -999,11 +1010,18 @@ input:checked + .slider:before {
 
 @media (max-width: 960px) {
   .edit-info-container {
-    margin: 0 10px;
+    margin: 0 0 0 10px;
     padding-right: 0;
   }
   .info-container {
     margin: 0 10px;
+  }
+}
+
+@media (max-width: 639px) {
+  .edit-info-container {
+    margin: 0 10px;
+    padding-right: 0;
   }
 }
 </style>

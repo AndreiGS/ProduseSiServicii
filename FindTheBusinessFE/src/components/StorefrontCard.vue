@@ -13,7 +13,7 @@
           <p class="card-text uk-text-center wrap">
             {{title}}
           </p> 
-          <p class="uk-text-left uk-text-center wrap" style="white-space: pre-line;">{{displayedDescription}}</p>
+          <p class="uk-text-left wrap" style="white-space: pre-line;">{{displayedDescription}}</p>
           <div v-if="needsCrop == true" style="margin-bottom: 20px;">
             <button style="cursor: pointer;"  class="custom-showmore-button" v-if="isShowingFullDesc == false" @click="getFullDescription()">Arata toata descrierea</button>
             <button style="cursor: pointer;"  class="custom-showmore-button" v-else @click="cutDescription()">Arata mai putin</button>

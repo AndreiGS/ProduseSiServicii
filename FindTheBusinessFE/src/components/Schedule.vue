@@ -109,8 +109,8 @@ export default {
 	border-bottom: 2px solid #6FC42B;
 	text-align: center;
   white-space: pre-line;
-  max-width: 350px;
-  min-width: 350px;
+  max-width: 100%;
+  min-width: 100%;
 }
 
 .custom-schedule-paragraph {
@@ -143,12 +143,5 @@ export default {
 .schedule-card-container {
   place-content: center;
   align-items: center;
-}
-
-@media(max-width: 640px) {
-  .custom-textarea-enabled {
-    max-width: 200px;
-    min-width: 200px;
-  }
 }
 </style>

@@ -7,16 +7,18 @@ public class ChangeStorefrontImageRequestDto {
     private String name;
     private String description;
     private String schedule;
+    private Boolean hasDeletedLargeImage;
 
     public ChangeStorefrontImageRequestDto() {
     }
 
-    public ChangeStorefrontImageRequestDto(String newImage, String newSmallImage, String name, String description, String schedule) {
+    public ChangeStorefrontImageRequestDto(String newImage, String newSmallImage, String name, String description, String schedule, Boolean hasDeletedLargeImage) {
         this.newImage = newImage;
         this.newSmallImage = newSmallImage;
         this.name = name;
         this.description = description;
         this.schedule = schedule;
+        this.hasDeletedLargeImage = hasDeletedLargeImage;
     }
 
     public String getNewSmallImage() {
@@ -61,6 +63,15 @@ public class ChangeStorefrontImageRequestDto {
 
     public ChangeStorefrontImageRequestDto setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    public Boolean getHasDeletedLargeImage() {
+        return hasDeletedLargeImage;
+    }
+
+    public ChangeStorefrontImageRequestDto setHasDeletedLargeImage(Boolean hasDeletedLargeImage) {
+        this.hasDeletedLargeImage = hasDeletedLargeImage;
         return this;
     }
 }

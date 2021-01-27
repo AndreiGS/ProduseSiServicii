@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
             return new ProfileInfoDtoWithAccessToken(new ProfileInfoDto(BasicEncrypt.decrypt(user.getEmail()),
                     user.getName(), user.getBalance(), shops, findAllSubcategoriesDto(), findAllCategoriesDto(),
                     user.getSmallTokens(), user.getMediumTokens(), user.getLargeTokens(), user.getUnlimitedTokens(),
-                    auth.getRefreshToken(), auth.getCsrfToken()), auth.getAccessToken());
+                    user.getNoOfShopsAllowed(), auth.getRefreshToken(), auth.getCsrfToken()), auth.getAccessToken());
 
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             throw new CannotResponseToRequestException();
