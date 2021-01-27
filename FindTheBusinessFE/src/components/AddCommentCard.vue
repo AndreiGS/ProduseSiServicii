@@ -14,8 +14,8 @@
                     Conecteaza-te cu:
                   </p>
                   <!--<vk-icon v-on:click="loginWithGoogle()" icon="google" ratio="1.5" style="color: #DB4437; cursor: pointer" />-->
-                  <div class="login-button">
-                    <vk-icons-facebook v-on:click="loginWithFacebook()" :height="'30px'" :width="'30px'" />
+                  <div v-on:click="loginWithFacebook()" class="login-button">
+                    <vk-icons-facebook :height="'30px'" :width="'30px'" />
                   </div>
               </div>
               <div v-if="error == true" class="uk-text-center" style="margin-bottom: 0; margin-top: 20px">
