@@ -144,6 +144,7 @@
 					v-on:show_modal="showDialog()" 
 					v-on:close_modal="closeDialog()" 
 					@change_balance="changeBalance($event)"
+					@promote_shop="promoteShop($event)"
 					:shops="user.shops" 
 					:subcategories="subcategories"
 					:categories="categories"
@@ -261,6 +262,17 @@ export default {
 			this.user.shops.forEach(shop => {
 				if(shop.id == data.id) {
 					shop.published = data.isPublished
+					return
+				}
+			});
+		},
+		promoteShop(promoteData) {
+			this.user.shops.forEach(shop => {
+				if(shop.id == promoteData.shopId) {
+					if(promoteData.where == 'SEARCHES')
+						shop.promotedDaysInSearchesRemaining += promoteData.days
+					else
+						shop.promotedDaysInHomeRemaining += promoteData.days
 					return
 				}
 			});

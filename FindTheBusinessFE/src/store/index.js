@@ -12,7 +12,7 @@ export default new Vuex.Store({
     tutorialStrings: [
       {
         title: 'Tutorial:',
-        content: 'Doriti sa treceti prin modul de utilizare? In cazul in care un buton nu este vizibil pe ecranul dumneavostra, glisati degetul pe ecran in sus',
+        content: 'Doriti sa treceti prin modul de utilizare? In cazul in care un buton nu este vizibil pe ecranul dumneavostra, va rugam sa folositi scroll-ul sau sa ne scrieti la adresa de email produsesiservicii.ro@gmail.com pentru asistenta',
         place: 'top',
         hasYesButton: true,
         hasNoButton: true,

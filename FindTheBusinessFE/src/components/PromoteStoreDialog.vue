@@ -51,15 +51,10 @@ export default {
   },
   methods: {
     hideModal() {
-      UIkit.modal("#promote-shop-sections").hide();
+      UIkit.modal("#promote-shop-sections").hide()
       this.$emit('close_modal')
       if(this.$store.getters.getIsWithinTutorial)
         this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
-      /*if(this.$store.getters.getHasCompletedTutorial) {
-        this.$emit("refresh_page");
-      } else {
-        this.$emit('change_balance', this.purchased);
-      }*/
     },
     async promoteStore(type) {
       var timeoutVar = setTimeout(() => { this.loading = true; }, 1000);
@@ -74,12 +69,19 @@ export default {
       })
         .then((response) => {
           let where = type == 'SEARCHES' ? 'in cautari' : 'in pagina "Acasa"' 
-          UIkit.notification({message: `Ati promovat magazinul ${where} cu succes!`, status: 'success'})
+          UIkit.notification({message: `Ati promovat magazinul ${where} pentru inca 30 de zile!`, status: 'success'})
 
           this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
           this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
 
           this.$emit('change_balance', -60);
+
+          let promote = {
+            where: type,
+            days: 30,
+            shopId: this.shopIdToModify,
+          }
+          this.$emit('promote_shop', promote)
         }) 
         .catch((error) => {
           if(error.response.status == 400)

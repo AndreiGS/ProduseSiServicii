@@ -560,6 +560,9 @@ public class ShopServiceImpl implements ShopService {
     }
 
     private void deleteImage(String image) {
+        if(image == null)
+            return;
+
         String[] oldPhotoName;
         try {
             oldPhotoName = image.split("/");

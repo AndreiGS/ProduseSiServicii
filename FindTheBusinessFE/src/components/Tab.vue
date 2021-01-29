@@ -4,12 +4,11 @@
       <div class="uk-inline uk-text-left" style="width: 100%">
         <input maxlength="20" v-model="tabData.tabName" class="uk-input custom-input-width" :class="setTabClass()"  type="text" placeholder="Nume categorie" :disabled="(editingTab == true) ? false : true">
         
-        <div v-if="editingTab == false">
+        <div v-if="shouldShowTabActions()">
           <a uk-tooltip="Sterge fila" v-if="tab.id.includes('not-set') == false" style="cursor: pointer;" @click="deleteExistingTab()" class="uk-form-icon uk-form-icon-flip second-button" uk-icon="icon: trash"></a>
-          <a uk-tooltip="Editeaza fila" style="cursor: pointer;" class="uk-form-icon uk-form-icon-flip first-button" @click="changeEdit()" uk-icon="icon: pencil"></a>
-          
+          <a uk-tooltip="Editeaza fila" style="cursor: pointer;" class="uk-form-icon uk-form-icon-flip first-button" @click="changeEdit()" uk-icon="icon: pencil"></a>   
         </div>
-        <div v-else>
+        <div v-else-if="editingTab == true">
           <a uk-tooltip="Sterge fila" v-if="tab.id.includes('not-set') == false" style="cursor: pointer;" @click="deleteExistingTab()" class="uk-form-icon uk-form-icon-flip third-button" uk-icon="icon: trash"></a>
           <a uk-tooltip="Salveaza modificarile" style="cursor: pointer;" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 24 ? 'in-focus' : ''" class="uk-form-icon uk-form-icon-flip second-button" @click="saveChanges()" uk-icon="icon: check"></a>
           <a uk-tooltip="Anuleaza modificarile" style="cursor: pointer;"  class="uk-form-icon uk-form-icon-flip first-button" @click="discardChanges()" uk-icon="icon: ban"></a>
@@ -49,6 +48,9 @@ export default {
     }
   },
   methods: {
+    shouldShowTabActions(){
+      return this.$store.getters.getIsWithinTutorial ? false : this.editingTab == false
+    },
     setTabClass() {
       let className = !this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 24 ? 'in-focus ' : ''
     

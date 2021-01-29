@@ -365,8 +365,9 @@ export default {
 			return subcategoriesToReturn*/
 		},
     openPromotedInfoPanel() {
+      this.$emit('promote_shop', this.id)
       this.$emit('show_modal')
-      UIkit.modal("#promote-info-sections").show();
+      UIkit.modal("#promote-info-sections"+this.id).show();
       this.changeTutorialStep();
     },
     onImgLoad() {

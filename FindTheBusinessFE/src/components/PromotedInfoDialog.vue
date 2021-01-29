@@ -1,5 +1,5 @@
 <template>
-  <div id="promote-info-sections" bg-close="false" uk-modal>
+  <div :id="'promote-info-sections'+this.id" bg-close="false" uk-modal>
     <div class="uk-modal-dialog uk-margin-auto-vertical">
       <button class="uk-modal-close-default" type="button" uk-close></button>
       <div class="uk-modal-header">
@@ -62,7 +62,8 @@ export default {
         this.$store.dispatch('changeTutorialStep', this.$store.getters.getTutorialStep+1)
     },
     hideModal() {
-      UIkit.modal("#promote-info-sections").hide();
+      console.log("hide");
+      UIkit.modal('#promote-info-sections'+this.id).hide();
     }
   }
 }

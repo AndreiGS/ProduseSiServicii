@@ -53,7 +53,12 @@
     </div>
 
     <RefreshStoreDialog v-on:refresh_page="$emit('refresh_page')" @close_modal="$emit('close_modal')" :shopIdToModify="shopId"/>
-    <PromoteStoreDialog v-on:refresh_page="$emit('refresh_page')" @change_balance="$emit('change_balance', $event)" @close_modal="$emit('close_modal')" :shopIdToModify="shopId"/>
+    <PromoteStoreDialog 
+      v-on:refresh_page="$emit('refresh_page')" 
+      @change_balance="$emit('change_balance', $event)" 
+      @close_modal="$emit('close_modal')" :shopIdToModify="shopId"
+      @promote_shop="$emit('promote_shop', $event)"
+    />
     <DeleteShopDialog v-on:delete_shop="$emit('delete_shop', $event)" :shopIdToModify="shopId"/>
     <SurePublishDialog v-on:change_published="$emit('change_published', $event)" :shopIdToModify="shopId"/> 
   </div>
@@ -118,7 +123,7 @@ export default {
           })
         }
         this.$emit('add_shop')
-      }
+      },
     },
 }
 </script>

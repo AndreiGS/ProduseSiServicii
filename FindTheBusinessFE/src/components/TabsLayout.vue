@@ -1,6 +1,6 @@
 <template>
   <div class="uk-padding-small" style="background-color: rgba(111,196,43,0.2)">
-    <AddTabCard v-if="!newTabAdded" class="add-style" v-on:add_new_tab="addNewTab()" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 23 ? 'in-focus' : ''"/>
+    <AddTabCard v-if="shouldShowAddTabCard()" class="add-style" v-on:add_new_tab="addNewTab()" :class="!this.$store.getters.getHasCompletedTutorial && this.$store.getters.getTutorialStep == 23 ? 'in-focus' : ''"/>
     
     <div v-if="tabs.length > 0">
       <Tab style="margin-bottom: 15px"
@@ -46,6 +46,13 @@ export default {
     saveNewTab(tab) {
       this.$emit('new_tab_saved', tab)
     },
+    shouldShowAddTabCard() {
+      if(!this.$store.getters.getIsWithinTutorial) {
+        return !this.newTabAdded;
+      }
+
+      return this.$store.getters.getTutorialStep == 23
+    }
   },
   mounted() {
     this.allTabs = this.tabs
