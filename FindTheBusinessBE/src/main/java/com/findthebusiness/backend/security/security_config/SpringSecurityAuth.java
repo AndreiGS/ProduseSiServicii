@@ -98,11 +98,11 @@ public class SpringSecurityAuth extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        String frontendUrl1 = System.getenv("SPRING_APP_FRONTEND_1");
-        String frontendUrl2 = System.getenv("SPRING_APP_FRONTEND_2");
+        //String frontendUrl1 = System.getenv("SPRING_APP_FRONTEND_1");
+        //String frontendUrl2 = System.getenv("SPRING_APP_FRONTEND_2");
 
         List<String> frontendUrls = new ArrayList<>();
-        if(frontendUrl1 != null) {
+        /*if(frontendUrl1 != null) {
             frontendUrls.add(frontendUrl1);
         }
 
@@ -111,6 +111,14 @@ public class SpringSecurityAuth extends WebSecurityConfigurerAdapter {
         }
 
         if(frontendUrl1 == null && frontendUrl2 == null) {
+            frontendUrls.add("http://localhost:8081");
+            frontendUrls.add("http://127.0.0.1:8887");
+        }*/
+        String SPRING_ENV = System.getenv("SPRING_ENV");
+        if(SPRING_ENV.equals("prod")) {
+            frontendUrls.add("https://produsesiservicii.ro");
+            frontendUrls.add("https://wwww.produsesiservicii.ro");
+        } else {
             frontendUrls.add("http://localhost:8081");
             frontendUrls.add("http://127.0.0.1:8887");
         }
