@@ -50,7 +50,7 @@ public class AuthenticationUtil {
             saveAuthenticationDetailsWithoutReturning(previousAuth);
         }
         boolean isSecure = true;
-        String frontendUrlEnvVar = System.getenv("SPRING_APP_FRONTEND");
+        String frontendUrlEnvVar = System.getenv("SPRING_APP_FRONTEND_1");
 
         if(frontendUrlEnvVar == null)
             isSecure = false;
