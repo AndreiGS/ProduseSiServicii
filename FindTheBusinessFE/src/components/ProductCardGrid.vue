@@ -221,10 +221,10 @@ export default {
           this.itemAdded = false;
       },
       async getItems() {
-        let csrfToken = this.$cookie.get("CSRF-TOKEN")
+        let csrfToken = this.$cookies.get("CSRF-TOKEN")
         if(!csrfToken) {
           csrfToken=Math.floor(Math.random() * 10000000);
-			    this.$cookie.set("CSRF-TOKEN", csrfToken, 7)
+			    this.$cookies.set("CSRF-TOKEN", csrfToken)
         } 
 
         var timeoutVar = setTimeout(() => { this.firstEnter = false; this.loading = true; }, 1000);

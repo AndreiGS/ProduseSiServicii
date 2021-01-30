@@ -56,6 +56,16 @@ public class RefreshTokenFilter extends OncePerRequestFilter {
                 Cookie accessToken = new Cookie(ACCESS_TOKEN, "");
                 accessToken.setMaxAge(0);
                 accessToken.setHttpOnly(true);
+
+                String SPRING_ENV = System.getenv("SPRING_ENV");
+                if(SPRING_ENV != null && SPRING_ENV.equals("prod")) {
+                    accessToken.setDomain("produsesiservicii.ro");
+                    accessToken.setSecure(true);
+                } else {
+                    accessToken.setDomain("localhost");
+                    accessToken.setSecure(false);
+                }
+
                 response.addCookie(accessToken);
 
                 accessDeniedHandler.handle(request, response, new AccessDeniedException(

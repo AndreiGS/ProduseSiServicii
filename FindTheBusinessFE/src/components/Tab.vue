@@ -77,14 +77,14 @@ export default {
         url: this.backend+'/api/tabs/deleteTab?shopId='+this.$route.params.id+'&tabId='+this.tabToEmit.id,
         method: 'delete',
         headers: {
-          'X-CSRF-TOKEN': this.$cookie.get('CSRF-TOKEN'),
-          'X-REFRESH-TOKEN': this.$cookie.get('REFRESH-TOKEN')
+          'X-CSRF-TOKEN': this.$cookies.get('CSRF-TOKEN'),
+          'X-REFRESH-TOKEN': this.$cookies.get('REFRESH-TOKEN')
         },
         withCredentials: true
       })
         .then((response) => {
-          this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
-          this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
+          this.$cookies.set("CSRF-TOKEN", response.data.csrfToken);
+          this.$cookies.set("REFRESH-TOKEN", response.data.refreshToken);
 
           UIkit.notification({message: 'Categoria a fost stearsa', status: 'success'})
 
@@ -123,8 +123,8 @@ export default {
         url: this.backend+'/api/tabs/postTab?shopId='+this.$route.params.id+'&tabId='+this.tabData.id,
         method: 'post',
         headers: {
-          'X-CSRF-TOKEN': this.$cookie.get('CSRF-TOKEN'),
-          'X-REFRESH-TOKEN': this.$cookie.get('REFRESH-TOKEN'),
+          'X-CSRF-TOKEN': this.$cookies.get('CSRF-TOKEN'),
+          'X-REFRESH-TOKEN': this.$cookies.get('REFRESH-TOKEN'),
         },
         data: {
           name: this.tabData.tabName
@@ -132,8 +132,8 @@ export default {
         withCredentials: true
       })
         .then((response) => {
-          this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
-          this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
+          this.$cookies.set("CSRF-TOKEN", response.data.csrfToken);
+          this.$cookies.set("REFRESH-TOKEN", response.data.refreshToken);
 
           this.tabToEmit.oldId = this.tab.id
           this.tabToEmit.id = response.data.tabResponseDto.id

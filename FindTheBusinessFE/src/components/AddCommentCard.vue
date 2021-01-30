@@ -154,16 +154,16 @@ export default {
             var timeoutVar = setTimeout(() => { this.loading = true; }, 1000);
 
 
-            if(!this.$cookie.get("CSRF-TOKEN"))  {
+            if(!this.$cookies.get("CSRF-TOKEN"))  {
               let csrfToken=Math.floor(Math.random() * 10000000);
-              this.$cookie.set("CSRF-TOKEN", csrfToken, 7)
+              this.$cookies.set("CSRF-TOKEN", csrfToken)
             }
             
             await axios({
               method: 'post',
               url: this.backend+"/api/comments/postComment?store="+this.$route.params.id,
               headers: {
-                'X-CSRF-TOKEN': this.$cookie.get("CSRF-TOKEN")
+                'X-CSRF-TOKEN': this.$cookies.get("CSRF-TOKEN")
               },
               data: {
                 rating: this.formData.rating,
@@ -204,16 +204,16 @@ export default {
 
           var timeoutVar = setTimeout(() => { this.loading = true; }, 1000);
 
-          if(!this.$cookie.get("CSRF-TOKEN"))  {
+          if(!this.$cookies.get("CSRF-TOKEN"))  {
             let csrfToken=Math.floor(Math.random() * 10000000);
-            this.$cookie.set("CSRF-TOKEN", csrfToken, 7)
+            this.$cookies.set("CSRF-TOKEN", csrfToken)
           }
 
           await axios({
             method: 'post',
             url: this.backend+"/api/authentication/loginWithFacebook?store="+this.$route.params.id,
             headers: {
-              'X-CSRF-TOKEN': this.$cookie.get("CSRF-TOKEN")
+              'X-CSRF-TOKEN': this.$cookies.get("CSRF-TOKEN")
             },
             data: {
               fbcode: this.codeData,
