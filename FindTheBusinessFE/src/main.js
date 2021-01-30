@@ -35,7 +35,7 @@ Vue.use(VueCookies)
 Vue.use(vueCountryRegionSelect)
 Vue.use(VueWindowSize)
 
-Vue.$cookies.config('7d','', process.env.VUE_APP_FRONTEND.includes("produsesiservicii.ro") ? 'produsesiservicii.ro' : 'localhost', process.env.VUE_APP_FRONTEND.includes("https") ? true : false)
+Vue.$cookies.config('7d', '', 'produsesiservicii.ro', true)
 
 new Vue({
   async beforeCreate() { 
@@ -69,13 +69,13 @@ new Vue({
         withCredentials: true,
       })
         .then((response) => {
-          this.$cookie.set('CSRF-TOKEN', response.data.csrfToken, 7);
-					this.$cookie.set('REFRESH-TOKEN', response.data.refreshToken, 7);
+          this.$cookies.set('CSRF-TOKEN', response.data.csrfToken);
+					this.$cookies.set('REFRESH-TOKEN', response.data.refreshToken);
         })
         .catch(() => {
           this.$store.dispatch('changeLogged', '')
-          this.$cookie.delete('CSRF-TOKEN')
-          this.$cookie.delete('REFRESH-TOKEN')
+          this.$cookies.remove('CSRF-TOKEN')
+          this.$cookies.remove('REFRESH-TOKEN')
 
           if(this.$route.query.owner) {
             let query = Object.assign({}, this.$route.query);
