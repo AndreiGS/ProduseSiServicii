@@ -315,8 +315,8 @@ export default {
 					this.error = true;
 
 					this.$store.dispatch('changeLogged', '');
-					this.$cookies.delete('CSRF-TOKEN')
-					this.$cookies.delete('REFRESH-TOKEN')
+					this.$cookies.remove('CSRF-TOKEN')
+					this.$cookies.remove('REFRESH-TOKEN')
 				})
 				.finally(() => {
 					this.loading = false;
