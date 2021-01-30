@@ -48,15 +48,15 @@ export default {
 			await axios({
         url: this.backend+'/api/user/deleteProfile',
         headers: {
-          'X-CSRF-TOKEN': this.$cookie.get('CSRF-TOKEN'),
-          'X-REFRESH-TOKEN': this.$cookie.get('REFRESH-TOKEN'),
+          'X-CSRF-TOKEN': this.$cookies.get('CSRF-TOKEN'),
+          'X-REFRESH-TOKEN': this.$cookies.get('REFRESH-TOKEN'),
         },
 				withCredentials: true,
 				method: 'delete'
 			})
 				.then((response) => {
-					this.$cookie.delete('REFRESH-TOKEN')
-					this.$cookie.delete('CSRF-TOKEN')
+					this.$cookies.remove('REFRESH-TOKEN')
+					this.$cookies.remove('CSRF-TOKEN')
           this.$store.dispatch('changeLogged', '');
           this.$router.push("/")
           

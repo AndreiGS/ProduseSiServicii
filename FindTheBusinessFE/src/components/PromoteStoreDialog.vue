@@ -63,16 +63,16 @@ export default {
         method: 'patch',
         withCredentials: true,
         headers: {
-          'X-CSRF-TOKEN': this.$cookie.get('CSRF-TOKEN'),
-          'X-REFRESH-TOKEN': this.$cookie.get('REFRESH-TOKEN'),
+          'X-CSRF-TOKEN': this.$cookies.get('CSRF-TOKEN'),
+          'X-REFRESH-TOKEN': this.$cookies.get('REFRESH-TOKEN'),
         }
       })
         .then((response) => {
           let where = type == 'SEARCHES' ? 'in cautari' : 'in pagina "Acasa"' 
           UIkit.notification({message: `Ati promovat magazinul ${where} pentru inca 30 de zile!`, status: 'success'})
 
-          this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
-          this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
+          this.$cookies.set("CSRF-TOKEN", response.data.csrfToken);
+          this.$cookies.set("REFRESH-TOKEN", response.data.refreshToken);
 
           this.$emit('change_balance', -60);
 

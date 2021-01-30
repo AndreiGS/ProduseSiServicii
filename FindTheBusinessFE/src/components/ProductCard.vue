@@ -298,14 +298,14 @@ export default {
           url: this.backend+'/api/items/deleteItem?itemId='+this.item.id+'&shopId='+this.$route.params.id,
           method: 'delete',
           headers: {
-            'X-CSRF-TOKEN': this.$cookie.get('CSRF-TOKEN'),
-            'X-REFRESH-TOKEN': this.$cookie.get('REFRESH-TOKEN')
+            'X-CSRF-TOKEN': this.$cookies.get('CSRF-TOKEN'),
+            'X-REFRESH-TOKEN': this.$cookies.get('REFRESH-TOKEN')
           },
           withCredentials: true
         })
           .then((response) => {
-            this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
-            this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
+            this.$cookies.set("CSRF-TOKEN", response.data.csrfToken);
+            this.$cookies.set("REFRESH-TOKEN", response.data.refreshToken);
             this.$emit('delete_item', this.item)
           })
           .catch((error) => {
@@ -322,8 +322,8 @@ export default {
           url: this.backend+'/api/items/addItem?shopId='+this.$route.params.id+'&itemId='+this.item.id,
           method: 'post',
           headers: {
-            'X-CSRF-TOKEN': this.$cookie.get('CSRF-TOKEN'),
-            'X-REFRESH-TOKEN': this.$cookie.get('REFRESH-TOKEN')
+            'X-CSRF-TOKEN': this.$cookies.get('CSRF-TOKEN'),
+            'X-REFRESH-TOKEN': this.$cookies.get('REFRESH-TOKEN')
           },
           data: {
             title: this.item.title,
@@ -335,8 +335,8 @@ export default {
           withCredentials: true
         })
           .then((response) => {
-            this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
-            this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
+            this.$cookies.set("CSRF-TOKEN", response.data.csrfToken);
+            this.$cookies.set("REFRESH-TOKEN", response.data.refreshToken);
 
             let newTab = response.data.itemResponseDto.tabWithoutIdDto;
 
@@ -374,8 +374,8 @@ export default {
             }
             if(error.response.status == 406) {
               this.$store.dispatch('changeLogged', '')
-              this.$cookie.delete('REFRESH-TOKEN')
-              this.$cookie.delete('CSRF-TOKEN')
+              this.$cookies.remove('REFRESH-TOKEN')
+              this.$cookies.remove('CSRF-TOKEN')
               return
             }
             if(error.response.status == 400) {

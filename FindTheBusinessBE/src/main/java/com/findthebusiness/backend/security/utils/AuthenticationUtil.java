@@ -50,26 +50,28 @@ public class AuthenticationUtil {
             saveAuthenticationDetailsWithoutReturning(previousAuth);
         }
         boolean isSecure = true;
-        String frontendUrlEnvVar = System.getenv("SPRING_APP_FRONTEND");
+        String frontendUrlEnvVar = System.getenv("SPRING_APP_FRONTEND_1");
+        String domain = "produsesiservicii.ro";
 
-        if(frontendUrlEnvVar == null)
+        if(frontendUrlEnvVar == null || !frontendUrlEnvVar.contains("https")) {
             isSecure = false;
-        else if(!frontendUrlEnvVar.contains("https"))
-            isSecure = false;
+            domain = "localhost";
+        }
 
-        Cookie accessTokenCookie = createCookie(ACCESS_TOKEN, accessToken, 7, true, isSecure);
+        Cookie accessTokenCookie = createCookie(ACCESS_TOKEN, accessToken, 7, true, isSecure, domain);
         /*Cookie refreshTokenCookie = createCookie(REFRESH_TOKEN, refreshToken, 7, false, false);
             Cookie csrfTokenCookie = createCookie(CSRF_TOKEN, csrfToken, 7, false, false);*/
 
         return new AuthenticationCredentialsDto(accessTokenCookie, refreshToken, csrfToken);
     }
 
-    private Cookie createCookie(String name, String value, Integer timeInDays, boolean isHttpOnly, boolean isSecure) {
+    private Cookie createCookie(String name, String value, Integer timeInDays, boolean isHttpOnly, boolean isSecure, String domain) {
         Cookie cookie = new Cookie(name, value);
         cookie.setHttpOnly(isHttpOnly);
         cookie.setSecure(isSecure);
         cookie.setMaxAge(1000*60*60*24*timeInDays);
         cookie.setPath("/api");
+        cookie.setDomain(domain);
         return cookie;
     }
 

@@ -46,9 +46,9 @@ export default {
 	async created() {
 		var timeoutVar = setTimeout(() => { this.loading = true; }, 1000);
 
-		let csrfToken=this.$cookie.get('CSRF-TOKEN') || Math.floor(Math.random() * 10000000);
+		let csrfToken=this.$cookies.get('CSRF-TOKEN') || Math.floor(Math.random() * 10000000);
 
-		this.$cookie.set("CSRF-TOKEN", csrfToken, 7)
+		this.$cookies.set("CSRF-TOKEN", csrfToken)
 		await axios({
 			method: 'patch',
 			url: this.backend+"/api/authentication/confirmEmail?code="+this.code, 

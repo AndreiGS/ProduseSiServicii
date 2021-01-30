@@ -115,9 +115,9 @@ public class SpringSecurityAuth extends WebSecurityConfigurerAdapter {
             frontendUrls.add("http://127.0.0.1:8887");
         }*/
         String SPRING_ENV = System.getenv("SPRING_ENV");
-        if(SPRING_ENV.equals("prod")) {
+        if(SPRING_ENV != null && SPRING_ENV.equals("prod")) {
             frontendUrls.add("https://produsesiservicii.ro");
-            frontendUrls.add("https://wwww.produsesiservicii.ro");
+            frontendUrls.add("https://www.produsesiservicii.ro");
         } else {
             frontendUrls.add("http://localhost:8081");
             frontendUrls.add("http://127.0.0.1:8887");

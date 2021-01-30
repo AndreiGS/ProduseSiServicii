@@ -119,8 +119,8 @@ export default {
           UIkit.notification({message: 'Ati adaugat ' + response.data.amount/100 + ' RON', status: 'success'})
 	  
 	  
-          this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
-          this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
+          this.$cookies.set("CSRF-TOKEN", response.data.csrfToken);
+          this.$cookies.set("REFRESH-TOKEN", response.data.refreshToken);
           
           this.paying = false;
           this.amount = null;

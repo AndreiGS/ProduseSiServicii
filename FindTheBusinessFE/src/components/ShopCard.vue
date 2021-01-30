@@ -451,8 +451,8 @@ export default {
         url: this.backend+'/api/shops/saveShop?id='+this.id,
         method: 'post',
         headers: {
-          'X-CSRF-TOKEN': this.$cookie.get("CSRF-TOKEN"),
-          'X-REFRESH-TOKEN': this.$cookie.get("REFRESH-TOKEN")
+          'X-CSRF-TOKEN': this.$cookies.get("CSRF-TOKEN"),
+          'X-REFRESH-TOKEN': this.$cookies.get("REFRESH-TOKEN")
         },
         data: {
           base64SmallImage: this.newImage,
@@ -465,8 +465,8 @@ export default {
         withCredentials: true
       })
         .then((response) => {
-          this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
-          this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
+          this.$cookies.set("CSRF-TOKEN", response.data.csrfToken);
+          this.$cookies.set("REFRESH-TOKEN", response.data.refreshToken);
 
           this.id = response.data.shopId;
           let imageUrl = response.data.smallPhotoUrl;
@@ -620,15 +620,15 @@ export default {
         url: this.backend+'/api/shops/changePublished?id='+this.id+'&sure=false',
         method: 'post',
         headers: {
-          'X-CSRF-TOKEN': this.$cookie.get("CSRF-TOKEN"),
-          'X-REFRESH-TOKEN': this.$cookie.get("REFRESH-TOKEN")
+          'X-CSRF-TOKEN': this.$cookies.get("CSRF-TOKEN"),
+          'X-REFRESH-TOKEN': this.$cookies.get("REFRESH-TOKEN")
         },
         withCredentials: true
       })
         .then((response) => {
           this.isPublished = response.data.published
-          this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
-          this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
+          this.$cookies.set("CSRF-TOKEN", response.data.csrfToken);
+          this.$cookies.set("REFRESH-TOKEN", response.data.refreshToken);
 
           let published = {
             id: this.id,

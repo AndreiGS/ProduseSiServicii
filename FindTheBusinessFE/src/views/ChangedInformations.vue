@@ -52,8 +52,8 @@ export default {
   async created() {
 		var timeoutVar = setTimeout(() => { this.loading = true; }, 1000);
 
-		let csrfToken = this.$cookie.get("CSRF-TOKEN")
-    let refreshToken = this.$cookie.get("REFRESH-TOKEN")
+		let csrfToken = this.$cookies.get("CSRF-TOKEN")
+    let refreshToken = this.$cookies.get("REFRESH-TOKEN")
     
 		await axios({
 			method: 'patch',
@@ -69,8 +69,8 @@ export default {
 			})
 			.catch(error => {
 				this.$store.dispatch('changeLogged', '');
-				this.$cookie.delete('CSRF-TOKEN')
-				this.$cookie.delete('REFRESH-TOKEN')
+				this.$cookies.remove('CSRF-TOKEN')
+				this.$cookies.remove('REFRESH-TOKEN')
 				this.error = error.response.status;
 			})
 			.finally(() => {

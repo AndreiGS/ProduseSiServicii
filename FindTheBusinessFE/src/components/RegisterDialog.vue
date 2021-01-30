@@ -102,7 +102,7 @@ export default {
 
 			let csrfToken=Math.floor(Math.random() * 10000000);
 
-			this.$cookie.set("CSRF-TOKEN", csrfToken, 7)
+			this.$cookies.set("CSRF-TOKEN", csrfToken)
 
 			await axios({
 				  method: 'post',

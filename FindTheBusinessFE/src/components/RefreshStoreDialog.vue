@@ -58,16 +58,16 @@ export default {
         method: 'patch',
         withCredentials: true,
         headers: {
-          'X-CSRF-TOKEN': this.$cookie.get('CSRF-TOKEN'),
-          'X-REFRESH-TOKEN': this.$cookie.get('REFRESH-TOKEN'),
+          'X-CSRF-TOKEN': this.$cookies.get('CSRF-TOKEN'),
+          'X-REFRESH-TOKEN': this.$cookies.get('REFRESH-TOKEN'),
         }
       })
         .then((response) => {
           UIkit.notification({message: 'Ati reincarcat magazinul cu succes!', status: 'success'})
 
 
-          this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
-          this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
+          this.$cookies.set("CSRF-TOKEN", response.data.csrfToken);
+          this.$cookies.set("REFRESH-TOKEN", response.data.refreshToken);
 
           this.hideModal()
 

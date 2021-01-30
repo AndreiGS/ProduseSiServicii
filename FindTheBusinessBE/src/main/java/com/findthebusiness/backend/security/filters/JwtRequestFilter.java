@@ -88,6 +88,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 Cookie accessTokenCookie = new Cookie(ACCESS_TOKEN, "");
                 accessTokenCookie.setMaxAge(0);
                 accessTokenCookie.setHttpOnly(true);
+
+                String SPRING_ENV = System.getenv("SPRING_ENV");
+                if(SPRING_ENV != null && SPRING_ENV.equals("prod")) {
+                    accessTokenCookie.setDomain("produsesiservicii.ro");
+                    accessTokenCookie.setSecure(true);
+                } else {
+                    accessTokenCookie.setDomain("localhost");
+                    accessTokenCookie.setSecure(false);
+                }
+
                 response.addCookie(accessTokenCookie);
 
                 accessDeniedHandler.handle(request, response, new AccessDeniedException(

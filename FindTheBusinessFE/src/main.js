@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import VueCookie from 'vue-cookie'
+import VueCookies from 'vue-cookies'
 import axios from 'axios'
 import vueCountryRegionSelect from 'vue-country-region-select'
 import VueMeta from 'vue-meta'
@@ -31,9 +31,11 @@ Vue.component('VkTabs', Tabs)
 Vue.component('VkTabsItem', TabsItem)
 Vue.component('VkLabel', Label)
 
+Vue.use(VueCookies)
 Vue.use(vueCountryRegionSelect)
-Vue.use(VueCookie);
 Vue.use(VueWindowSize)
+
+Vue.$cookies.config('7d','', process.env.VUE_APP_FRONTEND.includes("produsesiservicii.ro") ? 'produsesiservicii.ro' : 'localhost', process.env.VUE_APP_FRONTEND.includes("https") ? true : false)
 
 new Vue({
   async beforeCreate() { 
@@ -61,8 +63,8 @@ new Vue({
         url: (process.env.VUE_APP_BACKEND || 'http://localhost:8080') + '/api/authentication/checkIdentity',
         method: 'post',
         headers: {
-          'X-CSRF-TOKEN': this.$cookie.get('CSRF-TOKEN'),
-          'X-REFRESH-TOKEN': this.$cookie.get('REFRESH-TOKEN')
+          'X-CSRF-TOKEN': this.$cookies.get('CSRF-TOKEN'),
+          'X-REFRESH-TOKEN': this.$cookies.get('REFRESH-TOKEN')
         },
         withCredentials: true,
       })

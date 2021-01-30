@@ -283,7 +283,7 @@ export default {
 				method: 'get',
 				url: this.backend+'/api/user/getUserProfileInfo',
 				headers: {
-					'X-REFRESH-TOKEN': this.$cookie.get('REFRESH-TOKEN')
+					'X-REFRESH-TOKEN': this.$cookies.get('REFRESH-TOKEN')
 				},
 				withCredentials: true
 			})
@@ -308,15 +308,15 @@ export default {
 						this.$store.dispatch('changeHasCompletedTutorial', true);
 					}
 					
-          this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
-          this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
+          this.$cookies.set("CSRF-TOKEN", response.data.csrfToken);
+          this.$cookies.set("REFRESH-TOKEN", response.data.refreshToken);
 				})
 				.catch(error => {
 					this.error = true;
 
 					this.$store.dispatch('changeLogged', '');
-					this.$cookie.delete('CSRF-TOKEN')
-					this.$cookie.delete('REFRESH-TOKEN')
+					this.$cookies.delete('CSRF-TOKEN')
+					this.$cookies.delete('REFRESH-TOKEN')
 				})
 				.finally(() => {
 					this.loading = false;
@@ -356,16 +356,16 @@ export default {
 				method: 'post',
 				url: this.backend+'/api/authentication/logout',
 				headers: {
-					'X-REFRESH-TOKEN': this.$cookie.get('REFRESH-TOKEN'),
-					'X-CSRF-TOKEN': this.$cookie.get('CSRF-TOKEN')
+					'X-REFRESH-TOKEN': this.$cookies.get('REFRESH-TOKEN'),
+					'X-CSRF-TOKEN': this.$cookies.get('CSRF-TOKEN')
 				},
 				withCredentials: true
 			})
 				.finally(() => {
 					this.error=0;
 					UIkit.notification({message: 'V-ati deconectat cu succes', status: 'success'})
-					this.$cookie.delete("CSRF-TOKEN");
-					this.$cookie.delete("REFRESH-TOKEN");
+					this.$cookies.remove("CSRF-TOKEN");
+					this.$cookies.remove("REFRESH-TOKEN");
 
 					this.$store.dispatch('changeLogged', '');
 
@@ -414,8 +414,8 @@ export default {
 				method: 'post',
 				url: this.backend+'/api/user/sendEmailForChangingInformation',
 				headers: {
-					'X-REFRESH-TOKEN': this.$cookie.get('REFRESH-TOKEN'),
-					'X-CSRF-TOKEN': this.$cookie.get('CSRF-TOKEN')
+					'X-REFRESH-TOKEN': this.$cookies.get('REFRESH-TOKEN'),
+					'X-CSRF-TOKEN': this.$cookies.get('CSRF-TOKEN')
 				},
 				data: {
 					newEmail: this.editedEmail,
@@ -426,8 +426,8 @@ export default {
 				.then(response => {
 					this.error=0;
 
-          this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
-          this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
+          this.$cookies.set("CSRF-TOKEN", response.data.csrfToken);
+          this.$cookies.set("REFRESH-TOKEN", response.data.refreshToken);
 
 					UIkit.notification({message: 'Email-ul pentru confirmare a fost trimis', status: 'success'})
 				})
@@ -463,8 +463,8 @@ export default {
         method: 'post',
         url: this.backend+"/api/user/sendEmailForChangingPassword",
         headers: {
-          "X-CSRF-TOKEN": this.$cookie.get("CSRF-TOKEN"),
-          "X-REFRESH-TOKEN": this.$cookie.get("REFRESH-TOKEN"),
+          "X-CSRF-TOKEN": this.$cookies.get("CSRF-TOKEN"),
+          "X-REFRESH-TOKEN": this.$cookies.get("REFRESH-TOKEN"),
         },
         withCredentials: true
       })
@@ -473,8 +473,8 @@ export default {
 					this.error=0;
 
 
-          this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
-          this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
+          this.$cookies.set("CSRF-TOKEN", response.data.csrfToken);
+          this.$cookies.set("REFRESH-TOKEN", response.data.refreshToken);
 
 					UIkit.notification({message: 'Email-ul pentru confirmare a fost trimis', status: 'success'})
 					this.editing = false;

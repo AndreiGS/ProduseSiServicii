@@ -450,14 +450,14 @@ export default {
             method: 'post',
             withCredentials: true,
             headers: {
-              'X-CSRF-TOKEN': this.$cookie.get('CSRF-TOKEN'),
-              'X-REFRESH-TOKEN': this.$cookie.get('REFRESH-TOKEN')
+              'X-CSRF-TOKEN': this.$cookies.get('CSRF-TOKEN'),
+              'X-REFRESH-TOKEN': this.$cookies.get('REFRESH-TOKEN')
             }
           })
             .then((response) => {
               
-              this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
-              this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
+              this.$cookies.set("CSRF-TOKEN", response.data.csrfToken);
+              this.$cookies.set("REFRESH-TOKEN", response.data.refreshToken);
               
               UIkit.notification({message: 'Am modificat actualizarea automata a creditului pentru acest magazin', status: 'success'});
             })
@@ -601,16 +601,16 @@ export default {
             url: this.backend+'/api/shops/checkIfOwner?id='+this.$route.params.id,
             method: 'post',
             headers: {
-              'X-CSRF-TOKEN': this.$cookie.get('CSRF-TOKEN'),
-              'X-REFRESH-TOKEN': this.$cookie.get('REFRESH-TOKEN')
+              'X-CSRF-TOKEN': this.$cookies.get('CSRF-TOKEN'),
+              'X-REFRESH-TOKEN': this.$cookies.get('REFRESH-TOKEN')
             },
             withCredentials: true
           })
             .then((response) => {
               this.isOwner = true;
 
-              this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
-					    this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
+              this.$cookies.set("CSRF-TOKEN", response.data.csrfToken);
+					    this.$cookies.set("REFRESH-TOKEN", response.data.refreshToken);
             })
             .catch((error) => {
               this.isOwner = false;
@@ -690,8 +690,8 @@ export default {
             url: `${this.backend}/api/shops/changeStorefrontImage?id=${this.$route.params.id}&image_type=${imageType}`,
             method: 'post',
             headers: {
-              'X-CSRF-TOKEN': this.$cookie.get('CSRF-TOKEN'),
-              'X-REFRESH-TOKEN': this.$cookie.get('REFRESH-TOKEN')
+              'X-CSRF-TOKEN': this.$cookies.get('CSRF-TOKEN'),
+              'X-REFRESH-TOKEN': this.$cookies.get('REFRESH-TOKEN')
             },
             data: {
               hasDeletedLargeImage: this.store.largePhoto == null && this.newImage == null,
@@ -704,8 +704,8 @@ export default {
             withCredentials: true
           })
             .then((response) => {
-              this.$cookie.set("CSRF-TOKEN", response.data.csrfToken, 7);
-              this.$cookie.set("REFRESH-TOKEN", response.data.refreshToken, 7);
+              this.$cookies.set("CSRF-TOKEN", response.data.csrfToken);
+              this.$cookies.set("REFRESH-TOKEN", response.data.refreshToken);
 
               this.store.largePhoto = response.data.newImageURL
               this.store.smallPhoto = response.data.newSmallImageURL
@@ -734,8 +734,8 @@ export default {
           }
           if(error.response.status == 403) {
             this.$store.dispatch('changeLogged', '')
-            this.$cookie.delete('REFRESH-TOKEN')
-            this.$cookie.delete('CSRF-TOKEN')
+            this.$cookies.remove('REFRESH-TOKEN')
+            this.$cookies.remove('CSRF-TOKEN')
             return
           }
           UIkit.notification({message: 'Modificarile nu au putut fi salvate', status: 'danger'})
