@@ -1,2 +1,2 @@
-URL of the website:
+URL:
   https://produsesiservicii.ro
